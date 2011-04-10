@@ -1,0 +1,1248 @@
+=== mosh.py, 118
+Abstract section called.
+>>>>
+Section abstraite appelée.
+=== mosh.py, 131
+Section is not coded yet.
+>>>>
+Cette section n'est pas encore implémentée.
+=== mosh.py, 145
+Unknown File: 
+>>>>
+Fichier introuvable :
+=== mosh.py, 154
+%s: Attempted to read before (%d) beginning of file/buffer.
+>>>>
+%s: Tentative de lecture (%d) avant le début du fichier/buffer.
+=== mosh.py, 157
+%s: Attempted to read past (%d) end (%d) of file/buffer.
+>>>>
+%s: Tentative de lecture (%d) avant le fin (%d) du fichier/buffer.
+=== mosh.py, 169
+%s: Bad Ref: %s: objId: %s iObj: %d
+>>>>
+%s: Référence erronée: %s: objId: %s iObj: %d
+=== mosh.py, 183
+%s: Expected size == %d, but got: %d 
+>>>>
+%s: La taille attendue est %d, mais celle renvoyée est %d 
+=== mosh.py, 185
+%s: Expected size <= %d, but got: %d 
+>>>>
+%s: La taille attendue doit être <= %d, mais celle renvoyée est %d 
+=== mosh.py, 192
+Extraneous subrecord (%s) in %s record.
+>>>>
+Le sous-élément (%s) n'est pas dans l'élément %s.
+=== mosh.py, 198
+Load list is full.
+>>>>
+La liste de chargement est pleine.
+=== mosh.py, 568
+Scale must not equal zero!
+>>>>
+L'échelle ne doit pas être zéro!
+=== mosh.py, 661
+%s: Expected %s subrecord, but found %s instead.
+>>>>
+%s: Le sous-élément attendu est %s, alors que celui renvoyé est %s.
+=== mosh.py, 757
+Data changed: 
+>>>>
+Données modifiées :
+=== mosh.py, 758
+Data undefined: 
+>>>>
+Données non définies :
+=== mosh.py, 895
+Type must be either LEVC or LEVI.
+>>>>
+Le type doit être LEVC ou LEVI.
+=== mosh.py, 948
+No id for %s record.
+>>>>
+L'élément %s n'a pas d'ID.
+=== mosh.py, 1182
+: Second NAM0 subrecord.
+>>>>
+: Second NAM0 sous-élément.
+=== mosh.py, 1349
+DIAL %d %s: Unexpected subrecords
+>>>>
+DIAL %d %s: Sous-éléments inattendus
+=== mosh.py, 1356
+Dialog %s: info with missing id.
+>>>>
+Dialog %s: l'ID de l'info est manquant.
+=== mosh.py, 1845
+Unknown SCPT record: 
+>>>>
+Elément SCPT inconnu : 
+=== mosh.py, 1848
+SCPT %d %s: Unexpected subrecords
+>>>>
+SCPT %d %s: Sous-éléments inattendus
+=== mosh.py, 1854
+SCPT.RNAM
+>>>>
+
+=== mosh.py, 2099
+Morrowind.ini: [GameFiles] section not found.
+>>>>
+Morrowind.ini: section [GameFiles] introuvable.
+=== mosh.py, 2132
+Morrowind.ini has changed
+>>>>
+Morrowind.ini a été modifié
+=== mosh.py, 2376
+Expected TES3, but got 
+>>>>
+TES3 attendu : 
+=== mosh.py, 2549
+%s Snapshots|%s|All Snapshots|*.esp;*.esm;*.ess
+>>>>
+%s Captures|%s|Toutes les captures|*.esp;*.esm;*.ess
+=== mosh.py, 2828
+Copying Files...
+>>>>
+Copie des fichiers...
+=== mosh.py, 3118
+[No Journal Record Found.]
+>>>>
+[Aucune entrée de journal trouvée.]
+=== mosh.py, 3132
+[Error reading file.]
+>>>>
+[Erreur de lecture de fichier.]
+=== mosh.py, 3432
+Insufficient data to write file.
+>>>>
+Données insufisantes pour écrire le fichier.
+=== mosh.py, 3519
+: Attempted to access damaged file.
+>>>>
+: tentative d'accéder à un fichier endommagé.
+=== mosh.py, 3655
+FileRefs.renumberObjects is for esps only.
+>>>>
+FileRefs.renumberObjects valide seulement pour les fichiers .esp.
+=== mosh.py, 3667
+First index should be a positive integer
+>>>>
+Le premier indice doit être un entier positif
+=== mosh.py, 3787
+Detached Global Scripts
+>>>>
+Scripts globaux détachés
+=== mosh.py, 3930
+Records added:
+>>>>
+Elément ajouté:
+=== mosh.py, 3936
+References replaced:
+>>>>
+Références remplacées:
+=== mosh.py, 4011
+Building 
+>>>>
+Construction  
+=== mosh.py, 4035
+NO SUCH MASTER
+>>>>
+FICHIER MASTER INEXISTANT
+=== mosh.py, 4070
+Misordered esm: %s should load before %s
+>>>>
+.esm mal ordonné: %s devrait être chrgé avant %s
+=== mosh.py, 4081
+Cannot remove debris cells from a non-save game!
+>>>>
+Les cellules inutilisées ne peuvent être retirées que d'une sauvegarde !
+=== mosh.py, 4102
+Cannot remove save debris from a non-save game!
+>>>>
+Les données inutilisée ne peuvent être retirées que d'une sauvegarde !
+=== mosh.py, 4127
+Debris %s:
+>>>>
+Données inutilisées %s:
+=== mosh.py, 4138
+Cannot remove overriding lists from a non-save game!
+>>>>
+La liste des écrasements ne peut être retirée que d'une sauvegarde !
+=== mosh.py, 4143
+Overriding Lists
+>>>>
+Listes d'écrasement
+=== mosh.py, 4168
+BAD DELETE>>DELETED %d %d %s
+>>>>
+ERREUR D'EFFACEMENT>>EFFACE %d %d %s
+=== mosh.py, 4169
+BAD REF>>REMATCHED  %d %d %s %d
+>>>>
+ERREUR DE REFERENCE>>CORRECTION  %d %d %s %d
+=== mosh.py, 4170
+BAD REF>>NO MASTER  %d %d %s
+>>>>
+ERREUR DE REFERENCE>>PAS DE MASTER  %d %d %s
+=== mosh.py, 4171
+BAD REF>>DOUBLED    %d %d %s
+>>>>
+ERREUR DE REFERENCE>>DUPLICATION    %d %d %s
+=== mosh.py, 4194
+Debris Cell Name: 
+>>>>
+Nom de la cellule inutilisée :
+=== mosh.py, 4282
+Drawing Cells
+>>>>
+Drawing Cells
+=== mosh.py, 4374
+No match for:
+>>>>
+Aucune correspondance pour :
+=== mosh.py, 4388
+Trimming: 
+>>>>
+Elimination des parties inutiles : 
+=== mosh.py, 4662
+Merged %s Lists:
+>>>>
+%s listes combinées :
+=== mosh.py, 4699
+Bad line in CharSet class file.
+>>>>
+Ligne erronée dans le fichier de la classe CharSet.
+=== mosh.py, 4704
+Bad number of stats for class 
+>>>>
+Mauvais numéro de statistiques pour la classe 
+=== mosh.py, 4884
+IMPORT: 
+>>>>
+IMPORT :
+=== mosh.py, 4891
+  [%s already imported.]
+>>>>
+  [%s déjà importé.]
+=== mosh.py, 4900
+PROJECT: 
+>>>>
+PROJET :
+=== mosh.py, 4939
+Bad sleep condition state for %s in %s: %s
+>>>>
+Stato test sonno errato per %s in %s: %s
+=== mosh.py, 4961
+Pos cell not defined for %s %s %d
+>>>>
+Pos cella non definita per %s %s %d
+=== mosh.py, 5057
+No project has been defined!
+>>>>
+Nessun progetto definito!
+=== mosh.py, 5157
+Compiled
+>>>>
+Compilato
+=== masher.py, 85
+Balmora, Caius Cosades' House
+>>>>
+
+=== masher.py, 86
+Indarys Manor
+>>>>
+
+=== masher.py, 87
+Raven Rock, Factor's Estate
+>>>>
+
+=== masher.py, 88
+Rethan Manor
+>>>>
+
+=== masher.py, 89
+Skaal Village, The Blodskaal's House
+>>>>
+
+=== masher.py, 90
+Solstheim, Thirsk
+>>>>
+
+=== masher.py, 91
+Tel Uvirith, Tower Lower
+>>>>
+
+=== masher.py, 92
+Tel Uvirith, Tower Upper
+>>>>
+
+=== masher.py, 99
+Author
+>>>>
+Autore
+=== masher.py, 100
+Cell
+>>>>
+Cella
+=== masher.py, 101
+Count
+>>>>
+Numero
+=== masher.py, 102
+Day
+>>>>
+Giorno
+=== masher.py, 103
+File
+>>>>
+
+=== masher.py, 104
+Rating
+>>>>
+Voto
+=== masher.py, 105
+Group
+>>>>
+Gruppo
+=== masher.py, 106
+Load Order
+>>>>
+Ordine caricamento
+=== masher.py, 107
+Modified
+>>>>
+Data modifica
+=== masher.py, 108
+Num
+>>>>
+
+=== masher.py, 109
+Player
+>>>>
+Giocatore
+=== masher.py, 111
+Save Name
+>>>>
+Partita
+=== masher.py, 112
+Size
+>>>>
+Dimensione
+=== masher.py, 113
+Status
+>>>>
+Stato
+=== masher.py, 114
+Type
+>>>>
+Tipo
+=== masher.py, 115
+Version
+>>>>
+Versione
+=== masher.py, 269
+Error
+>>>>
+Errore
+=== masher.py, 273
+Warning
+>>>>
+Attenzione
+=== masher.py, 281
+Information
+>>>>
+Informazione
+=== masher.py, 322
+Don't show this in the future.
+>>>>
+Non mostrare più queste informazioni.
+=== masher.py, 337
+Choose a directory.
+>>>>
+Scegli una cartella.
+=== masher.py, 362
+Progress
+>>>>
+Avanzamento
+=== masher.py, 372
+Dialog already destroyed.
+>>>>
+Finestra di dialogo già eliminata.
+=== masher.py, 625
+Add
+>>>>
+Aggiungi
+=== masher.py, 628
+Edit
+>>>>
+Modifica
+=== masher.py, 631
+Rename
+>>>>
+Rinomina
+=== masher.py, 634
+Remove
+>>>>
+Rimuovi
+=== masher.py, 681
+Rename to:
+>>>>
+Rinomina in:
+=== masher.py, 692
+Name must be unique.
+>>>>
+Il nome deve essere unico.
+=== masher.py, 944
+File "%s" does not exist.
+>>>>
+File "%s" non trovato.
+=== masher.py, 1067
+Unrecognized sort key: 
+>>>>
+Chiave ordinamento non riconosciuta: 
+=== masher.py, 1100
+Unable to select %s because file already has maximum number of masters.
+>>>>
+Impossibile selezionare %s poiché il file ha già il numero massimo consentito di master.
+=== masher.py, 1217
+Edit/update the masters list? Note that the update process will automatically fix some problems. Be sure to review the changes before saving.
+>>>>
+Modifica/aggiorna la lista dei master? Il processo di aggiornamento risolverà automaticamente alcuni problemi. Controlla le modifiche prima di salvare.
+=== masher.py, 1218
+Update Masters
+>>>>
+Aggiorna master
+=== masher.py, 1259
+Missing master: 
+>>>>
+Master mancante:
+=== masher.py, 1477
+Morrowind Mod File
+>>>>
+File Mod Morrowind
+=== masher.py, 1608
+Incorrect file extension: 
+>>>>
+Estensione file errata:
+=== masher.py, 1612
+File %s already exists.
+>>>>
+Il file %s é già presente.
+=== masher.py, 1634
+Unrecognized date: 
+>>>>
+Data non riconosciuta: 
+=== masher.py, 1638
+Mash cannot handle files dates greater than January 19, 2038.)
+>>>>
+Mash non può gestire file con data successiva al 19 Gennaio 2038.)
+=== masher.py, 1694
+Saving
+>>>>
+Salvataggio
+=== masher.py, 1698
+Remap Masters
+>>>>
+Rimappatura master
+=== masher.py, 1714
+File corrupted on save!
+>>>>
+File danneggiato durante il salvataggio!
+=== masher.py, 1890
+Morrowind Save File
+>>>>
+File partita salvata Morrowind
+=== masher.py, 2128
+Mods
+>>>>
+Mod
+=== masher.py, 2130
+Saves
+>>>>
+Partite salvate
+=== masher.py, 2205
+Modified dates have been reset for some mod files.
+>>>>
+Le date modificate sono state ripristinate per alcuni mod.
+=== masher.py, 2218
+Missing files have been removed from load list. (%s)
+>>>>
+I file mancanti sono stati rimossi dalla lista di caricamento. (%s)
+=== masher.py, 2224
+Load list has been truncated because it was too long. (%s)
+>>>>
+La lista di caricamento é stata troncata perché troppo lunga. (%s)
+=== masher.py, 2232
+The following mod files have corrupted headers: 
+>>>>
+I seguenti file mod hanno intestazioni rovinate: 
+=== masher.py, 2238
+The following save files have corrupted headers: 
+>>>>
+I seguenti file partita salvata hanno intestazioni rovinate: 
+=== masher.py, 2244
+Mash cannot handle dates greater than January 19, 2038. Accordingly, the dates for the following files have been reset to an earlier date: 
+>>>>
+Mash non può gestire date successive al 19 Gennaio 2038. Di conseguenza, le date dei seguenti file sono state ripristinate a una data precedente: 
+=== masher.py, 2299
+Doc Browser
+>>>>
+Elenco documentazione
+=== masher.py, 2311
+Set Doc...
+>>>>
+Imposta Doc...
+=== masher.py, 2315
+Forget Doc...
+>>>>
+Rimuovi Doc dalla lista...
+=== masher.py, 2319
+Rename Doc...
+>>>>
+Rinomina Doc...
+=== masher.py, 2323
+Edit Doc...
+>>>>
+Modifica Doc...
+=== masher.py, 2418
+Select doc for %s:
+>>>>
+Seleziona doc per %s:
+=== masher.py, 2437
+Rename file to:
+>>>>
+Rinomina file in:
+=== masher.py, 2463
+Filename not defined.
+>>>>
+Nome file non definito.
+=== masher.py, 2502
+My Readme Template.txt
+>>>>
+
+=== masher.py, 2503
+Mash Readme Template.txt
+>>>>
+
+=== masher.py, 2586
+Journal
+>>>>
+Journal
+=== masher.py, 2613
+[Savefile %s not found.]
+>>>>
+[Partita %s non trovata.]
+=== masher.py, 2640
+Help
+>>>>
+Aide
+=== masher.py, 2657
+Wrye Mash.html
+>>>>
+
+=== masher.py, 2710
+Select your Morrowind installation directory.
+>>>>
+Choisissez le répertoire d'installation de Morrowind.
+=== masher.py, 2724
+Morrowind Install Directory
+>>>>
+Répertoire d'installation de Morrowind
+=== masher.py, 2850
+Unhide...
+>>>>
+Récuperation...
+=== masher.py, 2877
+You can't unhide files from this directory.
+>>>>
+Non puoi recuperare i file in questa cartella. 
+=== masher.py, 2882
+File skipped: %s. File is already present.
+>>>>
+File saltato: %s. Il file é già presente.
+=== masher.py, 2896
+Delete
+>>>>
+Effacé
+=== masher.py, 2901
+Delete Files
+>>>>
+Fichiers effacés
+=== masher.py, 2920
+Duplicate...
+>>>>
+Dupliqué...
+=== masher.py, 2932
+Duplicate as:
+>>>>
+Dupliqué comme:
+=== masher.py, 2940
+Files cannot be duplicated to themselves!
+>>>>
+Un file non può essere duplicato con lo stesso nome!
+=== masher.py, 2955
+Hide
+>>>>
+Nascondi
+=== masher.py, 2960
+Hide Files
+>>>>
+Nascondi file
+=== masher.py, 2979
+A file named %s already exists in the hidden files directory. Overwrite it?
+>>>>
+Un file %s é già presente nella cartella file nascosti. Lo sovrascrivo?
+=== masher.py, 2992
+Move To...
+>>>>
+Sposta a...
+=== masher.py, 3003
+A file named %s already exists in the destination directory. Overwrite it?
+>>>>
+Un file %s é già presente nella cartella destinazione. Lo sovrascrivo?
+=== masher.py, 3016
+Redate...
+>>>>
+Cambia data...
+=== masher.py, 3024
+Redate selected mods starting at...
+>>>>
+Cambia data ai mod selezionati partendo da...
+=== masher.py, 3025
+Redate Mods
+>>>>
+Cambia data ai mod
+=== masher.py, 3037
+Bash cannot handle dates greater than January 19, 2038.)
+>>>>
+Mash non può gestire date successive al 19 Gennaio 2038.)
+=== masher.py, 3054
+Sort
+>>>>
+Ordina
+=== masher.py, 3060
+This command will sort the selected files alphabetically, assigning them dates one minute after each other. It cannot be undone.\n\nNote that some mods need to be in a specific order to work correctly, and this sort operation may break that order.
+>>>>
+Questo comando ordinerà alfabeticamente i file selezionati, assegnando loro date a intervalli di un minuto una dall'altra. Non può essere annullato.\n\nNotate che alcuni mod devono essere caricati in un certo ordine per funzionare correttamente, e questa operazione di ordinamento potrebbe compromettere tale ordine.
+=== masher.py, 3061
+Sort Mods
+>>>>
+Ordina mod
+=== masher.py, 3079
+Snapshot...
+>>>>
+Istantanea...
+=== masher.py, 3090
+Save snapshot as:
+>>>>
+Salva istantanea come...
+=== masher.py, 3116
+Revert to Snapshot...
+>>>>
+Ripristina istantanea...
+=== masher.py, 3130
+Revert %s to snapshot:
+>>>>
+Ripristina %s a istantanea:
+=== masher.py, 3139
+Revert %s to snapshot %s dated %s?
+>>>>
+Ripristinare %s a istantanea %s del %s?
+=== masher.py, 3141
+Revert to Snapshot
+>>>>
+Ripristina istantanea
+=== masher.py, 3153
+Snapshot file is corrupt!
+>>>>
+Il file istantanea é rovinato!
+=== masher.py, 3163
+Backup
+>>>>
+
+=== masher.py, 3183
+Revert to Backup
+>>>>
+Ripristina backup
+=== masher.py, 3190
+Revert to First Backup
+>>>>
+Ripristina primo backup
+=== masher.py, 3205
+Revert %s to backup dated %s?
+>>>>
+Ripristina %s al backup del %s?
+=== masher.py, 3217
+Old file is corrupt!
+>>>>
+Il file vecchio é rovinato!
+=== masher.py, 3241
+Cell Name:
+>>>>
+Nome cella:
+=== masher.py, 3241
+Add Safe Cell
+>>>>
+Aggiungi una cella sicura
+=== masher.py, 3283
+Select Ref Remover file or files:
+>>>>
+Seleziona il/i file di rimozione riferimenti:
+=== masher.py, 3296
+Combo %d
+>>>>
+
+=== masher.py, 3309
+Name must be between 1 and 64 characters long.
+>>>>
+Il nome deve essere di lunghezza compresa tra 1 e 64 caratteri.
+=== masher.py, 3340
+Edit Removers...
+>>>>
+Modifica Eliminatori...
+=== masher.py, 3341
+Edit Safe Cells...
+>>>>
+Modifica celle sicure...
+=== masher.py, 3360
+This command will remove ALL instances of the refs listed in the associated file, EXCEPT for instances in safe cells. Be SURE that the cells you use for storage (strongholds, etc.) are included in the safe cells list, or you risk losing the items you have stored in them!
+>>>>
+Questo comando rimuoverà TUTTE le istanze dei riferimenti elencati nel file corrispondente, TRANNE quelle all'interno delle "celle sicure". ACCERTATI di includere tra le "celle sicure" quelle che contengono il tuo bottino (fortezze, case, ecc.), altrimenti rischi di perdere oggetti preziosi!
+=== masher.py, 3361
+Remove Refs by Id...
+>>>>
+Elimina riferimenti per Id...
+=== masher.py, 3379
+Refs Removed: 
+>>>>
+Riferimenti eliminati: 
+=== masher.py, 3398
+Safe Cells
+>>>>
+Celle sicure
+=== masher.py, 3407
+Ref Removers
+>>>>
+Eliminatori riferimenti
+=== masher.py, 3431
+Select Ref Replacer list file:
+>>>>
+Seleziona il file di scambio riferimenti:
+=== masher.py, 3479
+Edit Replacers...
+>>>>
+Modifica scambiatori riferimenti...
+=== masher.py, 3497
+This command will replace all instances of objects listed in the replacer file with other objects.
+>>>>
+Questo comando sostituirà tutte le istanze degli oggetti vecchi con i nuovi oggetti elencati nel file scambiatore.
+=== masher.py, 3498
+Replace Refs by Id...
+>>>>
+Scambia riferimenti per Id...
+=== masher.py, 3503
+Refs Replaced: 
+>>>>
+Riferimenti scambiati: 
+=== masher.py, 3519
+Source mod %s is not in Data Files folder.
+>>>>
+Il mod sorgente %s non é nella cartella Data Files.
+=== masher.py, 3521
+Source Mod
+>>>>
+Mod sorgente
+=== masher.py, 3522
+None
+>>>>
+Nessuno
+=== masher.py, 3527
+No replacements necessary.
+>>>>
+Nessuno scambio necessario.
+=== masher.py, 3542
+Ref Replacers
+>>>>
+Scambiatori riferimenti
+=== masher.py, 3552
+Repair Refs
+>>>>
+Ripara riferimenti
+=== masher.py, 3563
+File master list is out of date. Please edit masters before attempting repair.
+>>>>
+L'elenco dei file master non é aggiornato. Per cortesia, aggiornalo prima di ritentare una riparazione.
+=== masher.py, 3569
+Repairing 
+>>>>
+Riparazione
+=== masher.py, 3579
+%s has bad refs and must be repaired first.\n
+>>>>
+%s contiene riferimenti errati e deve essere prima riparato.\n
+=== masher.py, 3580
+\nExample Bad Ref from %s:
+>>>>
+\nEsempio riferimento errato da %s:
+=== masher.py, 3581
+\n  Cell: %s\n  Object Id: %s\n  Object Index: %d
+>>>>
+\n  Cella: %s\n  Id oggetto: %s\n  Indice oggetto: %d
+=== masher.py, 3582
+\n  Mod Index: %d (%s)
+>>>>
+\n  Indice mod: %d (%s)
+=== masher.py, 3594
+No problems found!
+>>>>
+Non rilevo alcun problema!
+=== masher.py, 3600
+Objects repaired: %d.\nObjects deleted: %d.
+>>>>
+Oggetti riparati: %d.\nOggetti eliminati: %d.
+=== masher.py, 3616
+Sort Records
+>>>>
+Ordina record
+=== masher.py, 3623
+This function will sort the records of the selected esp for easier viewing in the Details view of TESCS. Generally, this is only useful for active modders.
+>>>>
+Questo comando ordinerà i record del mod selezionato per una più semplice visualizzazione nella vista dettagli dell'editor. Normalmente questo é utile soltanto per i modder.
+=== masher.py, 3624
+Sort Records...
+>>>>
+Ordina record...
+=== masher.py, 3632
+Record sort completed.
+>>>>
+Ordinamento record completato.
+=== masher.py, 3707
+Statistics
+>>>>
+Statistiche
+=== masher.py, 3777
+Save List...
+>>>>
+Salva lista...
+=== masher.py, 3778
+Edit Lists...
+>>>>
+Modifica liste...
+=== masher.py, 3810
+Unable to add mod %s because load list is full.
+>>>>
+Non posso aggiungere il mod %s perché la lista di caricamento é piena.
+=== masher.py, 3820
+All load list slots are full. Please delete an existing load list before adding another.
+>>>>
+Liste caricamento piene. E' necessario cancellarne una per poter aggiungere una nuova lista.
+=== masher.py, 3823
+Save current load list as:
+>>>>
+Salva lista caricamento corrente come:
+=== masher.py, 3831
+Load list name must be between 1 and 64 characters long.
+>>>>
+Il nome della lista di caricamento deve essere di lunghezza compresa tra 1 e 64 caratteri.
+=== masher.py, 3841
+Load Lists
+>>>>
+Carica liste
+=== masher.py, 3872
+Selection
+>>>>
+Selezione
+=== masher.py, 3886
+Lock Times
+>>>>
+Blocca date
+=== masher.py, 3944
+Replacers...
+>>>>
+Scambiatori...
+=== masher.py, 3950
+Replacers
+>>>>
+Scambiatori
+=== masher.py, 3959
+INI Tweaks...
+>>>>
+Modifiche file INI...
+=== masher.py, 3965
+Modifies games settings in Morrowind.ini by applying changes defined in a .mit (Morrowind INI Tweak) file.
+>>>>
+Modifica le impostazioni di gioco nel file di configurazione Morrowind.ini applicando le modifiche definite in un file .mit (Morrowind INI Tweak).
+=== masher.py, 3966
+INI Tweaks
+>>>>
+Modifiche INI
+=== masher.py, 3979
+%s applied.
+>>>>
+%s applicato.
+=== masher.py, 4126
+Edit Groups...
+>>>>
+Modifica gruppi...
+=== masher.py, 4127
+Groups
+>>>>
+gruppi
+=== masher.py, 4128
+Add group:
+>>>>
+Aggiungi gruppo:
+=== masher.py, 4139
+Edit Ratings...
+>>>>
+Modifica voti...
+=== masher.py, 4140
+Ratings
+>>>>
+Voti
+=== masher.py, 4141
+Add rating:
+>>>>
+Aggiungi voto:
+=== masher.py, 4150
+Copy to Esm
+>>>>
+Copia come Esm
+=== masher.py, 4157
+Copy to Esp
+>>>>
+Copia come Esp
+=== masher.py, 4168
+Replace existing %s?
+>>>>
+Sostituisco il vecchio %s?
+=== masher.py, 4185
+Dialogue
+>>>>
+Dialogo
+=== masher.py, 4195
+Export dialogs to:
+>>>>
+Esporta dialoghi verso:
+=== masher.py, 4229
+Import dialogs from:
+>>>>
+Importa dialoghi da:
+=== masher.py, 4255
+LCV Schedules
+>>>>
+Tabelle di marcia LCV 
+=== masher.py, 4263
+Generates LCV schedule scripts from an LCV schedule text file, and inserts (but does not compile) the scripts into the current mod file. You should not use this feature unless you know exactly what you're doing.
+>>>>
+Genera script tabelle di marcia LCV partendo dal file di testo corrispondente e inserisce (ma non compila) gli script nel mod correntemente selezionato. Non dovreste usare questo comando se non sapete esattamente quello cha state facendo.
+=== masher.py, 4264
+Import LCV Schedules...
+>>>>
+Importa tabelle di marcia LCV...
+=== masher.py, 4285
+Import LCV schedules from:
+>>>>
+Importa tabelle di marcia LCV da:
+=== masher.py, 4309
+Merged Lists
+>>>>
+Liste combinate
+=== masher.py, 4325
+Loading 
+>>>>
+Caricamento
+=== masher.py, 4343
+TesTool Merged_Leveled_Lists.esp skipped. Please remove it from your load list.
+>>>>
+TesTool Merged_Leveled_Lists.esp saltato. Per favore, toglietelo dalla lista dei mod caricati.
+=== masher.py, 4349
+Saving: 
+>>>>
+Salvataggio:
+=== masher.py, 4369
+No lists required merging.
+>>>>
+Nessuna lista ha richiesto di essere ricombinata.
+=== masher.py, 4377
+Renumber Refs
+>>>>
+Rinumera riferimenti
+=== masher.py, 4387
+Renumbers new objects placed by esp, thus reducing likelihood of local ref conflicts between mods. Note that using TESCS on this mod will undo this renumbering. Also if an existing save game depends on this mod, doubling will likely result.
+>>>>
+Rinumera i nuovi oggetti creati dai file esp, riducendo in tal modo la probabilità di conflitti di riferimenti locali tra i mod. Notate che salvando nuovamente il mod da TESCS l'operazione verrà annullata. Inoltre se una partita salvata é dipendente dal mod in questione, possono verificarsi duplicazioni di oggetti.
+=== masher.py, 4388
+Renumber References...
+>>>>
+Rinumerazione riferimenti...
+=== masher.py, 4397
+Renumbering 
+>>>>
+Rinumerazione
+=== masher.py, 4406
+No local references to renumber.
+>>>>
+Non ci sono riferimenti locali da rinumerare
+=== masher.py, 4411
+Enter first objectIndex. [Current value: %d]
+>>>>
+Inserisci l'indice di partenza per il primo oggetto. [Valore corrente: %d]
+=== masher.py, 4412
+First Object Index
+>>>>
+Indice primo oggetto
+=== masher.py, 4417
+Object index must be an integer in range 1:100,000.
+>>>>
+L'indice dell'oggetto deve essere un intero compreso tra 1 e 100000.
+=== masher.py, 4420
+New object index is same as old object index!
+>>>>
+Nuovo e vecchio indice oggetto sono uguali!
+=== masher.py, 4426
+References changed: %d.
+>>>>
+Riferimenti modificati: %d.
+=== masher.py, 4446
+Readme...
+>>>>
+Leggimi...
+=== masher.py, 4486
+Morrowind Mod Files
+>>>>
+File mod Morrowind
+=== masher.py, 4488
+Select previous version:
+>>>>
+Scegli la versione precedente:
+=== masher.py, 4498
+Previous mod file must be located in Data Files directory.
+>>>>
+Il file mod versione precedente deve trovarsi nella cartella Data Files.
+=== masher.py, 4521
+No updater required for conversion from %s to %s.
+>>>>
+Non sono richiesti aggiornamenti per passare da %s a %s.
+=== masher.py, 4530
+Updaters...
+>>>>
+Aggiornamenti...
+=== masher.py, 4537
+Updaters
+>>>>
+Aggiornamenti
+=== masher.py, 4565
+Enter profile name:
+>>>>
+Inserisci un nome profilo:
+=== masher.py, 4584
+ cannot be renamed.
+>>>>
+ no può essere rinominato.
+=== masher.py, 4604
+Active profile cannot be removed.
+>>>>
+Il profilo attivo non può essere rimosso
+=== masher.py, 4607
+Default profile cannot be removed.
+>>>>
+Il profilo standard non può essere rimosso.
+=== masher.py, 4613
+Delete profile %s and the %d save files it contains?
+>>>>
+Vuoi davvero eliminare il profilo %s e le %d partite salvate in esso contenute?
+=== masher.py, 4614
+Delete Profile
+>>>>
+Elimina profilo
+=== masher.py, 4629
+Default
+>>>>
+Standard
+=== masher.py, 4642
+Edit Profiles...
+>>>>
+Modifica profili...
+=== masher.py, 4659
+Save Profiles
+>>>>
+Salva profili...
+=== masher.py, 4679
+Moving Files
+>>>>
+Spostamento profili
+=== masher.py, 4706
+World Map Gridlines
+>>>>
+Griglia Mappa
+=== masher.py, 4724
+ Copy
+>>>>
+ Copia
+=== masher.py, 4727
+Duplicate
+>>>>
+Duplica
+=== masher.py, 4760
+Load Masters
+>>>>
+Carica master
+=== masher.py, 4787
+Please update masters to correct for missing masters (%s).
+>>>>
+Per cortesia, aggiorna l'elenco master in modo da aggiungere i master mancanti (%s)
+=== masher.py, 4796
+Map Notes
+>>>>
+Note mappa
+=== masher.py, 4806
+Map Notes: 
+>>>>
+Note mappa:
+=== masher.py, 4826
+Spawned Creatures
+>>>>
+Creature generate
+=== masher.py, 4845
+%d spawn points removed/reset.
+>>>>
+%d punti di generazione rimossi/reinizializzati.
+=== masher.py, 4847
+No spawn points to remove/reset!
+>>>>
+Non ci sono punti di generazione da rimuovere/reinizializzare!
+=== masher.py, 4857
+Debris Cells
+>>>>
+Celle Obsolete
+=== masher.py, 4864
+This command will remove all references in cells that have been visited, but are not supported by the current set of masters. Typically this is used to cleanup exterior cells that were added by mods that have since been removed. Note that if you have intentionally placed objects into such cells (e.g., a travelling ship), then those objects WILL BE LOST!
+>>>>
+Questo comando rimuoverà tutti i riferimenti nelle celle che sono state visitate, ma non hanno riferimenti nell'elenco di master corrente. Tipicamente questo viene usato per ripulire le celle esterne precedentemente aggiunte da mod ora rimossi. Notate che se avete volontariamente inserito degli oggetti in queste celle (ad esempio una nave semovente), ANCHE QUESTI OGGETTI SARANNO ELIMINATI!
+=== masher.py, 4865
+Remove Debris Cells
+>>>>
+Rimuovi celle obsolete
+=== masher.py, 4875
+Removing Debris Cells
+>>>>
+Rimozione celle obsolete
+=== masher.py, 4898
+No orphaned content present.
+>>>>
+Non ci sono riferimenti scollegati.
+=== masher.py, 4909
+Repair All
+>>>>
+Riparazione completa
+=== masher.py, 4952
+Orphaned content records:
+>>>>
+Record oggetti scollegati:
+=== masher.py, 4955
+Overriding lists:
+>>>>
+Liste riscritte:
+=== masher.py, 4967
+\nDebris records deleted: %d.\nOrphan contents deleted: %d.
+>>>>
+\nRecord obsoleti eliminati: %d.\nContenuti scollegati eliminati: %d.
+=== masher.py, 4969
+\nOverriding lists deleted: %d.
+>>>>
+\nListe riscritte eliminate: %d.
+=== masher.py, 4982
+Review
+>>>>
+Riassunto
+=== masher.py, 4994
+Review of 
+>>>>
+Riassunto di
+=== masher.py, 5005
+Nothing noteworthy found.
+>>>>
+Nulla da segnalare.
+=== masher.py, 5018
+Journal...
+>>>>
+Diario...
+=== masher.py, 5036
+Update Map
+>>>>
+Aggiorna mappa
+=== masher.py, 5053
+Re-mapping 
+>>>>
+Rimappatura
+=== masher.py, 5076
+World map updated.
+>>>>
+Mappa del mondo aggiornata.
+=== masher.py, 5089
+Copy List
+>>>>
+Copia lista
+=== masher.py, 5097
+Masters for %s:
+>>>>
+Master di %s:
+=== masher.py, 5118
+Update
+>>>>
+Aggiorna
+=== masher.py, 5132
+Sync to Load ESMs
+>>>>
+Sincronizza con gli ESM caricati
+=== masher.py, 5134
+Sync to Load List
+>>>>
+Sincronizza con la Lista caricamento
+=== masher.py, 5152
+Cannot Sync to Load ESMs, since resulting master list would be circular.
+>>>>
+Impossibile effettuare la sincronizzazione con gli ESM caricati, poiché vi sarebbero riferimenti circolari nella lista master risultante.
+=== masher.py, 5176
+Change to...
+>>>>
+Cambia in...
+=== masher.py, 5187
+Change master name to:
+>>>>
+Cambia il nome master in:
+=== masher.py, 5197
+File must be selected from Morrowind Data Files directory.
+>>>>
+Il file deve essere selezionato dalla cartella Data Files di Morrowind.
+=== masher.py, 5216
+Launch Morrowind
+>>>>
+Avvia Morrowind
+=== masher.py, 5233
+Help File
+>>>>
+File guida
+=== masher.py, 5289
+Sort by
+>>>>
+Ordina per
+=== masher.py, 5310
+Load
+>>>>
+Carica
+=== masher.py, 5361
+Export
+>>>>
+Esporta
+=== masher.py, 5365
+Import
+>>>>
+Importa
+=== masher.py, 5394
+Profile
+>>>>
+Profilo

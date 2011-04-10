@@ -1,0 +1,1186 @@
+(dp1
+S'A file named %s already exists in the destination directory. Overwrite it?'
+p2
+S'Un file %s \xe9 gi\xe0 presente nella cartella destinazione. Lo sovrascrivo?'
+p3
+sS'Hide'
+p4
+S'Nascondi'
+p5
+sS'Expected TES3, but got '
+p6
+S'TES3 attendu : '
+p7
+sS'Export dialogs to:'
+p8
+S'Esporta dialoghi verso:'
+p9
+sS'Author'
+p10
+S'Autore'
+p11
+sS'Delete Profile'
+p12
+S'Elimina profilo'
+p13
+sS'Rename to:'
+p14
+S'Rinomina in:'
+p15
+sS'No spawn points to remove/reset!'
+p16
+S'Non ci sono punti di generazione da rimuovere/reinizializzare!'
+p17
+sS'NO SUCH MASTER'
+p18
+S'FICHIER MASTER INEXISTANT'
+p19
+sS'Hide Files'
+p20
+S'Nascondi file'
+p21
+sS'Add group:'
+p22
+S'Aggiungi gruppo:'
+p23
+sS'Update Map'
+p24
+S'Aggiorna mappa'
+p25
+sS'%s: Bad Ref: %s: objId: %s iObj: %d'
+p26
+S'%s: R\xe9f\xe9rence erron\xe9e: %s: objId: %s iObj: %d'
+p27
+sS'[Error reading file.]'
+p28
+S'[Erreur de lecture de fichier.]'
+p29
+sS' cannot be renamed.'
+p30
+S' no pu\xf2 essere rinominato.'
+p31
+sS'No updater required for conversion from %s to %s.'
+p32
+S'Non sono richiesti aggiornamenti per passare da %s a %s.'
+p33
+sS'Progress'
+p34
+S'Avanzamento'
+p35
+sS'Import LCV Schedules...'
+p36
+S'Importa tabelle di marcia LCV...'
+p37
+sS'Unhide...'
+p38
+S'R\xe9cuperation...'
+p39
+sS'Replacers...'
+p40
+S'Scambiatori...'
+p41
+sS'Revert %s to backup dated %s?'
+p42
+S'Ripristina %s al backup del %s?'
+p43
+sS'Doc Browser'
+p44
+S'Elenco documentazione'
+p45
+sS'Updaters'
+p46
+S'Aggiornamenti'
+p47
+sS'BAD REF>>NO MASTER  %d %d %s'
+p48
+S'ERREUR DE REFERENCE>>PAS DE MASTER  %d %d %s'
+p49
+sS'Redate selected mods starting at...'
+p50
+S'Cambia data ai mod selezionati partendo da...'
+p51
+sS'Select your Morrowind installation directory.'
+p52
+S"Choisissez le r\xe9pertoire d'installation de Morrowind."
+p53
+sS'\nExample Bad Ref from %s:'
+p54
+S'\nEsempio riferimento errato da %s:'
+p55
+sS'Renumber References...'
+p56
+S'Rinumerazione riferimenti...'
+p57
+sS'New object index is same as old object index!'
+p58
+S'Nuovo e vecchio indice oggetto sono uguali!'
+p59
+sS'Save current load list as:'
+p60
+S'Salva lista caricamento corrente come:'
+p61
+sS'Update'
+p62
+S'Aggiorna'
+p63
+sS'Snapshot...'
+p64
+S'Istantanea...'
+p65
+sS'Edit Groups...'
+p66
+S'Modifica gruppi...'
+p67
+sS'First Object Index'
+p68
+S'Indice primo oggetto'
+p69
+sS'Insufficient data to write file.'
+p70
+S'Donn\xe9es insufisantes pour \xe9crire le fichier.'
+p71
+sS'Debris Cell Name: '
+p72
+S'Nom de la cellule inutilis\xe9e :'
+p73
+sS'Day'
+p74
+S'Giorno'
+p75
+sS'Delete profile %s and the %d save files it contains?'
+p76
+S'Vuoi davvero eliminare il profilo %s e le %d partite salvate in esso contenute?'
+p77
+sS'Safe Cells'
+p78
+S'Celle sicure'
+p79
+sS'Renumbers new objects placed by esp, thus reducing likelihood of local ref conflicts between mods. Note that using TESCS on this mod will undo this renumbering. Also if an existing save game depends on this mod, doubling will likely result.'
+p80
+S"Rinumera i nuovi oggetti creati dai file esp, riducendo in tal modo la probabilit\xe0 di conflitti di riferimenti locali tra i mod. Notate che salvando nuovamente il mod da TESCS l'operazione verr\xe0 annullata. Inoltre se una partita salvata \xe9 dipendente dal mod in questione, possono verificarsi duplicazioni di oggetti."
+p81
+sS'[Savefile %s not found.]'
+p82
+S'[Partita %s non trovata.]'
+p83
+sS'Objects repaired: %d.\nObjects deleted: %d.'
+p84
+S'Oggetti riparati: %d.\nOggetti eliminati: %d.'
+p85
+sS'Pos cell not defined for %s %s %d'
+p86
+S'Pos cella non definita per %s %s %d'
+p87
+sS'Load list name must be between 1 and 64 characters long.'
+p88
+S'Il nome della lista di caricamento deve essere di lunghezza compresa tra 1 e 64 caratteri.'
+p89
+sS'Ref Removers'
+p90
+S'Eliminatori riferimenti'
+p91
+sS'Revert to First Backup'
+p92
+S'Ripristina primo backup'
+p93
+sS'File must be selected from Morrowind Data Files directory.'
+p94
+S'Il file deve essere selezionato dalla cartella Data Files di Morrowind.'
+p95
+sS'None'
+p96
+S'Nessuno'
+p97
+sS'%s applied.'
+p98
+S'%s applicato.'
+p99
+sS'Record sort completed.'
+p100
+S'Ordinamento record completato.'
+p101
+sS'Scale must not equal zero!'
+p102
+S"L'\xe9chelle ne doit pas \xeatre z\xe9ro!"
+p103
+sS'Replace Refs by Id...'
+p104
+S'Scambia riferimenti per Id...'
+p105
+sS'Launch Morrowind'
+p106
+S'Avvia Morrowind'
+p107
+sS'Rating'
+p108
+S'Voto'
+p109
+sS'Data undefined: '
+p110
+S'Donn\xe9es non d\xe9finies :'
+p111
+sS'Object index must be an integer in range 1:100,000.'
+p112
+S"L'indice dell'oggetto deve essere un intero compreso tra 1 e 100000."
+p113
+sS'Saving'
+p114
+S'Salvataggio'
+p115
+sS'Help'
+p116
+S'Aide'
+p117
+sS'Ref Replacers'
+p118
+S'Scambiatori riferimenti'
+p119
+sS'Unknown SCPT record: '
+p120
+S'El\xe9ment SCPT inconnu : '
+p121
+sS'Duplicate'
+p122
+S'Duplica'
+p123
+sS'Readme...'
+p124
+S'Leggimi...'
+p125
+sS'Change master name to:'
+p126
+S'Cambia il nome master in:'
+p127
+sS'Warning'
+p128
+S'Attenzione'
+p129
+sS'Save Name'
+p130
+S'Partita'
+p131
+sS'FileRefs.renumberObjects is for esps only.'
+p132
+S'FileRefs.renumberObjects valide seulement pour les fichiers .esp.'
+p133
+sS'PROJECT: '
+p134
+S'PROJET :'
+p135
+sS'Type must be either LEVC or LEVI.'
+p136
+S'Le type doit \xeatre LEVC ou LEVI.'
+p137
+sS'Cannot remove save debris from a non-save game!'
+p138
+S"Les donn\xe9es inutilis\xe9e ne peuvent \xeatre retir\xe9es que d'une sauvegarde !"
+p139
+sS'Revert to Backup'
+p140
+S'Ripristina backup'
+p141
+sS'Debris %s:'
+p142
+S'Donn\xe9es inutilis\xe9es %s:'
+p143
+sS'Sort Records...'
+p144
+S'Ordina record...'
+p145
+sS'World Map Gridlines'
+p146
+S'Griglia Mappa'
+p147
+sS'Revert to Snapshot'
+p148
+S'Ripristina istantanea'
+p149
+sS'Renumbering '
+p150
+S'Rinumerazione'
+p151
+sS'Change to...'
+p152
+S'Cambia in...'
+p153
+sS'Bad sleep condition state for %s in %s: %s'
+p154
+S'Stato test sonno errato per %s in %s: %s'
+p155
+sS'Morrowind Save File'
+p156
+S'File partita salvata Morrowind'
+p157
+sS'Load Order'
+p158
+S'Ordine caricamento'
+p159
+sS'INI Tweaks'
+p160
+S'Modifiche INI'
+p161
+sS"You can't unhide files from this directory."
+p162
+S'Non puoi recuperare i file in questa cartella. '
+p163
+sS'Name must be between 1 and 64 characters long.'
+p164
+S'Il nome deve essere di lunghezza compresa tra 1 e 64 caratteri.'
+p165
+sS'Version'
+p166
+S'Versione'
+p167
+sS'Forget Doc...'
+p168
+S'Rimuovi Doc dalla lista...'
+p169
+sS'Modified dates have been reset for some mod files.'
+p170
+S'Le date modificate sono state ripristinate per alcuni mod.'
+p171
+sS'Import'
+p172
+S'Importa'
+p173
+sS'Journal...'
+p174
+S'Diario...'
+p175
+sS'Unrecognized sort key: '
+p176
+S'Chiave ordinamento non riconosciuta: '
+p177
+sS'Type'
+p178
+S'Tipo'
+p179
+sS'Abstract section called.'
+p180
+S'Section abstraite appel\xe9e.'
+p181
+sS'Select doc for %s:'
+p182
+S'Seleziona doc per %s:'
+p183
+sS'Replacers'
+p184
+S'Scambiatori'
+p185
+sS'Section is not coded yet.'
+p186
+S"Cette section n'est pas encore impl\xe9ment\xe9e."
+p187
+sS'Enter profile name:'
+p188
+S'Inserisci un nome profilo:'
+p189
+sS'Add Safe Cell'
+p190
+S'Aggiungi una cella sicura'
+p191
+sS'Bash cannot handle dates greater than January 19, 2038.)'
+p192
+S'Mash non pu\xf2 gestire date successive al 19 Gennaio 2038.)'
+p193
+sS'Merged Lists'
+p194
+S'Liste combinate'
+p195
+sS'Modifies games settings in Morrowind.ini by applying changes defined in a .mit (Morrowind INI Tweak) file.'
+p196
+S'Modifica le impostazioni di gioco nel file di configurazione Morrowind.ini applicando le modifiche definite in un file .mit (Morrowind INI Tweak).'
+p197
+sS'Morrowind.ini has changed'
+p198
+S'Morrowind.ini a \xe9t\xe9 modifi\xe9'
+p199
+sS'Delete Files'
+p200
+S'Fichiers effac\xe9s'
+p201
+sS'Refs Replaced: '
+p202
+S'Riferimenti scambiati: '
+p203
+sS'IMPORT: '
+p204
+S'IMPORT :'
+p205
+sS'Cannot remove overriding lists from a non-save game!'
+p206
+S"La liste des \xe9crasements ne peut \xeatre retir\xe9e que d'une sauvegarde !"
+p207
+sS'Renumber Refs'
+p208
+S'Rinumera riferimenti'
+p209
+sS'Default'
+p210
+S'Standard'
+p211
+sS'TesTool Merged_Leveled_Lists.esp skipped. Please remove it from your load list.'
+p212
+S'TesTool Merged_Leveled_Lists.esp saltato. Per favore, toglietelo dalla lista dei mod caricati.'
+p213
+sS'This command will remove ALL instances of the refs listed in the associated file, EXCEPT for instances in safe cells. Be SURE that the cells you use for storage (strongholds, etc.) are included in the safe cells list, or you risk losing the items you have stored in them!'
+p214
+S'Questo comando rimuover\xe0 TUTTE le istanze dei riferimenti elencati nel file corrispondente, TRANNE quelle all\'interno delle "celle sicure". ACCERTATI di includere tra le "celle sicure" quelle che contengono il tuo bottino (fortezze, case, ecc.), altrimenti rischi di perdere oggetti preziosi!'
+p215
+sS'Replace existing %s?'
+p216
+S'Sostituisco il vecchio %s?'
+p217
+sS'Load list has been truncated because it was too long. (%s)'
+p218
+S'La lista di caricamento \xe9 stata troncata perch\xe9 troppo lunga. (%s)'
+p219
+sS'Mash cannot handle files dates greater than January 19, 2038.)'
+p220
+S'Mash non pu\xf2 gestire file con data successiva al 19 Gennaio 2038.)'
+p221
+sS'References changed: %d.'
+p222
+S'Riferimenti modificati: %d.'
+p223
+sS'No project has been defined!'
+p224
+S'Nessun progetto definito!'
+p225
+sS'Modified'
+p226
+S'Data modifica'
+p227
+sS'%s Snapshots|%s|All Snapshots|*.esp;*.esm;*.ess'
+p228
+S'%s Captures|%s|Toutes les captures|*.esp;*.esm;*.ess'
+p229
+sS'BAD REF>>DOUBLED    %d %d %s'
+p230
+S'ERREUR DE REFERENCE>>DUPLICATION    %d %d %s'
+p231
+sS'Remove Debris Cells'
+p232
+S'Rimuovi celle obsolete'
+p233
+sS'SCPT %d %s: Unexpected subrecords'
+p234
+S'SCPT %d %s: Sous-\xe9l\xe9ments inattendus'
+p235
+sS'\nDebris records deleted: %d.\nOrphan contents deleted: %d.'
+p236
+S'\nRecord obsoleti eliminati: %d.\nContenuti scollegati eliminati: %d.'
+p237
+sS'No lists required merging.'
+p238
+S'Nessuna lista ha richiesto di essere ricombinata.'
+p239
+sS'Overriding Lists'
+p240
+S"Listes d'\xe9crasement"
+p241
+sS'Edit/update the masters list? Note that the update process will automatically fix some problems. Be sure to review the changes before saving.'
+p242
+S'Modifica/aggiorna la lista dei master? Il processo di aggiornamento risolver\xe0 automaticamente alcuni problemi. Controlla le modifiche prima di salvare.'
+p243
+sS': Second NAM0 subrecord.'
+p244
+S': Second NAM0 sous-\xe9l\xe9ment.'
+p245
+sS'Import LCV schedules from:'
+p246
+S'Importa tabelle di marcia LCV da:'
+p247
+sS'This command will sort the selected files alphabetically, assigning them dates one minute after each other. It cannot be undone.\n\nNote that some mods need to be in a specific order to work correctly, and this sort operation may break that order.'
+p248
+S"Questo comando ordiner\xe0 alfabeticamente i file selezionati, assegnando loro date a intervalli di un minuto una dall'altra. Non pu\xf2 essere annullato.\n\nNotate che alcuni mod devono essere caricati in un certo ordine per funzionare correttamente, e questa operazione di ordinamento potrebbe compromettere tale ordine."
+p249
+sS'Save List...'
+p250
+S'Salva lista...'
+p251
+sS'Delete'
+p252
+S'Effac\xe9'
+p253
+sS'Rename'
+p254
+S'Rinomina'
+p255
+sS'Missing files have been removed from load list. (%s)'
+p256
+S'I file mancanti sono stati rimossi dalla lista di caricamento. (%s)'
+p257
+sS'Selection'
+p258
+S'Selezione'
+p259
+sS'Bad line in CharSet class file.'
+p260
+S'Ligne erron\xe9e dans le fichier de la classe CharSet.'
+p261
+sS'File %s already exists.'
+p262
+S'Il file %s \xe9 gi\xe0 presente.'
+p263
+sS'No replacements necessary.'
+p264
+S'Nessuno scambio necessario.'
+p265
+sS'Unable to add mod %s because load list is full.'
+p266
+S'Non posso aggiungere il mod %s perch\xe9 la lista di caricamento \xe9 piena.'
+p267
+sS'Save snapshot as:'
+p268
+S'Salva istantanea come...'
+p269
+sS'Load Lists'
+p270
+S'Carica liste'
+p271
+sS'Revert %s to snapshot %s dated %s?'
+p272
+S'Ripristinare %s a istantanea %s del %s?'
+p273
+sS'Building '
+p274
+S'Construction  '
+p275
+sS'No problems found!'
+p276
+S'Non rilevo alcun problema!'
+p277
+sS'Nothing noteworthy found.'
+p278
+S'Nulla da segnalare.'
+p279
+sS'Missing master: '
+p280
+S'Master mancante:'
+p281
+sS'The following save files have corrupted headers: '
+p282
+S'I seguenti file partita salvata hanno intestazioni rovinate: '
+p283
+sS'Save Profiles'
+p284
+S'Salva profili...'
+p285
+sS'Records added:'
+p286
+S'El\xe9ment ajout\xe9:'
+p287
+sS'Morrowind Mod File'
+p288
+S'File Mod Morrowind'
+p289
+sS'Journal'
+p290
+S'Journal'
+p291
+sS"Generates LCV schedule scripts from an LCV schedule text file, and inserts (but does not compile) the scripts into the current mod file. You should not use this feature unless you know exactly what you're doing."
+p292
+S'Genera script tabelle di marcia LCV partendo dal file di testo corrispondente e inserisce (ma non compila) gli script nel mod correntemente selezionato. Non dovreste usare questo comando se non sapete esattamente quello cha state facendo.'
+p293
+sS'Orphaned content records:'
+p294
+S'Record oggetti scollegati:'
+p295
+sS'Group'
+p296
+S'Gruppo'
+p297
+sS'Morrowind Install Directory'
+p298
+S"R\xe9pertoire d'installation de Morrowind"
+p299
+sS'Information'
+p300
+S'Informazione'
+p301
+sS'Ratings'
+p302
+S'Voti'
+p303
+sS'Review'
+p304
+S'Riassunto'
+p305
+sS'Snapshot file is corrupt!'
+p306
+S'Il file istantanea \xe9 rovinato!'
+p307
+sS'World map updated.'
+p308
+S'Mappa del mondo aggiornata.'
+p309
+sS'BAD REF>>REMATCHED  %d %d %s %d'
+p310
+S'ERREUR DE REFERENCE>>CORRECTION  %d %d %s %d'
+p311
+sS'Cell'
+p312
+S'Cella'
+p313
+sS'Add'
+p314
+S'Aggiungi'
+p315
+sS'Statistics'
+p316
+S'Statistiche'
+p317
+sS'%s has bad refs and must be repaired first.\n'
+p318
+S'%s contiene riferimenti errati e deve essere prima riparato.\n'
+p319
+sS'Map Notes'
+p320
+S'Note mappa'
+p321
+sS'Move To...'
+p322
+S'Sposta a...'
+p323
+sS'%s: Expected size == %d, but got: %d '
+p324
+S'%s: La taille attendue est %d, mais celle renvoy\xe9e est %d '
+p325
+sS'Removing Debris Cells'
+p326
+S'Rimozione celle obsolete'
+p327
+sS'Sync to Load ESMs'
+p328
+S'Sincronizza con gli ESM caricati'
+p329
+sS'Status'
+p330
+S'Stato'
+p331
+sS'Re-mapping '
+p332
+S'Rimappatura'
+p333
+sS'Moving Files'
+p334
+S'Spostamento profili'
+p335
+sS'Loading '
+p336
+S'Caricamento'
+p337
+sS'Extraneous subrecord (%s) in %s record.'
+p338
+S"Le sous-\xe9l\xe9ment (%s) n'est pas dans l'\xe9l\xe9ment %s."
+p339
+sS'Unrecognized date: '
+p340
+S'Data non riconosciuta: '
+p341
+sS'Merged %s Lists:'
+p342
+S'%s listes combin\xe9es :'
+p343
+sS'\n  Mod Index: %d (%s)'
+p344
+S'\n  Indice mod: %d (%s)'
+p345
+sS'Edit Doc...'
+p346
+S'Modifica Doc...'
+p347
+sS'\nOverriding lists deleted: %d.'
+p348
+S'\nListe riscritte eliminate: %d.'
+p349
+sS'This command will remove all references in cells that have been visited, but are not supported by the current set of masters. Typically this is used to cleanup exterior cells that were added by mods that have since been removed. Note that if you have intentionally placed objects into such cells (e.g., a travelling ship), then those objects WILL BE LOST!'
+p350
+S"Questo comando rimuover\xe0 tutti i riferimenti nelle celle che sono state visitate, ma non hanno riferimenti nell'elenco di master corrente. Tipicamente questo viene usato per ripulire le celle esterne precedentemente aggiunte da mod ora rimossi. Notate che se avete volontariamente inserito degli oggetti in queste celle (ad esempio una nave semovente), ANCHE QUESTI OGGETTI SARANNO ELIMINATI!"
+p351
+sS'Sort Mods'
+p352
+S'Ordina mod'
+p353
+sS'Cannot Sync to Load ESMs, since resulting master list would be circular.'
+p354
+S'Impossibile effettuare la sincronizzazione con gli ESM caricati, poich\xe9 vi sarebbero riferimenti circolari nella lista master risultante.'
+p355
+sS'Choose a directory.'
+p356
+S'Scegli una cartella.'
+p357
+sS'Sort Records'
+p358
+S'Ordina record'
+p359
+sS'Groups'
+p360
+S'gruppi'
+p361
+sS'[No Journal Record Found.]'
+p362
+S'[Aucune entr\xe9e de journal trouv\xe9e.]'
+p363
+sS'Repair Refs'
+p364
+S'Ripara riferimenti'
+p365
+sS'First index should be a positive integer'
+p366
+S'Le premier indice doit \xeatre un entier positif'
+p367
+sS'Edit Ratings...'
+p368
+S'Modifica voti...'
+p369
+sS'Revert %s to snapshot:'
+p370
+S'Ripristina %s a istantanea:'
+p371
+sS'Remove Refs by Id...'
+p372
+S'Elimina riferimenti per Id...'
+p373
+sS'Count'
+p374
+S'Numero'
+p375
+sS'File master list is out of date. Please edit masters before attempting repair.'
+p376
+S"L'elenco dei file master non \xe9 aggiornato. Per cortesia, aggiornalo prima di ritentare una riparazione."
+p377
+sS'A file named %s already exists in the hidden files directory. Overwrite it?'
+p378
+S'Un file %s \xe9 gi\xe0 presente nella cartella file nascosti. Lo sovrascrivo?'
+p379
+sS'Copy to Esp'
+p380
+S'Copia come Esp'
+p381
+sS'Unknown File: '
+p382
+S'Fichier introuvable :'
+p383
+sS'Update Masters'
+p384
+S'Aggiorna master'
+p385
+sS'Remap Masters'
+p386
+S'Rimappatura master'
+p387
+sS'No match for:'
+p388
+S'Aucune correspondance pour :'
+p389
+sS'Files cannot be duplicated to themselves!'
+p390
+S'Un file non pu\xf2 essere duplicato con lo stesso nome!'
+p391
+sS'Spawned Creatures'
+p392
+S'Creature generate'
+p393
+sS'Help File'
+p394
+S'File guida'
+p395
+sS'Redate Mods'
+p396
+S'Cambia data ai mod'
+p397
+sS'Error'
+p398
+S'Errore'
+p399
+sS'DIAL %d %s: Unexpected subrecords'
+p400
+S'DIAL %d %s: Sous-\xe9l\xe9ments inattendus'
+p401
+sS'Redate...'
+p402
+S'Cambia data...'
+p403
+sS'Set Doc...'
+p404
+S'Imposta Doc...'
+p405
+sS'Load'
+p406
+S'Carica'
+p407
+sS'Updaters...'
+p408
+S'Aggiornamenti...'
+p409
+sS'Edit Lists...'
+p410
+S'Modifica liste...'
+p411
+sS'Select previous version:'
+p412
+S'Scegli la versione precedente:'
+p413
+sS'Old file is corrupt!'
+p414
+S'Il file vecchio \xe9 rovinato!'
+p415
+sS'Add rating:'
+p416
+S'Aggiungi voto:'
+p417
+sS'Copying Files...'
+p418
+S'Copie des fichiers...'
+p419
+sS'\n  Cell: %s\n  Object Id: %s\n  Object Index: %d'
+p420
+S'\n  Cella: %s\n  Id oggetto: %s\n  Indice oggetto: %d'
+p421
+sS'Repair All'
+p422
+S'Riparazione completa'
+p423
+sS'Drawing Cells'
+p424
+S'Drawing Cells'
+p425
+sS'Source mod %s is not in Data Files folder.'
+p426
+S'Il mod sorgente %s non \xe9 nella cartella Data Files.'
+p427
+sS'Copy to Esm'
+p428
+S'Copia come Esm'
+p429
+sS'Edit Profiles...'
+p430
+S'Modifica profili...'
+p431
+sS'File "%s" does not exist.'
+p432
+S'File "%s" non trovato.'
+p433
+sS'Lock Times'
+p434
+S'Blocca date'
+p435
+sS'LCV Schedules'
+p436
+S'Tabelle di marcia LCV '
+p437
+sS'BAD DELETE>>DELETED %d %d %s'
+p438
+S"ERREUR D'EFFACEMENT>>EFFACE %d %d %s"
+p439
+sS'Size'
+p440
+S'Dimensione'
+p441
+sS'This command will replace all instances of objects listed in the replacer file with other objects.'
+p442
+S'Questo comando sostituir\xe0 tutte le istanze degli oggetti vecchi con i nuovi oggetti elencati nel file scambiatore.'
+p443
+sS'Dialog %s: info with missing id.'
+p444
+S"Dialog %s: l'ID de l'info est manquant."
+p445
+sS'Debris Cells'
+p446
+S'Celle Obsolete'
+p447
+sS'No local references to renumber.'
+p448
+S'Non ci sono riferimenti locali da rinumerare'
+p449
+sS'INI Tweaks...'
+p450
+S'Modifiche file INI...'
+p451
+sS'Load list is full.'
+p452
+S'La liste de chargement est pleine.'
+p453
+sS'Rename Doc...'
+p454
+S'Rinomina Doc...'
+p455
+sS'Default profile cannot be removed.'
+p456
+S'Il profilo standard non pu\xf2 essere rimosso.'
+p457
+sS'Copy List'
+p458
+S'Copia lista'
+p459
+sS"Don't show this in the future."
+p460
+S'Non mostrare pi\xf9 queste informazioni.'
+p461
+sS'%d spawn points removed/reset.'
+p462
+S'%d punti di generazione rimossi/reinizializzati.'
+p463
+sS'Data changed: '
+p464
+S'Donn\xe9es modifi\xe9es :'
+p465
+sS'Edit Removers...'
+p466
+S'Modifica Eliminatori...'
+p467
+sS'File corrupted on save!'
+p468
+S'File danneggiato durante il salvataggio!'
+p469
+sS'Overriding lists:'
+p470
+S'Liste riscritte:'
+p471
+sS'Misordered esm: %s should load before %s'
+p472
+S'.esm mal ordonn\xe9: %s devrait \xeatre chrg\xe9 avant %s'
+p473
+sS'Detached Global Scripts'
+p474
+S'Scripts globaux d\xe9tach\xe9s'
+p475
+sS'All load list slots are full. Please delete an existing load list before adding another.'
+p476
+S"Liste caricamento piene. E' necessario cancellarne una per poter aggiungere una nuova lista."
+p477
+sS'%s: Expected size <= %d, but got: %d '
+p478
+S'%s: La taille attendue doit \xeatre <= %d, mais celle renvoy\xe9e est %d '
+p479
+sS' Copy'
+p480
+S' Copia'
+p481
+sS'Duplicate...'
+p482
+S'Dupliqu\xe9...'
+p483
+sS'Rename file to:'
+p484
+S'Rinomina file in:'
+p485
+sS'Load Masters'
+p486
+S'Carica master'
+p487
+sS'Sort'
+p488
+S'Ordina'
+p489
+sS'Previous mod file must be located in Data Files directory.'
+p490
+S'Il file mod versione precedente deve trovarsi nella cartella Data Files.'
+p491
+sS'Dialogue'
+p492
+S'Dialogo'
+p493
+sS'Morrowind Mod Files'
+p494
+S'File mod Morrowind'
+p495
+sS'Edit Safe Cells...'
+p496
+S'Modifica celle sicure...'
+p497
+sS'Enter first objectIndex. [Current value: %d]'
+p498
+S"Inserisci l'indice di partenza per il primo oggetto. [Valore corrente: %d]"
+p499
+sS'Cannot remove debris cells from a non-save game!'
+p500
+S"Les cellules inutilis\xe9es ne peuvent \xeatre retir\xe9es que d'une sauvegarde !"
+p501
+sS'Sync to Load List'
+p502
+S'Sincronizza con la Lista caricamento'
+p503
+sS'Compiled'
+p504
+S'Compilato'
+p505
+sS'  [%s already imported.]'
+p506
+S'  [%s d\xe9j\xe0 import\xe9.]'
+p507
+sS'Review of '
+p508
+S'Riassunto di'
+p509
+sS'%s: Expected %s subrecord, but found %s instead.'
+p510
+S'%s: Le sous-\xe9l\xe9ment attendu est %s, alors que celui renvoy\xe9 est %s.'
+p511
+sS'Bad number of stats for class '
+p512
+S'Mauvais num\xe9ro de statistiques pour la classe '
+p513
+sS'The following mod files have corrupted headers: '
+p514
+S'I seguenti file mod hanno intestazioni rovinate: '
+p515
+sS'Repairing '
+p516
+S'Riparazione'
+p517
+sS'%s: Attempted to read past (%d) end (%d) of file/buffer.'
+p518
+S'%s: Tentative de lecture (%d) avant le fin (%d) du fichier/buffer.'
+p519
+sS'Select Ref Replacer list file:'
+p520
+S'Seleziona il file di scambio riferimenti:'
+p521
+sS'References replaced:'
+p522
+S'R\xe9f\xe9rences remplac\xe9es:'
+p523
+sS'Revert to Snapshot...'
+p524
+S'Ripristina istantanea...'
+p525
+sS'Edit Replacers...'
+p526
+S'Modifica scambiatori riferimenti...'
+p527
+sS'No orphaned content present.'
+p528
+S'Non ci sono riferimenti scollegati.'
+p529
+sS'File skipped: %s. File is already present.'
+p530
+S'File saltato: %s. Il file \xe9 gi\xe0 presente.'
+p531
+sS'Profile'
+p532
+S'Profilo'
+p533
+sS'Mash cannot handle dates greater than January 19, 2038. Accordingly, the dates for the following files have been reset to an earlier date: '
+p534
+S'Mash non pu\xf2 gestire date successive al 19 Gennaio 2038. Di conseguenza, le date dei seguenti file sono state ripristinate a una data precedente: '
+p535
+sS'Mods'
+p536
+S'Mod'
+p537
+sS'Morrowind.ini: [GameFiles] section not found.'
+p538
+S'Morrowind.ini: section [GameFiles] introuvable.'
+p539
+sS'Edit'
+p540
+S'Modifica'
+p541
+sS'This function will sort the records of the selected esp for easier viewing in the Details view of TESCS. Generally, this is only useful for active modders.'
+p542
+S"Questo comando ordiner\xe0 i record del mod selezionato per una pi\xf9 semplice visualizzazione nella vista dettagli dell'editor. Normalmente questo \xe9 utile soltanto per i modder."
+p543
+sS'Remove'
+p544
+S'Rimuovi'
+p545
+sS'Dialog already destroyed.'
+p546
+S'Finestra di dialogo gi\xe0 eliminata.'
+p547
+sS'Import dialogs from:'
+p548
+S'Importa dialoghi da:'
+p549
+sS'Trimming: '
+p550
+S'Elimination des parties inutiles : '
+p551
+sS'Duplicate as:'
+p552
+S'Dupliqu\xe9 comme:'
+p553
+sS'Active profile cannot be removed.'
+p554
+S'Il profilo attivo non pu\xf2 essere rimosso'
+p555
+sS'Sort by'
+p556
+S'Ordina per'
+p557
+sS'Refs Removed: '
+p558
+S'Riferimenti eliminati: '
+p559
+sS'%s: Attempted to read before (%d) beginning of file/buffer.'
+p560
+S'%s: Tentative de lecture (%d) avant le d\xe9but du fichier/buffer.'
+p561
+sS'Map Notes: '
+p562
+S'Note mappa:'
+p563
+sS'Please update masters to correct for missing masters (%s).'
+p564
+S"Per cortesia, aggiorna l'elenco master in modo da aggiungere i master mancanti (%s)"
+p565
+sS'Saves'
+p566
+S'Partite salvate'
+p567
+sS'Unable to select %s because file already has maximum number of masters.'
+p568
+S'Impossibile selezionare %s poich\xe9 il file ha gi\xe0 il numero massimo consentito di master.'
+p569
+sS'Name must be unique.'
+p570
+S'Il nome deve essere unico.'
+p571
+sS'No id for %s record.'
+p572
+S"L'\xe9l\xe9ment %s n'a pas d'ID."
+p573
+sS'Player'
+p574
+S'Giocatore'
+p575
+sS': Attempted to access damaged file.'
+p576
+S": tentative d'acc\xe9der \xe0 un fichier endommag\xe9."
+p577
+sS'Export'
+p578
+S'Esporta'
+p579
+sS'Source Mod'
+p580
+S'Mod sorgente'
+p581
+sS'Filename not defined.'
+p582
+S'Nome file non definito.'
+p583
+sS'Select Ref Remover file or files:'
+p584
+S'Seleziona il/i file di rimozione riferimenti:'
+p585
+sS'Masters for %s:'
+p586
+S'Master di %s:'
+p587
+sS'Saving: '
+p588
+S'Salvataggio:'
+p589
+sS'Incorrect file extension: '
+p590
+S'Estensione file errata:'
+p591
+sS'Cell Name:'
+p592
+S'Nome cella:'
+p593
+s.
