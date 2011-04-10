@@ -1309,6 +1309,8 @@ class ModList(List):
         wx.EVT_LIST_ITEM_SELECTED(self,self.listId,self.OnItemSelected)
         self.list.Bind(wx.EVT_LEFT_DCLICK, self.OnDoubleClick)
 
+        self.list.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
+
     def Refresh(self,files='ALL',detail='SAME'):
         """Refreshes UI for specified file. Also calls saveList.Refresh()!"""
         #--Details
@@ -1474,6 +1476,61 @@ class ModList(List):
         self.details.SetFile(modName)
         if docBrowser: 
             docBrowser.SetMod(modName)
+
+    def OnKeyDown(self, event):
+        kc = event.GetKeyCode()
+        if kc == wx.WXK_UP:
+            self.OnUpPress(event) 
+        if kc == wx.WXK_DOWN:
+            self.OnDownPress(event) 
+
+    def OnUpPress(self, event):
+        event.Skip()
+        self.moveFile(
+                    event,
+                    lambda x: x - 1,
+                    lambda x: x - 1
+                )
+
+    def OnDownPress(self, event):
+        event.Skip()
+        self.moveFile(
+                    event,
+                    lambda x: x + 1,
+                    lambda x: x + 1
+                )
+
+    def moveFile(self, event, relationFunc, timeFunc):
+        if event.ControlDown() == False :
+            return
+
+        if settings['mash.mods.sort'] != 'Modified':
+            print 'Must be sorted by Modified to enable ctrl based sorting'
+            return
+
+
+        selected = self.GetSelected()
+        if len(selected) == 0 :
+            return
+
+        items = self.GetItems()
+        items.sort(key=lambda x:mosh.modInfos[x].mtime)
+
+        selFileName    = selected[0]
+        selFileIndex   = items.index(selFileName)
+        aboveFileIndex = relationFunc(selFileIndex)
+
+        if aboveFileIndex < 0 or aboveFileIndex >= len(items):
+            print 'No Item at index'
+            return
+
+        aboveFileName  = items[aboveFileIndex]
+        aboveFileTime  = mosh.modInfos[aboveFileName].mtime
+        newSelFileTime = timeFunc(aboveFileTime);
+
+        mosh.modInfos[selFileName].setMTime(newSelFileTime)
+        mosh.modInfos.refreshDoubleTime()
+        self.Refresh()
 
 #------------------------------------------------------------------------------
 class ModDetails(wx.Window):
