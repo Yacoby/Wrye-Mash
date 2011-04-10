@@ -431,12 +431,13 @@ images = {}
 class Checkboxes(balt.ImageList):
     """Checkboxes ImageList. Used by several List classes."""
     def __init__(self):
+        imgPath = os.path.dirname(os.path.realpath(__file__)) + '/images/'
         balt.ImageList.__init__(self,16,16)
         for status in ('on','off'):
             for color in ('purple','blue','green','orange','yellow','red'):
                 shortKey = color+'.'+status
                 imageKey = 'checkbox.'+shortKey
-                file = r'images\checkbox_'+color+'_'+status+'.png'
+                file = imgPath + r'checkbox_'+color+'_'+status+'.png'
                 image = images[imageKey] = Image(file,wx.BITMAP_TYPE_PNG)
                 self.Add(image,shortKey)
 
@@ -6529,21 +6530,24 @@ def InitSettings():
 
 def InitImages():
     """Initialize images (icons, checkboxes, etc.)."""
+    scriptPath = os.path.dirname(os.path.realpath(__file__))
+    imgPath    = scriptPath + '/images/'
+
     #--Standard
-    images['save.on'] = Image(r'images\save_on.png',wx.BITMAP_TYPE_PNG)
-    images['save.off'] = Image(r'images\save_off.png',wx.BITMAP_TYPE_PNG)
+    images['save.on'] = Image(imgPath + r'save_on.png',wx.BITMAP_TYPE_PNG)
+    images['save.off'] = Image(imgPath + r'save_off.png',wx.BITMAP_TYPE_PNG)
     #--Misc
-    images['morrowind'] = Image(r'images\morrowind.png',wx.BITMAP_TYPE_PNG)
-    images['help'] = Image(r'images\help.png',wx.BITMAP_TYPE_PNG)
+    images['morrowind'] = Image(imgPath + r'morrowind.png',wx.BITMAP_TYPE_PNG)
+    images['help'] = Image(imgPath + r'help.png',wx.BITMAP_TYPE_PNG)
     #--Tools
-    images['doc.on'] = Image(r'images\doc_on.png',wx.BITMAP_TYPE_PNG)
+    images['doc.on'] = Image(imgPath + r'doc_on.png',wx.BITMAP_TYPE_PNG)
     #--Checkboxes
     images['mash.checkboxes'] = Checkboxes()
     images['checkbox.green.on.32'] = (
-        Image(r'images\checkbox_green_on_32.png',wx.BITMAP_TYPE_PNG))
+        Image(imgPath + r'checkbox_green_on_32.png',wx.BITMAP_TYPE_PNG))
     images['checkbox.blue.on.32'] = (
-        Image(r'images\checkbox_blue_on_32.png',wx.BITMAP_TYPE_PNG))
-    images['checkbox.red.x'] = Image(r'images\checkbox_red_x.png',wx.BITMAP_TYPE_PNG)
+        Image(imgPath + r'checkbox_blue_on_32.png',wx.BITMAP_TYPE_PNG))
+    images['checkbox.red.x'] = Image(imgPath + r'checkbox_red_x.png',wx.BITMAP_TYPE_PNG)
     #--Applications Icons
     wryeMashIcons = balt.ImageBundle()
     wryeMashIcons.Add(images['checkbox.green.on'])
