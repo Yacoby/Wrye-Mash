@@ -40,7 +40,12 @@ from balt import Links, Link, SeparatorLink, MenuLink
 #  - Make sure that python root directory is in PATH, so can access dll's.
 if sys.prefix not in set(os.environ['PATH'].split(';')):
     os.environ['PATH'] += ';'+sys.prefix
-import wx.lib.iewin
+
+try:
+    import wx.lib.iewin
+except ValueError:
+    print 'Failed to import wx.lib.iewin'
+    import wx.html
 
 # Singletons ------------------------------------------------------------------
 statusBar = None
@@ -454,38 +459,40 @@ class Checkboxes(balt.ImageList):
         return self.indices[shortKey]
 
 # Icons------------------------------------------------------------------------
+scriptPath = os.path.dirname(os.path.realpath(__file__))
+imgPath    = scriptPath + '/images/'
 installercons = balt.ImageList(16,16)
 installercons.data.extend({
     #--Off/Archive
-    'off.green':  Image(r'images/checkbox_green_off.png',wx.BITMAP_TYPE_PNG),
-    'off.grey':   Image(r'images/checkbox_grey_off.png',wx.BITMAP_TYPE_PNG),
-    'off.red':    Image(r'images/checkbox_red_off.png',wx.BITMAP_TYPE_PNG),
-    'off.white':  Image(r'images/checkbox_white_off.png',wx.BITMAP_TYPE_PNG),
-    'off.orange': Image(r'images/checkbox_orange_off.png',wx.BITMAP_TYPE_PNG),
-    'off.yellow': Image(r'images/checkbox_yellow_off.png',wx.BITMAP_TYPE_PNG),
+    'off.green':  Image(imgPath + r'checkbox_green_off.png',wx.BITMAP_TYPE_PNG),
+    'off.grey':   Image(imgPath + r'checkbox_grey_off.png',wx.BITMAP_TYPE_PNG),
+    'off.red':    Image(imgPath + r'checkbox_red_off.png',wx.BITMAP_TYPE_PNG),
+    'off.white':  Image(imgPath + r'checkbox_white_off.png',wx.BITMAP_TYPE_PNG),
+    'off.orange': Image(imgPath + r'checkbox_orange_off.png',wx.BITMAP_TYPE_PNG),
+    'off.yellow': Image(imgPath + r'checkbox_yellow_off.png',wx.BITMAP_TYPE_PNG),
     #--On/Archive
-    'on.green':  Image(r'images/checkbox_green_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.grey':   Image(r'images/checkbox_grey_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.red':    Image(r'images/checkbox_red_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.white':  Image(r'images/checkbox_white_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.orange': Image(r'images/checkbox_orange_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.yellow': Image(r'images/checkbox_yellow_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.green':  Image(imgPath + r'checkbox_green_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.grey':   Image(imgPath + r'checkbox_grey_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.red':    Image(imgPath + r'checkbox_red_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.white':  Image(imgPath + r'checkbox_white_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.orange': Image(imgPath + r'checkbox_orange_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.yellow': Image(imgPath + r'checkbox_yellow_inc.png',wx.BITMAP_TYPE_PNG),
     #--Off/Directory
-    'off.green.dir':  Image(r'images/diamond_green_off.png',wx.BITMAP_TYPE_PNG),
-    'off.grey.dir':   Image(r'images/diamond_grey_off.png',wx.BITMAP_TYPE_PNG),
-    'off.red.dir':    Image(r'images/diamond_red_off.png',wx.BITMAP_TYPE_PNG),
-    'off.white.dir':  Image(r'images/diamond_white_off.png',wx.BITMAP_TYPE_PNG),
-    'off.orange.dir': Image(r'images/diamond_orange_off.png',wx.BITMAP_TYPE_PNG),
-    'off.yellow.dir': Image(r'images/diamond_yellow_off.png',wx.BITMAP_TYPE_PNG),
+    'off.green.dir':  Image(imgPath + r'diamond_green_off.png',wx.BITMAP_TYPE_PNG),
+    'off.grey.dir':   Image(imgPath + r'diamond_grey_off.png',wx.BITMAP_TYPE_PNG),
+    'off.red.dir':    Image(imgPath + r'diamond_red_off.png',wx.BITMAP_TYPE_PNG),
+    'off.white.dir':  Image(imgPath + r'diamond_white_off.png',wx.BITMAP_TYPE_PNG),
+    'off.orange.dir': Image(imgPath + r'diamond_orange_off.png',wx.BITMAP_TYPE_PNG),
+    'off.yellow.dir': Image(imgPath + r'diamond_yellow_off.png',wx.BITMAP_TYPE_PNG),
     #--On/Directory
-    'on.green.dir':  Image(r'images/diamond_green_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.grey.dir':   Image(r'images/diamond_grey_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.red.dir':    Image(r'images/diamond_red_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.white.dir':  Image(r'images/diamond_white_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.orange.dir': Image(r'images/diamond_orange_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.yellow.dir': Image(r'images/diamond_yellow_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.green.dir':  Image(imgPath + r'diamond_green_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.grey.dir':   Image(imgPath + r'diamond_grey_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.red.dir':    Image(imgPath + r'diamond_red_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.white.dir':  Image(imgPath + r'diamond_white_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.orange.dir': Image(imgPath + r'diamond_orange_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.yellow.dir': Image(imgPath + r'diamond_yellow_inc.png',wx.BITMAP_TYPE_PNG),
     #--Broken
-    'corrupt':   Image(r'images/red_x.png',wx.BITMAP_TYPE_PNG),
+    'corrupt':   Image(imgPath + r'red_x.png',wx.BITMAP_TYPE_PNG),
     }.items())
 # Windows ---------------------------------------------------------------------
 #------------------------------------------------------------------------------
