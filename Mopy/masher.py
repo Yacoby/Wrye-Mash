@@ -1496,21 +1496,22 @@ class ModList(List):
             docBrowser.SetMod(modName)
 
     def OnKeyDown(self, event):
+        fmap = {
+            wx.WXK_UP   :self.OnUpPress,
+            wx.WXK_DOWN :self.OnDownPress,
+            65          :self.OnAPress,
+        }
         kc = event.GetKeyCode()
-        if kc == wx.WXK_UP:
-            self.OnUpPress(event) 
-        if kc == wx.WXK_DOWN:
-            self.OnDownPress(event) 
-        if kc == 65:
-            self.OnAPress(event)
+        if kc in fmap:
+            fmap[kc](event)
 
     def OnAPress(self, event):
-        self.SelectAll()
+        if event.ControlDown():
+            self.SelectAll()
     
-
     def OnUpPress(self, event):
         event.Skip()
-        self.moveFile(
+        self.moveSelected(
                     event,
                     lambda x: x - 1,
                     lambda x: x - 1,
@@ -1519,14 +1520,38 @@ class ModList(List):
 
     def OnDownPress(self, event):
         event.Skip()
-        self.moveFile(
+        self.moveSelected(
                     event,
                     lambda x: x + 1,
                     lambda x: x + 1,
                     lambda l: l.pop()
                 )
 
-    def moveFile(self, event, relationFunc, timeFunc, getSelectedFunc):
+    
+    def moveSelected(self, event, relationFunc, timeFunc, getSelectedFunc):
+        """Moves selected files up or down
+
+        event -- the event that caused the need for movement
+        relationFunc -- this is the function that when given a index should return the index that the mod should be moved to.
+                        assuming that any index is valid. It is expected to be +-1 of the old index
+        timeFunc -- when given an unix timestamp it should return a new unix time stamp. It is expected to be +-1 of the old one
+        getSelectedFunc -- When passed in a sorted list of selected mods, should return the one to process and remove it from the list
+        """
+        def alterModTimeIfReq(movingToIndex, movingToTime):
+            """Checks if there is something (another mod) in the way of where we want to move this mod
+               to. If there is it moves it in the same direction, again calling this function to check if
+               anything is in the way.
+            """
+            #check if something is in the way
+            modInWayIndex = relationFunc(movingToIndex)
+            if hasItemAtIndex(modInWayIndex):
+                mod = mosh.modInfos[items[modInWayIndex]]
+                #if it has exaclt the same time, then we need to move it.
+                if mod.mtime == movingToTime:
+                    newTime = timeFunc(mod.mtime)
+                    #check we aren't moving it onto something
+                    alterModTimeIfReq(modInWayIndex, newTime)
+                    mosh.modInfos[items[modInWayIndex]].setMTime(newTime)
 
         if event.ControlDown() == False :
             return
@@ -1534,24 +1559,23 @@ class ModList(List):
         if settings['mash.mods.sort'] != 'Modified':
             print 'Must be sorted by Modified to enable ctrl based sorting'
             return
-
-
         
         selected = self.GetSelected()
         if len(selected) == 0 :
             return
-        process = list(selected) #copy
+
+        #shallow copy of the selected fiels that need processing
+        process = list(selected) 
         process.sort(key=lambda x:mosh.modInfos[x].mtime)
 
         items = self.GetItems()
-        items.sort(key=lambda x:mosh.modInfos[x].mtime)
         while len(process):
             items.sort(key=lambda x:mosh.modInfos[x].mtime)
 
-            selFileName       = getSelectedFunc(process)
+            selFileName       = getSelectedFunc(process) #this reduces the process list
             selFileIndex      = items.index(selFileName)
             selFileTime       = mosh.modInfos[selFileName].mtime
-            newSelFileTime    = timeFunc(selFileTime); #default. This is changed
+            newSelFileTime    = timeFunc(selFileTime); #default. This is changed later if requried
             movePastFileIndex = relationFunc(selFileIndex)
 
             hasItemAtIndex = lambda x: x >= 0 and x < len(items)
@@ -1561,25 +1585,12 @@ class ModList(List):
                 movePastFileTime  = mosh.modInfos[movePastFileName].mtime
                 newSelFileTime    = timeFunc(movePastFileTime);
 
-                #sometimes there may be a mod in the way where we want to move
-                #the current mod to. Hence the solution is to check if there is something there
-                #and if there is alter it. Of course, this mod runs into the same issue when we move it
-                def alterModTimeIfReq(movingToIndex, movingToTime):
-                    #check if something is in the way
-                    modInWayIndex = relationFunc(movingToIndex)
-                    if hasItemAtIndex(modInWayIndex):
-                        mod = mosh.modInfos[items[modInWayIndex]]
-                        if mod.mtime == movingToTime:
-                            newTime = timeFunc(mod.mtime)
-                            alterModTimeIfReq(modInWayIndex, newTime)
-                            mosh.modInfos[items[modInWayIndex]].setMTime(newTime)
-
                 alterModTimeIfReq(movePastFileIndex, newSelFileTime)
-
 
             mosh.modInfos[selFileName].setMTime(newSelFileTime) 
             mosh.modInfos.refreshDoubleTime()
 
+        #ensure correct items (i.e the ones we started with) are selected
         self.ClearSelected()
         self.SelectItems(selected)
 
