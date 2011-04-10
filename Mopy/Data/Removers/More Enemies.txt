@@ -1,0 +1,7 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Luminar's More Enemies - Daedra 1: Saints by Matthew Frost (aka Luminar)
+"silversaint"	"Silver Saint"
+"bronzesaint"	"Bronze Saint"
+"crystalsaint"	"Crystal Saint"

@@ -1,0 +1,38 @@
+;Default water settings.
+
+[Water]
+;Editor Alpha ranges from 0.0 (transparent) to 1.0 (opaque)
+;An alpha of 1.0 shows the water as it will appear in game.
+Editor Alpha=0.25
+Map Alpha=0.4
+MaxNumberRipples=75
+NearWaterIndoorID=Water Layer
+NearWaterIndoorTolerance=512.0
+NearWaterOutdoorID=Water Layer
+NearWaterOutdoorTolerance=1024.0
+NearWaterPoints=8
+NearWaterRadius=1000
+NearWaterUnderwaterFreq=0.3
+NearWaterUnderwaterVolume=0.9
+PSWaterReflectTerrain=1
+PSWaterReflectUpdate=20.0
+RippleAlphas=0.7, 0.1, 0.01
+RippleFrameCount=4
+RippleLifetime=3.0
+RippleRotSpeed=0.5
+RippleScale=0.15, 6.5
+RippleTexture=ripple
+SurfaceFPS=12
+SurfaceFrameCount=32
+SurfaceTexture=water
+SurfaceTextureSize=128
+SurfaceTileCount=10
+TileTextureDivisor=4.75
+UnderwaterColor=012,030,037
+UnderwaterColorWeight=0.85
+UnderwaterDayFog=2.5
+UnderwaterIndoorFog=3
+UnderwaterNightFog=4
+UnderwaterSunriseFog=3
+UnderwaterSunsetFog=3
+World Alpha=0.75

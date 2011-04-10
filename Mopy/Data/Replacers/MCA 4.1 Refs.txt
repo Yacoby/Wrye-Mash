@@ -1,0 +1,6 @@
+# [Filetype: Wrye Mash Replacer]
+
+@ replace
+# Tavern
+xMCA_in_tavern_imperial:	_MCA_in_tavern_imperial
+xMCA_in_tavern_imperial_p:	_MCA_in_tavern_imperial_p

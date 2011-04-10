@@ -1,0 +1,54 @@
+; Default lighting settings. (Linear)
+
+[LightAttenuation]
+;This section governs light attenuation. This is calcuated as follows:
+; atten = 1 / ( ConstantValue + Linear * Distance + Quadratic * Distance^2 )
+;
+;If you want to use Constant attenuation:
+; 1. set UseConstant=1
+; 2. set ConstantValue to some non-zero number
+;
+;If you want to use Linear attenuation:
+; 1. set UseLinear=1
+; 2. Choose your method of calculating the value:
+; a. LinearMethod=0 : uses LinearValue
+; b. LinearMethod=1 : uses LinearValue / LightRadius
+; c. LinearMethod=2 : uses LinearValue / LightRadius^2
+; b is most commonly used.
+;
+;If you want to use Quadraticattenuation:
+; 1. set UseQuadratic=1
+; 2. Choose your method of calculating the value:
+; a. QuadraticMethod=0 : uses QuadraticValue
+; b. QuadraticMethod=1 : uses QuadraticValue / LightRadius
+; c. QuadraticMethod=2 : uses QuadraticValue / LightRadius^2
+; c is most commonly used.
+;
+;You can use Linear attenuation inside and Quadratic attenuation outside
+;by setting.
+; OutQuadInLin=1
+;If this is present & set to 1, it overrides the UseLinear and UseQuadratic settings.
+;
+;If you want to alter the radius used in quadratic or linear attenuation,
+;you can set the followind. The radius will be multiplied by these numbers,
+;which default to 1.0, before the attenuation is calculated using method 1 or 2.
+; QuadraticRadiusMult=1.0
+; LinearRadiusMult=1.0
+;
+;If you leave out any of these settings, they'll default to settings hard-coded
+;in TES3Light.cpp
+
+UseConstant=0
+ConstantValue=0.0
+
+UseLinear=1
+LinearMethod=1
+LinearValue=3.0
+LinearRadiusMult=1.0
+
+UseQuadratic=0 
+QuadraticMethod=2
+QuadraticValue=16.0
+QuadraticRadiusMult=1.0
+
+OutQuadInLin=0

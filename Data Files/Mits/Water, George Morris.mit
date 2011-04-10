@@ -1,0 +1,10 @@
+;George Morris' water settings. Fog is so low as to be like air.
+
+[Water]
+UnderwaterColor=012,030,037
+UnderwaterColorWeight=0.45
+UnderwaterDayFog=0.10
+UnderwaterIndoorFog=0.10
+UnderwaterNightFog=0.10
+UnderwaterSunriseFog=0.10
+UnderwaterSunsetFog=0.10

@@ -1,0 +1,5 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Diamondback Kagouti by Jason L. Polson
+"Kagouti_diamondback"	"Diamondback Kagouti"

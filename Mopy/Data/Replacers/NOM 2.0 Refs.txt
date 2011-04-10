@@ -1,0 +1,27 @@
+# [Filetype: Wrye Mash Replacer]
+@ srcmod
+NOM MiniRes.esp
+
+@ replace
+# Statics
+ex_nord_well_01:	NOM_well_nord_01
+furn_com_cauldron_01:	NOM_cauldron_01
+furn_com_cauldron_02:	NOM_cauldron_02
+furn_com_kegstand:	NOM_kegstand_beer, NOM_kegstand_wine, NOM_kegstand_emp
+furn_de_kegstand:	NOM_kegstand_beer_de, NOM_kegstand_wine_de, NOM_kegstand_emp_de
+furn_de_minercave_grill_01:	NOM_grill_02
+furn_dwrv_stove00:	NOM_oven_dwrn
+furn_redoran_hearth_01:	NOM_oven_01
+furn_redoran_hearth_02:	NOM_oven_02
+furn_well00:		NOM_well_common_01
+# Misc
+misc_com_bottle_01: NOM_wine_09
+misc_com_bottle_05: NOM_wine_08
+misc_com_bottle_06: NOM_wine_02
+misc_com_bottle_07: NOM_wine_03
+misc_com_bottle_10: NOM_wine_04
+misc_com_bottle_11: NOM_beer_02
+misc_com_bottle_12: NOM_beer_03
+misc_com_bottle_13: NOM_beer_09
+misc_com_bottle_14: NOM_beer_08
+misc_com_bottle_15: NOM_beer_04

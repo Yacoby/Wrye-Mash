@@ -1,0 +1,15 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Endless Adventures - Primal v1.1 BETA by Arsonide
+"lair_mudcrab"	"A Mudcrab Burrow"
+"lair_cliff racer"	"A Cliff Racer Roost"
+"lair_alit"	"An Alit Mound"
+"lair_Rat"	"A Rat Nest"
+"lair_kwama"	"A Kwama Lair"
+"lair_scrib"	"A Scrib Hive"
+"lair_nix-hound"	"Nix-Hound Den"
+"lair_guar"	"A Guar Refuge"
+"lair_kagouti"	"A Kagouti Cave"
+"lair_shalk"	"A Shalk Mound"
+"lair_netch"	"A Netch Shelter"

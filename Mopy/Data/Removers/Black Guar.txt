@@ -1,0 +1,5 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Black Guar by Hamnio Nightstar
+"black_guar_unique"	"Black Guar"

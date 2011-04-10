@@ -1,0 +1,8 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Sabregirl's Morrowind Ecology by Sabregirl
+"BM_wolf_grey_lvl_1"	"Wolf"
+"BM_deer1"	"Deer"
+"BM_stag1"	"Caribou"
+"BM_wt_deer"	"White Tail Deer"

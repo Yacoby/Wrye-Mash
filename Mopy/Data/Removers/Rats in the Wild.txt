@@ -1,0 +1,12 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Rats in the Wild v1.0 by Telemachus
+"Rat_White"	"Rat"
+"Rat_White_Young"	"Baby Rat"
+"Rat_White_Young2"	"Baby Rat"
+"Rat_White_2"	"Rat"
+"Rat_White_3"	"Rat"
+"Rat_White_4"	"Rat"
+"Rat_White_5"	"Rat"
+"Rat_White_6"	"Rat"

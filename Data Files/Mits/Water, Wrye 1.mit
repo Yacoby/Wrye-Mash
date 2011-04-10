@@ -1,0 +1,16 @@
+;Water, Wrye v 1. 
+;  This version provides relatively clear (low fog) water. Thus, it doesn't
+;  light up interior cells too much. However, it's probably too clear for 
+;  exterior cells, especially during daytime.
+
+[Water] 
+; The main problem is the luminosity of water. If water is too bright, then it 
+; looks too bright indoors and at night. Accordingly, the color weight color 
+; needs to be kept dim, and the colorweight and fogs need to be kept relatively low.
+UnderwaterColor=012,030,045
+UnderwaterColorWeight=.55
+UnderwaterDayFog=1.3
+UnderwaterIndoorFog=1.0
+UnderwaterNightFog=1.1
+UnderwaterSunriseFog=1.3
+UnderwaterSunsetFog=1.3

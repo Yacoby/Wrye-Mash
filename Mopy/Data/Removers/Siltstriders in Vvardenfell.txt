@@ -1,0 +1,5 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Siltstriders are in Vvardenfell by lochnarus (and Lingarn)
+"LOCH_LN_SS_large"	"Wild Silt Strider"

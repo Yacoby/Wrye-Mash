@@ -1,0 +1,18 @@
+;Water, Wrye v 3 
+;  This version darkens the water color from default, which allows heavier
+;  color weight and fogging without lighting up dark interior cells too
+;  much (however, very dark interior cells will still have anomalously 
+;  well lit water.) If you have version 2, this is the same except with
+;  slightly heavier (1.5 to 1.75) exterior fogging.
+
+[Water] 
+; The main problem is the luminosity of water. If water is too bright, then it 
+; looks too bright indoors and at night. Accordingly, the color weight color 
+; needs to be kept dim, and the colorweight and fogs need to be kept relatively low.
+UnderwaterColor=009,020,030
+UnderwaterColorWeight=.75
+UnderwaterDayFog=1.75
+UnderwaterIndoorFog=2.0
+UnderwaterNightFog=1.75
+UnderwaterSunriseFog=1.75
+UnderwaterSunsetFog=1.75

@@ -1,0 +1,9 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Marksman mod v1.46 by Intelligentsia
+"skeleton ranger"	"Skeleton Ranger"
+"dremora_lord archer"	"Dremora Archer"
+"golden saint archer"	"Golden Saint Archer"
+"skeleton mercenary"	"Skeleton Mercenary"
+"dremora_lord archer2"	"Dremora Stalker"

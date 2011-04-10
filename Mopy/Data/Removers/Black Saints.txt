@@ -1,0 +1,5 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Snape's Black Saints by Sirius Snape
+"black_saint"	"Black Saint"

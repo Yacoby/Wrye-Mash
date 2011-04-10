@@ -1,0 +1,10 @@
+;Misty Moon's Clear water settings.
+
+[Water] 
+UnderwaterColor=060,160,200
+UnderwaterColorWeight=4.0
+UnderwaterDayFog=.60
+UnderwaterIndoorFog=.50
+UnderwaterNightFog=1 
+UnderwaterSunriseFog=.70 
+UnderwaterSunsetFog=.70

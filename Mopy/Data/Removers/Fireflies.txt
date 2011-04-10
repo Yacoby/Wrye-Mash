@@ -1,0 +1,4 @@
+# [Filetype: Wrye Mash Remover]
+# Fireflies by Thaedyn Vyr
+"firefly_K" "Photonis Vvardenicus Minimus"
+"firefly_w" "Photonis Vvardenicus"

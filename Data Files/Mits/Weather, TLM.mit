@@ -1,0 +1,111 @@
+[MIT]
+Desc=Applies lighting modifications for weather and nighttime conditions
+Author=Sensei
+Mod=TLM - The Lighting Mod 1.0
+File=morrowind.esm
+
+[Weather Clear]
+Ambient Night Color=010,011,012
+Ambient Sunrise Color=036,050,072
+Ambient Sunset Color=055,061,077
+Fog Night Color=005,005,005
+Fog Sunrise Color=255,188,155
+Fog Sunset Color=255,188,155
+Sky Night Color=005,005,005
+Sky Sunrise Color=117,141,164
+Sky Sunset Color=055,089,127
+Sun Night Color=045,073,131
+
+[Weather Cloudy]
+Ambient Night Color=010,012,016
+Ambient Sunrise Color=050,056,064
+Ambient Sunset Color=055,062,071
+Fog Night Color=005,005,005
+Fog Sunrise Color=255,203,147
+Fog Sunset Color=255,154,105
+Sky Night Color=005,005,005
+Sky Sunrise Color=125,158,173
+Sky Sunset Color=109,114,159
+Sun Night Color=039,046,061
+
+[Weather Foggy]
+Ambient Night Color=009,010,011
+Ambient Sunrise Color=020,022,024
+Ambient Sunset Color=050,036,020
+Fog Night Color=010,012,014
+Fog Sunrise Color=146,160,174
+Fog Sunset Color=156,137,108
+Land Fog Day Depth=1.3
+Land Fog Night Depth=1.9
+Sky Night Color=009,011,013
+Sky Sunrise Color=177,188,199
+Sky Sunset Color=174,159,138
+Sun Night Color=021,025,029
+
+[Weather Overcast]
+Ambient Night Color=018,019,020
+Ambient Sunrise Color=072,075,078
+Ambient Sunset Color=058,055,054
+Fog Night Color=010,011,012
+Fog Sunrise Color=088,096,102
+Fog Sunset Color=106,113,118
+Land Fog Day Depth=.75
+Land Fog Night Depth=.75
+Sky Night Color=010,011,012
+Sky Sunrise Color=088,096,102
+Sky Sunset Color=106,113,118
+Sun Night Color=008,013,024
+
+[Weather Rain]
+Ambient Night Color=016,017,020
+Ambient Sunrise Color=077,083,083
+Ambient Sunset Color=083,078,077
+Fog Night Color=012,012,012
+Fog Sunrise Color=066,068,068
+Fog Sunset Color=067,067,067
+Land Fog Day Depth=.85
+Land Fog Night Depth=.9
+Sky Night Color=012,012,012
+Sky Sunrise Color=066,068,068
+Sky Sunset Color=067,067,067
+Sun Night Color=013,016,025
+
+[Weather Thunderstorm]
+Ambient Night Color=016,016,016
+Ambient Sunrise Color=020,020,020
+Ambient Sunset Color=020,020,020
+Fog Night Color=010,010,010
+Fog Sunrise Color=067,071,081
+Fog Sunset Color=067,071,081
+Sky Night Color=010,010,010
+Sky Sunrise Color=027,028,029
+Sky Sunset Color=027,028,029
+Sun Night Color=014,020,028
+
+[Weather Ashstorm]
+Ambient Night Color=012,013,014
+Ambient Sunrise Color=026,020,018
+Ambient Sunset Color=011,010,009
+Fog Night Color=010,010,010
+Fog Sunrise Color=087,053,049
+Fog Sunset Color=101,052,039
+Land Fog Day Depth=1.3
+Land Fog Night Depth=1.5
+Sky Night Color=010,010,010
+Sky Sunrise Color=087,053,049
+Sky Sunset Color=101,052,039
+Sun Night Color=014,016,018
+
+[Weather Blight]
+Ambient Night Color=018,018,018
+Ambient Sunrise Color=020,014,014
+Ambient Sunset Color=020,014,014
+Fog Night Color=021,007,007
+Fog Sunrise Color=084,034,034
+Fog Sunset Color=086,032,032
+Land Fog Day Depth=1.15
+Land Fog Night Depth=1.3
+Sky Night Color=021,007,007
+Sky Sunrise Color=090,035,035
+Sky Sunset Color=092,033,033
+Sun Night Color=015,023,035

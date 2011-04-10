@@ -1,0 +1,6 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Daedric Tools and Jewellery by Luminar Nightblade
+"lumi_dremora_armourer"	"Dremora Armourer"
+"lumi_dremora_sorcerer"	"Dremora Sorcerer

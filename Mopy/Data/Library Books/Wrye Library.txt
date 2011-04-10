@@ -1,0 +1,309 @@
+# [Filetype: Library List]
+# List of books used to generate library versions of books.
+# Format:
+# - Four tab separated columns...
+#   - New book id
+#   - Original book id (prototype for new book)
+#   - Original book id 2 (optional, usually open versions of closed books)
+#   - Title of book (not used by script - just included for easy identification)
+# Notes
+# - This list includes books from three Morrowind ems plus the Entertainers 
+#   plugin. Not included (though perhaps they should be) are personal journals
+#   that you occasionally find in caves, etc.
+# - Series books are first, followed
+# - Some morrowind books are not available in closed versions. This list 
+#   assumes that closed versions of these books have been defined. (Wrye 
+#   Library should have copies of those listed here.)
+
+lib_LongBlade2	BookSkill_Long Blade2		2920, Morning Star
+lib_Mysticism2	BookSkill_Mysticism2		2920, Sun's Dawn
+lib_Spear2	BookSkill_Spear2		2920, First Seed
+lib_Restoration4	BookSkill_Restoration4		2920, Rain's Hand
+lib_Speechcraft3	BookSkill_Speechcraft3		2920, Second Seed
+lib_HeavyArmor2	BookSkill_Heavy Armor2		2920, MidYear
+lib_Mercantile3	BookSkill_Mercantile3		2920, Sun's Height
+lib_Sneak2	BookSkill_Sneak2		2920, Last Seed
+lib_Conjuration3	BookSkill_Conjuration3		2920, Hearth Fire
+lib_Conjuration4	BookSkill_Conjuration4		2920, FrostFall
+lib_ShortBlade2	BookSkill_Short Blade2		2920, Sun's Dusk
+lib_ShortBlade3	BookSkill_Short Blade3		2920, Evening Star
+lib_Athletics3	BookSkill_Athletics3		36 Lessons of Vivec, Sermon  1
+lib_Alchemy4	BookSkill_Alchemy4		36 Lessons of Vivec, Sermon  2
+lib_BluntWeapon4	BookSkill_Blunt Weapon4		36 Lessons of Vivec, Sermon  3
+lib_Mysticism3	BookSkill_Mysticism3		36 Lessons of Vivec, Sermon  4
+lib_Axe4	BookSkill_Axe4		36 Lessons of Vivec, Sermon  5
+lib_Armorer3	BookSkill_Armorer3		36 Lessons of Vivec, Sermon  6
+lib_Block4	BookSkill_Block4		36 Lessons of Vivec, Sermon  7
+lib_Athletics4	BookSkill_Athletics4		36 Lessons of Vivec, Sermon  8
+lib_BluntWeapon5	BookSkill_Blunt Weapon5		36 Lessons of Vivec, Sermon  9
+lib_ShortBlade4	BookSkill_Short Blade4		36 Lessons of Vivec, Sermon 10
+lib_Unarmored3	bookskill_unarmored3		36 Lessons of Vivec, Sermon 11
+lib_HeavyArmor5	bookskill_heavy armor5		36 Lessons of Vivec, Sermon 12
+lib_Alteration4	BookSkill_Alteration4		36 Lessons of Vivec, Sermon 13
+lib_Spear3	bookskill_spear3		36 Lessons of Vivec, Sermon 14
+lib_Unarmored4	bookskill_unarmored4		36 Lessons of Vivec, Sermon 15
+lib_Axe5	BookSkill_Axe5	BookSkill_Axe5_open	36 Lessons of Vivec, Sermon 16
+lib_LongBlade3	bookskill_long blade3		36 Lessons of Vivec, Sermon 17
+lib_Alchemy5	BookSkill_Alchemy5		36 Lessons of Vivec, Sermon 18
+lib_Enchant4	bookskill_enchant4		36 Lessons of Vivec, Sermon 19
+lib_LongBlade4	bookskill_long blade4		36 Lessons of Vivec, Sermon 20
+lib_LightArmor4	bookskill_light armor4		36 Lessons of Vivec, Sermon 21
+lib_MediumArmor4	bookskill_medium armor4		36 Lessons of Vivec, Sermon 22
+lib_LongBlade5	bookskill_long blade5		36 Lessons of Vivec, Sermon 23
+lib_Spear4	bookskill_spear4		36 Lessons of Vivec, Sermon 24
+lib_Armorer4	BookSkill_Armorer4		36 Lessons of Vivec, Sermon 25
+lib_Sneak5	bookskill_sneak5		36 Lessons of Vivec, Sermon 26
+lib_Speechcraft5	bookskill_speechcraft5		36 Lessons of Vivec, Sermon 27
+lib_LightArmor5	bookskill_light armor5		36 Lessons of Vivec, Sermon 28
+lib_Armorer5	BookSkill_Armorer5		36 Lessons of Vivec, Sermon 29
+lib_ShortBlade5	BookSkill_Short Blade5		36 Lessons of Vivec, Sermon 30
+lib_Athletics5	BookSkill_Athletics5		36 Lessons of Vivec, Sermon 31
+lib_Block5	BookSkill_Block5		36 Lessons of Vivec, Sermon 32
+lib_MediumArmor5	bookskill_medium armor5		36 Lessons of Vivec, Sermon 33
+lib_Unarmored5	bookskill_unarmored5		36 Lessons of Vivec, Sermon 34
+lib_Spear5	bookskill_spear5		36 Lessons of Vivec, Sermon 35
+lib_Mysticism4	BookSkill_Mysticism4		36 Lessons of Vivec, Sermon 36
+lib_BioBarenziah1	bk_BiographyBarenziah1		Biography of Barenziah v I
+lib_BioBarenziah2	bk_BiographyBarenziah2		Biography of Barenziah v II
+lib_BioBarenziah3	bk_BiographyBarenziah3		Biography of Barenziah v III
+lib_MediumArmor2	BookSkill_Medium Armor2		Bone, Part One
+lib_MediumArmor3	BookSkill_Medium Armor3		Bone, Part Two
+lib_BriefEmpire1	bk_BriefHistoryEmpire1		Brief History of the Empire v 1
+lib_BriefEmpire2	bk_BriefHistoryEmpire2		Brief History of the Empire v 2
+lib_BriefEmpire3	bk_BriefHistoryEmpire3		Brief History of the Empire v 3
+lib_BriefEmpire4	bk_BriefHistoryEmpire4		Brief History of the Empire v 4
+lib_Acrobatics4	BookSkill_Acrobatics4		Black Arrow, Volume 1
+lib_Marksman5	bookskill_marksman5		Black Arrow, Volume II
+lib_Unarmored2	bookskill_unarmored2		Charwich-Koniinge, Volume 1
+lib_HandHand3	bookskill_hand to hand3		Charwich-Koniinge, Volume 2
+lib_Mysticism5	BookSkill_Mysticism5		Charwich-Koniinge, Volume 3
+lib_HandHand4	bookskill_hand to hand4		Charwich-Koniinge, Volume 4
+lib_CorpsePrep1	bk_corpsepreperation1_c	bk_corpsepreperation1_o	Corpse Preparation v I
+lib_CorpsePrep2	bk_corpsepreperation2_c		Corpse Preparation v II
+lib_CorpsePrep3	bk_corpsepreperation3_c		Corpse Preparation v III
+lib_Acrobatics2	BookSkill_Acrobatics2		Dance in Fire, Chapter 1
+lib_Block3	BookSkill_Block3		Dance in Fire, Chapter 2
+lib_Athletics2	BookSkill_Athletics2		Dance in Fire, Chapter 3
+lib_Acrobatics3	BookSkill_Acrobatics3		Dance in Fire, Chapter 4
+lib_Marksman2	BookSkill_Marksman2		Dance in Fire, Chapter 5
+lib_Mercantile4	bookskill_mercantile4		Dance in Fire, Chapter 6
+lib_Mercantile5	bookskill_mercantile5		Dance in Fire, Chapter 7
+lib_Enchant1	BookSkill_Enchant1		Feyfolken I
+lib_Conjuration1	BookSkill_Conjuration1		Feyfolken II
+lib_Conjuration2	BookSkill_Conjuration2		Feyfolken III
+lib_MixedUnitTactics	bk_MixedUnitTactics		Mixed Unit Tactics v1
+lib_Acrobatics5	BookSkill_Acrobatics5		Mystery of Talara, Part 1
+lib_Restoration5	BookSkill_Restoration5		Mystery of Talara, Part 2
+lib_Destruction5	BookSkill_Destruction5	BookSkill_Destruction5_open	Mystery of Talara, Part 3
+lib_Illusion5	bookskill_illusion5		Mystery of Talara, Part 4
+lib_Mystery5	bookskill_mystery5		Mystery of Talara, Part 5
+lib_DweCogs	book_dwe_cogs00		Old Dwemer Book
+lib_DweWater00	book_dwe_water00		Old Dwemer Book
+lib_DweMetalFab	book_dwe_metal_fab00		Old Dwemer Book
+lib_DwePipe	book_dwe_pipe00_c	book_dwe_pipe00	Old Dwemer Book
+lib_DweBoom	book_dwe_boom00_c	book_dwe_boom00	Old Dwemer Book
+lib_DwePowerCon	book_dwe_power_con00		Old Dwemer Book
+lib_DweMach	book_dwe_mach00		Old Dwemer Book
+lib_Illusion4	bookskill_illusion4		Palla, Book I
+lib_Enchant3	bookskill_enchant3		Palla, Book II
+lib_Poisonsong1	bk_poisonsong1		Poison Song I
+lib_Poisonsong2	bk_poisonsong2		Poison Song II
+lib_Poisonsong3	bk_poisonsong3		Poison Song III
+lib_Poisonsong4	bk_poisonsong4		Poison Song IV
+lib_Poisonsong5	bk_poisonsong5		Poison Song V
+lib_Poisonsong6	bk_poisonsong6		Poison Song VI
+lib_Poisonsong7	bk_poisonsong7		Poison Song VII
+lib_RealBarenziah1	bk_RealBarenziah1		Real Barenziah v I
+lib_Realbarenziah2	bk_realbarenziah2		Real Barenziah v II
+lib_Realbarenziah3	bk_realbarenziah3		Real Barenziah v III
+lib_Realbarenziah4	bk_realbarenziah4		Real Barenziah v IV
+lib_RealBarenziah5	bk_RealBarenziah5		Real Barenziah v V
+lib_Vampires1	bk_vampiresofvvardenfell1		Vampires of Vvardenfell, v I
+lib_Vampires2	bk_vampiresofvvardenfell2		Vampires of Vvardenfell, v II
+lib_Security2	bookskill_security2		Wolf Queen, Book I
+lib_HandHand2	bookskill_hand to hand2		Wolf Queen, Book II
+lib_Illusion1	bookskill_illusion1		Wolf Queen, Book III
+lib_Mercantile2	bookskill_mercantile2		Wolf Queen, Book IV
+lib_Speechcraft2	bookskill_speechcraft2		Wolf Queen, Book V
+lib_Sneak1	bookskill_sneak1		Wolf Queen, Book VI
+lib_Speechcraft4	bookskill_speechcraft4		Wolf Queen, Book VII
+lib_Enchant2	BookSkill_Enchant2		Wolf Queen, Book VIII
+lib_BrownBook426	bk_BrownBook426		Brown Book of 3E 426
+lib_Redbook426	bk_redbook426		Red Book of 3E 426
+lib_Yellowbook426	bk_yellowbook426		Yellow Book of 3E 426
+lib_BlueRiddles	bk_BlueBookOfRiddles		Blue Book of Riddles
+lib_RedRiddles	bk_redbookofriddles		Red Book of Riddles
+lib_YellowRiddles	bk_yellowbookofriddles		Yellow Book of Riddles
+
+lib_ABCs	bk_ABCs		ABCs for Barbarians
+lib_AedraDaedra	bk_AedraAndDaedra		Aedra and Daedra
+lib_AffairsWizards	bk_AffairsOfWizards		Affairs of Wizards
+lib_AlchFormulary	bk_AlchemistsFormulary_c	bk_AlchemistsFormulary	Alchemists Formulary
+lib_AncestorsDunmer	bk_AncestorsAndTheDunmer		Ancestors and the Dunmer
+lib_AnnotatedAnuad	bk_AnnotatedAnuad	bk_ChildrensAnuad	Annotated Anuad
+lib_DwemerLaw	bk_AntecedantsDwemerLaw		Antecedants of Dwemer Law
+lib_Anticipations	bk_Anticipations		Anticipations
+lib_ArcanaRestored	bk_ArcanaRestored		Arcana Restored
+lib_ArcturianHeresy	bk_ArcturianHeresy		Arcturian Heresy
+lib_ArkayEnemy	bk_ArkayTheEnemy		Arkay the Enemy
+lib_Armorer1	BookSkill_Armorer1_c	BookSkill_Armorer1	Armorer's Challenge
+lib_Destruction4	bookskill_destruction4		Art of War Magic
+lib_AshlandHymns	bk_Ashland_Hymns		Ashland Hymns
+lib_Axe2	bookskill_axe2		Axe Man
+lib_Sneak3	BookSkill_Sneak3		Azura and the Box
+lib_BalladFakebook	bk_Balladeers_Fakebook		Balladeer's Fakebook
+lib_Speechcraft1	BookSkill_Speechcraft1		Biography of the Wolf Queen
+lib_BlackGlove	bk_BlackGlove		Black Glove
+lib_BlasRevenants	bk_BlasphemousRevenants_c	bk_BlasphemousRevenants	Blasphemous Revenants
+lib_BoethGlory	bk_Boethiah's Glory_unique		Boethiah's Glory
+lib_BoethPillowBook	bk_BoethiahPillowBook		Boethiah's Pillow Book
+lib_Daedra	bk_BookOfDaedra		Book of Daedra
+lib_DawnDusk	bk_BookDawnAndDusk_c	bk_BookDawnAndDusk	Book of Dawn and Dusk
+lib_LifeService	bk_BookOfLifeAndService		Book of Life and Service
+lib_RestEndings	bk_BookOfRestAndEndings		Book of Rest and Endings
+lib_Alteration1	BookSkill_Alteration1		Breathing Water
+lib_BrothersDarkness	bk_BrothersOfDarkness		Brothers of Darkness
+lib_Mercantile1	bookskill_mercantile1		Buying Game
+lib_Alchemy2	BookSkill_Alchemy2		Cake and the Diamond
+lib_CantatasVivec	bk_CantatasOfVivec		Cantatas of Vivec
+lib_Fishystick	bk_fishystick		Capn's Guide to the Fishy Stick
+lib_Security4	bookskill_security4		Chance's Folly
+lib_ChangedOnes	bk_ChangedOnes		Changed Ones
+lib_MediumArmor1	bookskill_medium armor1		Cherim's Heart of Anequina
+lib_ChildrenSky	bk_ChildrenOfTheSky		Children of the Sky
+lib_HeavyArmor3	BookSkill_Heavy Armor3_c	BookSkill_Heavy Armor3	Chimarvamidium
+lib_ChroniclesNchuleft	bk_ChroniclesNchuleft		Chronicles of Nchuleft
+lib_Confessions	bk_Confessions		Confessions of a Skooma-Eater
+lib_ConsolationsPrayer	bk_ConsolationsOfPrayer		Consolations of Prayer
+lib_DarkestDarkness	bk_darkestdarkness		Darkest Darkness
+lib_Block1	BookSkill_Block1		Death Blow of Abernanit
+lib_DivineMetaphysics	bk_DivineMetaphysics		Divine Metaphysics...
+lib_DoorsSpirit	bk_DoorsOfTheSpirit_c	bk_DoorsOfTheSpirit	Doors of the Spirit
+lib_Security3	BookSkill_Security3		Dowry
+lib_Alteration2	BookSkill_Alteration2		Dragon Break Re-Examined
+lib_EasternProvinces	bk_easternprovincesimpartial		Eastern Provinces...
+lib_EggTime	bk_EggOfTime		Egg of Time
+lib_SnowPrince	bk_snowprince_c	bk_snowprince	Fall of the Snow Prince
+lib_ArtifactsTamriel	bk_Artifacts_Tamriel		Famed Artifacts of Tamriel
+lib_FellowshipTemple	bk_fellowshiptemple		Fellowship of the Temple
+lib_Enchant5	bookskill_enchant5		Final Lesson
+lib_Firmament	bk_firmament		Firmament
+lib_Mysticism1	bookskill_mysticism1_c	bookskill_mysticism1	Firsthold Revolt
+lib_FiveFarStars	bk_five_far_stars		Five Far Stars
+lib_FiveSongs	bk_fivesongsofkingwulfharth		Five Songs of King Wulfharth
+lib_ForGodsEmperor	bk_formygodsandemperor		For my Gods and Emperor
+lib_Restoration3	bookskill_restoration3		Four Suitors of Benitah
+lib_FragmentArtaeum	bk_fragmentonartaeum		Fragment: On Artaeum
+lib_FrontierConquest	bk_frontierconquestaccommodat		Frontier, Conquest...
+lib_GalerionMystic	bk_galerionthemystic		Galerion The Mystic
+lib_GalurRithari	bk_galur_rithari's_papers		Galur Rithari's Papers
+lib_Alchemy1	BookSkill_Alchemy1_c	BookSkill_Alchemy1	Game at Dinner
+lib_Marksman1	bookskill_marksman1		Gold Ribbon of Merit
+lib_GraspingFortune	bk_graspingfortune		Grasping Fortune
+lib_Guylaines	bk_guylainesarchitecture		Guylaine's Architecture
+lib_HeavyArmor1	bookskill_heavy armor1		Hallgerd's Tale
+lib_HangingGardens	bk_hanginggardenswasten		Hanging Gardens...
+lib_BartendersGuide	bk_bartendersguide	bk_bartendersguide_01	Hanin's Wake
+lib_HomiliesAlmalexia	bk_HomiliesAlmalexia_c	bk_HomiliesOfBlessedAlmalexia	Homilies of Blessed Almalexia
+lib_HonorThieves	bk_honorthieves_c	bk_honorthieves	Honor Among Thieves
+lib_BluntWeapon1	bookskill_blunt weapon1		Hope of the Redoran
+lib_Destruction1	bookskill_destruction1	bk_playscript	Horror of Castle Xyr
+lib_HouseTroubles	bk_HouseOfTroubles_c	bk_HouseOfTroubles_o	House of Troubles
+lib_HeavyArmor4	bookskill_heavy armor4		How Orsinium Passed to the Orcs
+lib_Destruction3	bookskill_destruction3		Hypothetical Treachery
+lib_LightArmor2	BookSkill_Light Armor2		Ice and Chiton
+lib_ImMyOwnGrandpa	bk_Im_My_Own_Grandpa		I'm My Own Grandpa
+lib_BluntWeapon2	BookSkill_Blunt Weapon2_c	BookSkill_Blunt Weapon2	Importance of Where
+lib_Illusion3	bookskill_illusion3		Incident in Necrom
+lib_InvocationAzura	bk_InvocationOfAzura		Invocation of Azura
+lib_KagrenacsJournal	bk_kagrenac'sjournal_excl		Kagrenac's Journal
+lib_KagrenacsPlans	bk_kagrenac'splans_excl		Kagrenac's Planbook
+lib_Armorer2	BookSkill_Armorer2		Last Scabbard of Akrash
+lib_LegendaryScourge	bk_LegendaryScourge		Legendary Scourge
+lib_LegionsDead	bk_legionsofthedead		Legions of the Dead
+lib_LessRudeSong	bk_istunondescosmology		Less Rude Song
+lib_LivesSaints	bk_LivesOfTheSaints		Lives of the Saints
+lib_Security1	bookskill_security1_c	bookskill_security1	Locked Room
+lib_LightArmor3	bookskill_light armor3_c	bookskill_light armor3	Lord Jornibret's Last Dance
+lib_Alteration5	BookSkill_Alteration5		Lunar Lorkhan
+lib_LustyArgonianMaid	bk_lustyargonianmaid		Lusty Argonian Maid
+lib_MadnessPelagius	bk_madnessofpelagius		Madness of Pelagius
+lib_Marksman4	bookskill_marksman4		Marksmanship Lesson
+lib_HandHand5	bookskill_hand to hand5		Master Zoaraym's Tale
+lib_Block2	bookskill_block2		Mirror
+lib_Monomyth	bk_manyfacesmissinggod		Monomyth
+lib_MysteriousAkavir	bk_MysteriousAkavir		Mysterious Akavir
+lib_Mysticism	bk_Mysticism		Mysticism
+lib_NchunaksFire	bk_nchunaksfireandfaith		Nchunak's Fire and Faith
+lib_NerevarMoonStar	bk_NerevarMoonandStar		Nerevar Moon-and-Star
+lib_NGasta	bk_NGastaKvataKvakis_c	bk_NGastaKvataKvakis_o	N'Gasta! Kvata! Kvakis!
+lib_BluntWeapon3	bookskill_blunt weapon3		Night Falls On Sentinel
+lib_BriefWood	bk_BriefHistoryofWood	bk_BriefHistoryofWood_01	No-h's Picture Book of Wood
+lib_Restoration2	bookskill_restoration2_c	bookskill_restoration2	Notes on Racial Phylogeny
+lib_OldWays	bk_oldways		Old Ways
+lib_OnMorrowind	bk_OnMorrowind		On Morrowind
+lib_OnOblivion	bk_onoblivion		On Oblivion
+lib_OrdoLegionis	bk_ordolegionis		Ordo Legionis
+lib_OriginMagesGuild	bk_OriginOfTheMagesGuild		Origin of the Mages Guild
+lib_GodsWorship	bk_OverviewOfGodsAndWorship		Overview of Gods and Worship
+lib_PigChildren	bk_PigChildren		Pig Children
+lib_PilgrimsPath	bk_PilgrimsPath		Pilgrim's Path
+lib_PostingHunt	bk_PostingOfTheHunt		Posting of the Hunt
+lib_HandHand1	bookskill_hand to hand1		Prayers of Baranat
+lib_ProgressTruth	bk_progressoftruth		Progress of Truth
+lib_Athletics1	BookSkill_Athletics1		Ransom of Zarek
+lib_RealNerevar	bk_RealNerevar		Real Nerevar
+lib_Acrobatics1	bookskill_acrobatics1		Realizations of Acrobacy
+lib_LightArmor1	BookSkill_Light Armor1		Rear Guard
+lib_RedoranCooking	bk_redorancookingsecrets		Redoran Cooking Secrets
+lib_CultWorship	bk_reflectionsoncultworship...		Reflections on Cult Worship
+lib_Destruction2	bookskill_destruction2		Response to Bero's Speech
+lib_TamrielicReligions	bk_tamrielicreligions		Ruins of Kemel-Ze
+lib_SaryonisSermons	bk_SaryonisSermons		Saryoni's Sermons
+lib_DwemerAnimunculi	bk_SecretsDwemerAnimunculi		Secrets of Dwemer Animunculi
+lib_Axe3	BookSkill_Axe3		Seed
+lib_ShortMorrowind	bk_ShortHistoryMorrowind		Short History of Morrowind
+lib_Illusion2	bookskill_illusion2		Silence
+lib_Alteration3	BookSkill_Alteration3_c	BookSkill_Alteration3	Sithis
+lib_Spear1	bookskill_spear1		Smuggler's Island
+lib_Alchemy3	BookSkill_Alchemy3		Song of the Alchemists
+lib_Sovngarde	bk_Sovngarde		Sovngarde, a Reexamination
+lib_SpecialFlora	bk_specialfloraoftamriel		Special Flora of Tamriel
+lib_SpiritNirn	bk_spiritofnirn		Spirit of Nirn, God of Mortals
+lib_SpiritDaedra	bk_SpiritOfTheDaedra		Spirit of the Daedra
+lib_StarLovers	bk_SamarStarloversJournal		Starlover's Log
+lib_Security5	bookskill_security5_c	bookskill_security5	Surfeit of Thieves
+lib_TalMarogKer	bk_TalMarogKersResearches		Tal Marog Ker's Researches
+lib_YagrumBook	bk_Yagrum's_Book		Tamrielic Lore
+lib_AedraTarer	bk_Aedra_Tarer_Unique		Tarer's Aedra and Daedra
+lib_Axe1	BookSkill_Axe1_c	BookSkill_Axe1	Third Door
+lib_ThirskHistory	bk_ThirskHistory		Thirsk, a History
+lib_Sneak4	bookskill_sneak4		Trap
+lib_TrueNatureOrcs	bk_truenatureoforcs		True Nature of Orcs
+lib_TrueNoblesCode	bk_truenoblescode		True Noble's Code
+lib_ShortBlade1	bookskill_short blade1		Unnamed Book
+lib_VagariesMagica	bk_VagariesOfMagica		Vagaries of Magicka
+lib_VarietiesFaith	bk_varietiesoffaithintheempire		Varieties of Faith...
+lib_Marksman3	bookskill_marksman3_c	bookskill_marksman3	Vernaccus and Bourlor
+lib_VivecMephala	bk_vivecandmephala		Vivec and Mephala
+lib_WarFirstCouncil	bk_WaroftheFirstCouncil		War of the First Council
+lib_Conjuration5	bookskill_conjuration5		Warrior's Charge
+lib_WatersOblivion	bk_WatersOfOblivion		Waters of Oblivion
+lib_WhereDragonBroke	bk_wherewereyoudragonbroke		Where Were You ... Dragon Broke
+lib_WildElves	bk_wildelves		Wild Elves
+lib_Restoration1	bookskill_restoration1		Withershins
+lib_LongBlade1	BookSkill_Long Blade1		Words and Philosophy
+lib_WordsClanMother	bk_wordsclanmother		Words of Clan Mother Ahnissi
+lib_WordsWind	bk_words_of_the_wind		Words of the Wind
+lib_Unarmored1	bookskill_unarmored1		Wraith's Wedding Dowry
+
+# Scrolls
+lib_GreatHouses	bk_great_houses		Great Houses of Morrowind
+lib_GuideAldRuhn	bk_guide_to_ald_ruhn		Guide to Ald'ruhn
+lib_GuideBalmora	bk_guide_to_balmora		Guide to Balmora
+lib_GuideSadrithMora	bk_guide_to_sadrithmora		Guide to Sadrith Mora
+lib_GuideVivec	bk_guide_to_vivec		Guide to Vivec
+lib_GuideVvardenfell	bk_guide_to_vvardenfell		Guide to Vvardenfell
+lib_ProvincesTamriel	bk_provinces_of_tamriel		Provinces of Tamriel
+lib_UncleSweetShare	sc_unclesweetshare		The Song of Uncle Sweetshare
+lib_BattleMolagBeran	bk_Battle_Molag_Beran_c	bk_Battle_Molag_Beran	The Battle of Molag Beran

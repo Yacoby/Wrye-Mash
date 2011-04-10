@@ -1,0 +1,6 @@
+# [Filetype: Wrye Mash Remover]
+# by Dragon32
+
+# Dremora Archer v1.1 by blackassailant
+"dremarch_dremora_marksm"	"Dremora Marksman"
+"dremarch_dremora_sniper"	"Dremora Sniper"
