@@ -817,6 +817,15 @@ class List(wx.Panel):
                 selected.append(self.items[itemDex])
         return selected
 
+    def SelectItems(self, items):
+        itemDex = -1
+        while True:
+            itemDex = self.list.GetNextItem(itemDex, wx.LIST_NEXT_ALL)
+            if itemDex == -1: 
+                break
+            elif self.items[itemDex] in items:
+                self.list.Select(itemDex);
+
     def SelectAll(self):
         itemDex = -1
         while True:
@@ -1527,22 +1536,25 @@ class ModList(List):
             return
 
 
+        
         selected = self.GetSelected()
         if len(selected) == 0 :
             return
-        selected.sort(key=lambda x:mosh.modInfos[x].mtime)
+        process = list(selected) #copy
+        process.sort(key=lambda x:mosh.modInfos[x].mtime)
 
         items = self.GetItems()
-        while len(selected):
+        items.sort(key=lambda x:mosh.modInfos[x].mtime)
+        while len(process):
             items.sort(key=lambda x:mosh.modInfos[x].mtime)
 
-            selFileName       = getSelectedFunc(selected)
+            selFileName       = getSelectedFunc(process)
             selFileIndex      = items.index(selFileName)
             selFileTime       = mosh.modInfos[selFileName].mtime
             newSelFileTime    = timeFunc(selFileTime); #default. This is changed
             movePastFileIndex = relationFunc(selFileIndex)
 
-            hasItemAtIndex = lambda x: x < 0 or x >= len(items)
+            hasItemAtIndex = lambda x: x >= 0 and x < len(items)
 
             if hasItemAtIndex(movePastFileIndex):
                 movePastFileName  = items[movePastFileIndex]
@@ -1559,14 +1571,17 @@ class ModList(List):
                         mod = mosh.modInfos[items[modInWayIndex]]
                         if mod.mtime == movingToTime:
                             newTime = timeFunc(mod.mtime)
-                            moveTimeIfNeeded(modInWayIndex, newTime)
-                            mosh.modInfos.setMTime(newTime)
+                            alterModTimeIfReq(modInWayIndex, newTime)
+                            mosh.modInfos[items[modInWayIndex]].setMTime(newTime)
 
                 alterModTimeIfReq(movePastFileIndex, newSelFileTime)
 
 
             mosh.modInfos[selFileName].setMTime(newSelFileTime) 
             mosh.modInfos.refreshDoubleTime()
+
+        self.ClearSelected()
+        self.SelectItems(selected)
 
         self.Refresh()
 
