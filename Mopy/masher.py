@@ -1504,7 +1504,8 @@ class ModList(List):
         self.moveFile(
                     event,
                     lambda x: x - 1,
-                    lambda x: x - 1
+                    lambda x: x - 1,
+                    lambda l: l.pop(0)
                 )
 
     def OnDownPress(self, event):
@@ -1512,10 +1513,12 @@ class ModList(List):
         self.moveFile(
                     event,
                     lambda x: x + 1,
-                    lambda x: x + 1
+                    lambda x: x + 1,
+                    lambda l: l.pop()
                 )
 
-    def moveFile(self, event, relationFunc, timeFunc):
+    def moveFile(self, event, relationFunc, timeFunc, getSelectedFunc):
+
         if event.ControlDown() == False :
             return
 
@@ -1527,24 +1530,44 @@ class ModList(List):
         selected = self.GetSelected()
         if len(selected) == 0 :
             return
+        selected.sort(key=lambda x:mosh.modInfos[x].mtime)
 
         items = self.GetItems()
-        items.sort(key=lambda x:mosh.modInfos[x].mtime)
+        while len(selected):
+            items.sort(key=lambda x:mosh.modInfos[x].mtime)
 
-        selFileName    = selected[0]
-        selFileIndex   = items.index(selFileName)
-        aboveFileIndex = relationFunc(selFileIndex)
+            selFileName       = getSelectedFunc(selected)
+            selFileIndex      = items.index(selFileName)
+            selFileTime       = mosh.modInfos[selFileName].mtime
+            newSelFileTime    = timeFunc(selFileTime); #default. This is changed
+            movePastFileIndex = relationFunc(selFileIndex)
 
-        if aboveFileIndex < 0 or aboveFileIndex >= len(items):
-            print 'No Item at index'
-            return
+            hasItemAtIndex = lambda x: x < 0 or x >= len(items)
 
-        aboveFileName  = items[aboveFileIndex]
-        aboveFileTime  = mosh.modInfos[aboveFileName].mtime
-        newSelFileTime = timeFunc(aboveFileTime);
+            if hasItemAtIndex(movePastFileIndex):
+                movePastFileName  = items[movePastFileIndex]
+                movePastFileTime  = mosh.modInfos[movePastFileName].mtime
+                newSelFileTime    = timeFunc(movePastFileTime);
 
-        mosh.modInfos[selFileName].setMTime(newSelFileTime)
-        mosh.modInfos.refreshDoubleTime()
+                #sometimes there may be a mod in the way where we want to move
+                #the current mod to. Hence the solution is to check if there is something there
+                #and if there is alter it. Of course, this mod runs into the same issue when we move it
+                def alterModTimeIfReq(movingToIndex, movingToTime):
+                    #check if something is in the way
+                    modInWayIndex = relationFunc(movingToIndex)
+                    if hasItemAtIndex(modInWayIndex):
+                        mod = mosh.modInfos[items[modInWayIndex]]
+                        if mod.mtime == movingToTime:
+                            newTime = timeFunc(mod.mtime)
+                            moveTimeIfNeeded(modInWayIndex, newTime)
+                            mosh.modInfos.setMTime(newTime)
+
+                alterModTimeIfReq(movePastFileIndex, newSelFileTime)
+
+
+            mosh.modInfos[selFileName].setMTime(newSelFileTime) 
+            mosh.modInfos.refreshDoubleTime()
+
         self.Refresh()
 
 #------------------------------------------------------------------------------
