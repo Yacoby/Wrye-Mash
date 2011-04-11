@@ -1,3 +1,12 @@
+# -*- coding: cp1252 -*-
+#
+# Modified by D.C.-G. < 15:59 2010-06-11 >
+#
+# Extending Mash with a utils panel.
+#
+# Modifing HelpBrowser in order to have the content list in a left panel.
+# TODO: add indexing, and research functions.
+#
 # Imports ---------------------------------------------------------------------
 #--Localization
 #..Handled by mosh, so import that.
@@ -22,7 +31,6 @@ from types import *
 import bolt
 from bolt import LString,GPath, SubProgress
 
-#--wxPython
 import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from wx.lib.evtmgr import eventManager
@@ -42,10 +50,15 @@ if sys.prefix not in set(os.environ['PATH'].split(';')):
     os.environ['PATH'] += ';'+sys.prefix
 
 try:
-    import wx.lib.iewin
+    from ie import *
 except ValueError:
-    print 'Failed to import wx.lib.iewin'
+    print 'Failed to import ie. Features may not be available and there may be lots of errrors!'
     import wx.html
+
+#-# D.C.-G. for SettingsWindow
+from mesh import SettingsWindow
+settingsWindow = None
+#-#
 
 # Singletons ------------------------------------------------------------------
 statusBar = None
@@ -64,15 +77,14 @@ settings = None
 
 #--Load config/defaults
 settingDefaults = {
+    #-# SettingsWindow
+    'mash.settings.show':False,
     #--Morrowind Directory
-    #assuming the default morrowind directory is C:\Prog.. is to primative imho
-    'mwDir': os.path.dirname( #get the parent
-                #of the current directory
-                os.path.dirname(os.path.realpath(__file__))
-            ),
+    #get the parent of the current directory
+    'mwDir': os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
     #--Wrye Mash
     'mash.version': 0,
-    'mash.readme': (0,'0'),
+    'mash.readme': (0,'84 DCG'),
     'mash.framePos': (-1,-1),
     'mash.frameSize': (600,500),
     'mash.frameSize.min': (400,500),
@@ -103,8 +115,11 @@ settingDefaults = {
         'Count':1,
         'Size':1,
         },
+    #-# Added for Utilities page.
+    'bash.utils.page':0,
+    #-#
     #--Installers
-    'bash.installers.page':0,
+    'bash.installers.page':1,
     'bash.installers.enabled': True,
     'bash.installers.autoAnneal': True,
     'bash.installers.fastStart': True,
@@ -255,7 +270,7 @@ class IdListIterator:
     def __iter__(self):
         """Iterator method."""
         return self
-    
+
     def next(self):
         """Iterator method."""
         if self.prevId >= self.lastId:
@@ -325,11 +340,11 @@ def ErrorMessage(parent,message,title=_('Error'),style=(wx.OK|wx.ICON_HAND)):
 def WarningMessage(parent,message,title=_('Warning'),style=(wx.OK|wx.ICON_EXCLAMATION)):
     """Shows a modal warning message."""
     return Message(parent,message,title,style)
-    
+
 def WarningQuery(parent,message,title='',style=(wx.YES_NO|wx.ICON_EXCLAMATION)):
     """Shows a modal warning message."""
     return Message(parent,message,title,style)
-    
+
 def InfoMessage(parent,message,title=_('Information'),style=(wx.OK|wx.ICON_INFORMATION)):
     """Shows a modal information message."""
     return Message(parent,message,title,style)
@@ -435,13 +450,13 @@ images = {}
 class Checkboxes(balt.ImageList):
     """Checkboxes ImageList. Used by several List classes."""
     def __init__(self):
-        imgPath = os.path.dirname(os.path.realpath(__file__)) + '/images/'
+        imgPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
         balt.ImageList.__init__(self,16,16)
         for status in ('on','off'):
             for color in ('purple','blue','green','orange','yellow','red'):
                 shortKey = color+'.'+status
                 imageKey = 'checkbox.'+shortKey
-                file = imgPath + r'checkbox_'+color+'_'+status+'.png'
+                file = os.path.join(imgPath, r'checkbox_'+color+'_'+status+'.png')
                 image = images[imageKey] = Image(file,wx.BITMAP_TYPE_PNG)
                 self.Add(image,shortKey)
 
@@ -464,40 +479,39 @@ class Checkboxes(balt.ImageList):
         return self.indices[shortKey]
 
 # Icons------------------------------------------------------------------------
-scriptPath = os.path.dirname(os.path.realpath(__file__))
-imgPath    = scriptPath + '/images/'
 installercons = balt.ImageList(16,16)
+imgPath       = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
 installercons.data.extend({
     #--Off/Archive
-    'off.green':  Image(imgPath + r'checkbox_green_off.png',wx.BITMAP_TYPE_PNG),
-    'off.grey':   Image(imgPath + r'checkbox_grey_off.png',wx.BITMAP_TYPE_PNG),
-    'off.red':    Image(imgPath + r'checkbox_red_off.png',wx.BITMAP_TYPE_PNG),
-    'off.white':  Image(imgPath + r'checkbox_white_off.png',wx.BITMAP_TYPE_PNG),
-    'off.orange': Image(imgPath + r'checkbox_orange_off.png',wx.BITMAP_TYPE_PNG),
-    'off.yellow': Image(imgPath + r'checkbox_yellow_off.png',wx.BITMAP_TYPE_PNG),
+    'off.green':  Image(os.path.join(imgPath, r'checkbox_green_off.png'),wx.BITMAP_TYPE_PNG),
+    'off.grey':   Image(os.path.join(imgPath, r'checkbox_grey_off.png'),wx.BITMAP_TYPE_PNG),
+    'off.red':    Image(os.path.join(imgPath, r'checkbox_red_off.png'),wx.BITMAP_TYPE_PNG),
+    'off.white':  Image(os.path.join(imgPath, r'checkbox_white_off.png'),wx.BITMAP_TYPE_PNG),
+    'off.orange': Image(os.path.join(imgPath, r'checkbox_orange_off.png'),wx.BITMAP_TYPE_PNG),
+    'off.yellow': Image(os.path.join(imgPath, r'checkbox_yellow_off.png'),wx.BITMAP_TYPE_PNG),
     #--On/Archive
-    'on.green':  Image(imgPath + r'checkbox_green_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.grey':   Image(imgPath + r'checkbox_grey_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.red':    Image(imgPath + r'checkbox_red_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.white':  Image(imgPath + r'checkbox_white_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.orange': Image(imgPath + r'checkbox_orange_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.yellow': Image(imgPath + r'checkbox_yellow_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.green':  Image(os.path.join(imgPath, r'checkbox_green_inc.png'),wx.BITMAP_TYPE_PNG),
+    'on.grey':   Image(os.path.join(imgPath, r'checkbox_grey_inc.png'),wx.BITMAP_TYPE_PNG),
+    'on.red':    Image(os.path.join(imgPath, r'checkbox_red_inc.png'),wx.BITMAP_TYPE_PNG),
+    'on.white':  Image(os.path.join(imgPath, r'checkbox_white_inc.png'),wx.BITMAP_TYPE_PNG),
+    'on.orange': Image(os.path.join(imgPath, r'checkbox_orange_inc.png'),wx.BITMAP_TYPE_PNG),
+    'on.yellow': Image(os.path.join(imgPath, r'checkbox_yellow_inc.png'),wx.BITMAP_TYPE_PNG),
     #--Off/Directory
-    'off.green.dir':  Image(imgPath + r'diamond_green_off.png',wx.BITMAP_TYPE_PNG),
-    'off.grey.dir':   Image(imgPath + r'diamond_grey_off.png',wx.BITMAP_TYPE_PNG),
-    'off.red.dir':    Image(imgPath + r'diamond_red_off.png',wx.BITMAP_TYPE_PNG),
-    'off.white.dir':  Image(imgPath + r'diamond_white_off.png',wx.BITMAP_TYPE_PNG),
-    'off.orange.dir': Image(imgPath + r'diamond_orange_off.png',wx.BITMAP_TYPE_PNG),
-    'off.yellow.dir': Image(imgPath + r'diamond_yellow_off.png',wx.BITMAP_TYPE_PNG),
+    'off.green.dir':  Image(os.path.join(imgPath, r'diamond_green_off.png'),wx.BITMAP_TYPE_PNG),
+    'off.grey.dir':   Image(os.path.join(imgPath, r'diamond_grey_off.png'),wx.BITMAP_TYPE_PNG),
+    'off.red.dir':    Image(os.path.join(imgPath, r'diamond_red_off.png'),wx.BITMAP_TYPE_PNG),
+    'off.white.dir':  Image(os.path.join(imgPath, r'diamond_white_off.png'),wx.BITMAP_TYPE_PNG),
+    'off.orange.dir': Image(os.path.join(imgPath, r'diamond_orange_off.png'),wx.BITMAP_TYPE_PNG),
+    'off.yellow.dir': Image(os.path.join(imgPath, r'diamond_yellow_off.png'),wx.BITMAP_TYPE_PNG),
     #--On/Directory
-    'on.green.dir':  Image(imgPath + r'diamond_green_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.grey.dir':   Image(imgPath + r'diamond_grey_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.red.dir':    Image(imgPath + r'diamond_red_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.white.dir':  Image(imgPath + r'diamond_white_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.orange.dir': Image(imgPath + r'diamond_orange_inc.png',wx.BITMAP_TYPE_PNG),
-    'on.yellow.dir': Image(imgPath + r'diamond_yellow_inc.png',wx.BITMAP_TYPE_PNG),
+    'on.green.dir':  Image(os.path.join(imgPath, r'diamond_green_inc.png'),wx.BITMAP_TYPE_PNG),
+    'on.grey.dir':   Image(os.path.join(imgPath, r'diamond_grey_inc.png'),wx.BITMAP_TYPE_PNG),
+    'on.red.dir':    Image(os.path.join(imgPath, r'diamond_red_inc.png'),wx.BITMAP_TYPE_PNG),
+    'on.white.dir':  Image(os.path.join(imgPath, r'diamond_white_inc.png'),wx.BITMAP_TYPE_PNG),
+    'on.orange.dir': Image(os.path.join(imgPath, r'diamond_orange_inc.png'),wx.BITMAP_TYPE_PNG),
+    'on.yellow.dir': Image(os.path.join(imgPath, r'diamond_yellow_inc.png'),wx.BITMAP_TYPE_PNG),
     #--Broken
-    'corrupt':   Image(imgPath + r'red_x.png',wx.BITMAP_TYPE_PNG),
+    'corrupt':   Image(os.path.join(imgPath, r'red_x.png'),wx.BITMAP_TYPE_PNG),
     }.items())
 # Windows ---------------------------------------------------------------------
 #------------------------------------------------------------------------------
@@ -712,7 +726,7 @@ class ListEditorDialog(wx.Dialog):
         #--GUI
         del self.items[itemDex]
         self.list.Delete(itemDex)
-        
+
     #--Window Closing
     def OnCloseWindow(self, event):
         """Handle window close event.
@@ -724,7 +738,7 @@ class ListEditorDialog(wx.Dialog):
 #------------------------------------------------------------------------------
 class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID, pos=wx.DefaultPosition,
-                 size=wx.DefaultSize, style=0):
+                size=wx.DefaultSize, style=0):
         wx.ListCtrl.__init__(self, parent, ID, pos, size, style=style)
         ListCtrlAutoWidthMixin.__init__(self)
 
@@ -754,7 +768,7 @@ class List(wx.Panel):
         wx.EVT_LIST_COL_CLICK(self, listId, self.DoItemSort)
         wx.EVT_LIST_COL_RIGHT_CLICK(self, listId, self.DoColumnMenu)
         wx.EVT_LIST_COL_END_DRAG(self,listId, self.OnColumnResize)
-    
+
     #--Items ----------------------------------------------
     #--Populate Columns
     def PopulateColumns(self):
@@ -835,17 +849,30 @@ class List(wx.Panel):
             else:
                 self.list.Select(itemDex);
 
+    #$# from FallenWizard
+    def DeleteSelected(self):
+        """Deletes selected items."""
+        items = self.GetSelected()
+        if items:
+            message = _(r'Delete these items? This operation cannot be undone.')
+            message += '\n* ' + '\n* '.join(x for x in sorted(items))
+            if balt.askYes(self,message,_('Delete Items')):
+                for item in items:
+                    self.data.delete(item)
+            modList.Refresh()
+    #$#
+
     def GetSortSettings(self,col,reverse):
         """Return parsed col, reverse arguments. Used by SortSettings.
         col: sort variable. 
-          Defaults to last sort. (self.sort)
+        Defaults to last sort. (self.sort)
         reverse: sort order
-          1: Descending order
-          0: Ascending order
-         -1: Use current reverse settings for sort variable, unless
-             last sort was on same sort variable -- in which case, 
-             reverse the sort order. 
-         -2: Use current reverse setting for sort variable.
+        1: Descending order
+        0: Ascending order
+        -1: Use current reverse settings for sort variable, unless
+            last sort was on same sort variable -- in which case, 
+            reverse the sort order. 
+        -2: Use current reverse setting for sort variable.
         """
         #--Sort Column
         if not col:
@@ -906,7 +933,7 @@ class List(wx.Panel):
     def OnLeftDown(self,event):
         #self.hitTest = self.list.HitTest((event.GetX(),event.GetY()))
         event.Skip()
-    
+
 #------------------------------------------------------------------------------
 class MasterList(List):
     mainMenu = []
@@ -1112,7 +1139,7 @@ class MasterList(List):
                 return False
         #--Else Okay
         return True
-    
+
     def load(self,masterName):
         masterInfos = self.getMasterInfos(masterName)
         #--Already selected?
@@ -1265,7 +1292,7 @@ class MasterList(List):
         for newMaster in self.newMasters:
             newMasters.append((newMaster,mosh.modInfos[newMaster].size))
         return newMasters
-    
+
     #--Get ModMap
     def GetMaps(self):
         modMap = {}
@@ -1328,6 +1355,10 @@ class ModList(List):
         self.list.Bind(wx.EVT_LEFT_DCLICK, self.OnDoubleClick)
 
         self.list.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
+
+        #$# from FallenWizard
+        self.list.Bind(wx.EVT_CHAR, self.OnChar)
+        #$#
 
     def Refresh(self,files='ALL',detail='SAME'):
         """Refreshes UI for specified file. Also calls saveList.Refresh()!"""
@@ -1451,6 +1482,13 @@ class ModList(List):
             settings['mash.modDocs.show'] = True
         docBrowser.SetMod(fileInfo.name)
         docBrowser.Raise()
+
+    #$# from FallenWizard
+    def OnChar(self,event):
+        if (event.GetKeyCode() == 127):
+            self.DeleteSelected()
+        event.Skip()
+    #$#
 
     #--Column Resize
     def OnColumnResize(self,event):
@@ -1717,7 +1755,7 @@ class ModDetails(wx.Window):
         self.edited = True
         self.save.Enable()
         self.cancel.Enable()
-    
+
     def OnBrowser(self,event):
         """Event: Clicked Doc Browser button."""
         if not docBrowser: 
@@ -1788,7 +1826,7 @@ class ModDetails(wx.Window):
         if descriptionStr != self.descriptionStr:
             self.descriptionStr = descriptionStr
             self.SetEdited()
-    
+
     def OnSave(self,event):
         modInfo = self.modInfo
         #--Change Tests
@@ -1910,6 +1948,9 @@ class SaveList(List):
         self.list.SetImageList(checkboxesIL,wx.IMAGE_LIST_SMALL)
         #--Events
         wx.EVT_LIST_ITEM_SELECTED(self,self.listId,self.OnItemSelected)
+        #$# from FallenWizard
+        self.list.Bind(wx.EVT_CHAR, self.OnChar)
+        #$#
 
     def Refresh(self,files='ALL',detail='SAME'):
         """Refreshes UI for specified files."""
@@ -2011,6 +2052,13 @@ class SaveList(List):
         if journalBrowser: 
             journalBrowser.SetSave(saveName)
 
+    #$# from FallenWizard
+    def OnChar(self,event):
+        if (event.GetKeyCode() == 127):
+            self.DeleteSelected()
+        event.Skip()
+    #$#
+
 #------------------------------------------------------------------------------
 class SaveDetails(wx.Window):
     """Savefile details panel."""
@@ -2089,7 +2137,7 @@ class SaveDetails(wx.Window):
         sizer.Add(sizer_h1,0,wx.EXPAND|wx.TOP,4)
         wx.EVT_BUTTON(self,wx.ID_SAVE,self.OnSave)
         wx.EVT_BUTTON(self,wx.ID_CANCEL,self.OnCancel)
-    
+
     def SetFile(self,fileName='SAME'):
         """Set file to be viewed."""
         #--Reset?
@@ -2142,7 +2190,7 @@ class SaveDetails(wx.Window):
         self.edited = True
         self.save.Enable()
         self.cancel.Enable()
-    
+
     def OnBrowser(self,event):
         """Event: Clicked Journal Browser button."""
         if not journalBrowser: 
@@ -2186,7 +2234,7 @@ class SaveDetails(wx.Window):
         if saveNameStr != self.saveNameStr:
             self.saveNameStr = saveNameStr
             self.SetEdited()
-    
+
     def OnSave(self,event):
         """Event: Clicked Save button."""
         saveInfo = self.saveInfo
@@ -2291,6 +2339,7 @@ class InstallersPanel(SashTankPanel):
             installercons, InstallersPanel.mainMenu, InstallersPanel.itemMenu,
             details=self, style=wx.LC_REPORT)
         self.gList.SetSizeHints(100,100)
+        self.gList.gList.Bind(wx.EVT_LIST_COL_RIGHT_CLICK, self.DoColumnMenu)
         #--Package
         self.gPackage = wx.TextCtrl(right,-1,style=wx.TE_READONLY|wx.NO_BORDER)
         self.gPackage.SetBackgroundColour(self.GetBackgroundColour())
@@ -2343,6 +2392,14 @@ class InstallersPanel(SashTankPanel):
             ))
         wx.LayoutAlgorithm().LayoutWindow(self, right)
 
+    #-# D.C.-G.
+    #-# Modified to avoid system error if installers path is not reachable.
+    def DoColumnMenu(self, event):
+        """..."""
+        if not os.access(mosh.dirs["installers"].s, os.W_OK):
+            pass
+        self.gList.DoColumnMenu(event)
+
     def OnShow(self):
         """Panel is shown. Update self.data."""
         if settings.get('bash.installers.isFirstRun',True):
@@ -2359,8 +2416,12 @@ class InstallersPanel(SashTankPanel):
             progress = balt.Progress(_("Refreshing Installers..."),'\n'+' '*60)
             try:
                 what = ('DIS','I')[self.refreshed]
-                if data.refresh(progress,what,self.fullRefresh):
+                #-#
+                modified = data.refresh(progress,what,self.fullRefresh)
+                if modified == True:
                     self.gList.RefreshUI()
+                if modified == "noDir":
+                    WarningMessage(self,_("'%s' cannot be accessed.\nThis path is possibly on a remote drive, or mispelled, or unwritable."%mosh.dirs["installers"].s))
                 self.fullRefresh = False
                 self.frameActivated = False
                 self.refreshing = False
@@ -2441,7 +2502,7 @@ class InstallersPanel(SashTankPanel):
             self.gSubList.Clear()
             self.gEspmList.Clear()
             self.gComments.SetValue('')
-    
+
     def RefreshInfoPage(self,index,installer):
         """Refreshes notebook page."""
         gPage,initialized = self.infoPages[index]
@@ -2482,7 +2543,7 @@ class InstallersPanel(SashTankPanel):
                 else:
                     info += _("Structure: Complex\n")
             elif installer.type < 0:
-                 info += _("Structure: Corrupt/Incomplete\n")
+                info += _("Structure: Corrupt/Incomplete\n")
             else:
                 info += _("Structure: Unrecognized\n")
             nConfigured = len(installer.data_sizeCrc)
@@ -2546,6 +2607,11 @@ class InstallersPanel(SashTankPanel):
             else: 
                 espmNots.add(espm)
         self.refreshCurrent(installer)
+
+    #-# D.C.-G.
+    def SaveCfgFile(self):
+        """Save the installers path in mash.ini."""
+        self.data.saveCfgFile()
 
 #------------------------------------------------------------------------------
 class ScreensList(List):
@@ -2692,16 +2758,354 @@ class ScreensPanel(NotebookPanel):
         self.SetStatusCount()
 
 #------------------------------------------------------------------------------
+# UtilitiesPanel
+#
+# Extension for Wrye Mash 0.8.4
+#
+# D.C.-G. < 15:56 2010-06-11 >
+#
+#------------------------------------------------------------------------------
+class UtilsDialog(wx.Dialog):
+    """Dialog for crating/modifying utilities.
+    Has several text captions for name, program (with browse button), arguments and description."""
+    result = None
+    def __init__(self, parent, pos=wx.DefaultPosition, size=(400, wx.DefaultSize[1]), new=True, data = ("","","","")):
+        """..."""
+        wx.Dialog.__init__(self, parent, pos=pos, size=size, style=wx.DEFAULT_FRAME_STYLE)
+        self.Panel = wx.Panel(self)
+        self.SetMinSize(size)
+        sepV1 = (0,1)
+        sepV2 = (0,2)
+        # components
+        txtName = wx.StaticText(self.Panel, -1, _("Name"))
+        self.fldName = wx.TextCtrl(self.Panel, -1, value=data[0])
+        txtProg = wx.StaticText(self.Panel, -1, _("Program"))
+        self.fldProg = wx.TextCtrl(self.Panel, -1, value=data[1])
+        btnBrowse = button(self.Panel, id=-1, label=_("..."), name="btnBrowse", onClick=self.OpenFile, tip=_("Browse for a program."))
+        txtArguments = wx.StaticText(self.Panel, -1, _("Arguments"))
+        self.fldArguments = wx.TextCtrl(self.Panel, -1, value=data[2])
+        txtDesc = wx.StaticText(self.Panel, -1, _("Description"))
+        self.fldDesc = wx.TextCtrl(self.Panel, -1, style=wx.TE_MULTILINE, value=data[3])
+        btnOk = button(self.Panel, id=wx.ID_OK, label=_("OK"), name="btnOk", onClick=self.SaveUtility)
+        btnCancel = button(self.Panel, id=wx.ID_CANCEL, label=_("Cancel"), name="btnCancel", onClick=self.Cancel)
+        # sizers
+        sizerProg = wx.BoxSizer(wx.HORIZONTAL)
+        sizerProg.AddMany([(self.fldProg,1,wx.EXPAND),((2,0)),(btnBrowse)])
+        sizerBtn = wx.BoxSizer(wx.HORIZONTAL)
+        sizerBtn.AddMany([(btnOk,0,wx.EXPAND),((2,0),0,wx.EXPAND),(btnCancel,0,wx.EXPAND)])
+        sizerWin = wx.BoxSizer(wx.VERTICAL)
+        sizerWin.AddMany([(txtName),(sepV1),(self.fldName,0,wx.EXPAND),(sepV2),(txtProg),(sepV1),(sizerProg,0,wx.EXPAND),(sepV2),
+                    (txtArguments),(sepV1),(self.fldArguments,0,wx.EXPAND),(sepV2),(txtDesc),(sepV1),(self.fldDesc, 1, wx.EXPAND),(sepV2),
+                    (sizerBtn,0,wx.EXPAND)])
+        sizerWin.Fit(self)
+        self.Panel.SetSizer(sizerWin)
+        self.Panel.Layout()
+        # events
+        wx.EVT_BUTTON(self, wx.ID_OK, self.SaveUtility)
+        wx.EVT_BUTTON(self, wx.ID_CANCEL, self.Cancel)
+
+    def Cancel(self, event):
+        """Cancels the utility creation/modification."""
+        self.result = False
+        event.Skip()
+
+    def OpenFile(self, event):
+        """Opens the file dialog to set the utility program."""
+        dialog = wx.FileDialog(self,_("Chose the new utility."), "", "", "*.*", wx.OPEN)
+        if dialog.ShowModal() != wx.ID_OK:
+            dialogDestroy()
+            return
+        path = dialog.GetPath()
+        dialog.Destroy()
+        self.fldProg.SetValue(path)
+
+    def SaveUtility(self, event):
+        """Saves the new/modified utility."""
+        name = self.fldName.GetValue()
+        prog = self.fldProg.GetValue()
+        arguments = self.fldArguments.GetValue()
+        desc = self.fldDesc.GetValue()
+        self.result = (name, prog, arguments, desc)
+        event.Skip()
+
+#------------------------------------------------------------------------------
+class FakeColumnEvent:
+    """..."""
+    def __init__(self, numCols):
+        """..."""
+        self.column = numCols
+
+    def GetColumn(self):
+        """..."""
+        return self.column
+#------------------------------------------------------------------------------
+class UtilsList(List):
+    #--Class Data
+    mainMenu = Links() #--Column menu
+    itemMenu = Links() #--Single item menu
+
+    def __init__(self,parent):
+        #--Columns
+        self.cols = settings['bash.screens.cols']
+        self.colAligns = settings['bash.screens.colAligns']
+        self.colNames = settings['mash.colNames']
+        self.colReverse = settings.getChanged('bash.screens.colReverse')
+        self.colWidths = settings['bash.screens.colWidths']
+        #--Data/Items
+        self.data = bosh.utilsData = bosh.UtilsData()
+        self.sort = settings['bash.screens.sort']
+        #--Links
+        self.mainMenu = UtilsList.mainMenu
+        self.itemMenu = UtilsList.itemMenu
+        #--Parent init
+        List.__init__(self,parent,-1,ctrlStyle=(wx.LC_REPORT|wx.SUNKEN_BORDER))
+        #--Events
+        wx.EVT_LIST_ITEM_SELECTED(self,self.listId,self.OnItemSelected)
+        wx.EVT_LIST_ITEM_ACTIVATED(self,self.listId,self.OnItemActivated)
+
+    def RefreshUI(self,files='ALL',detail='SAME'):
+        """Refreshes UI for specified files."""
+        #--Details
+        if detail == 'SAME':
+            selected = set(self.GetSelected())
+        else:
+            selected = set([detail])
+        #--Populate
+        if files == 'ALL':
+            self.PopulateItems(selected=selected)
+        elif isinstance(files,StringTypes):
+            self.PopulateItem(files,selected=selected)
+        else: #--Iterable
+            for file in files:
+                self.PopulateItem(file,selected=selected)
+        mashFrame.SetStatusCount()
+
+    #--Populate Item
+    def PopulateItem(self,itemDex,mode=0,selected=set()):
+        #--String name of item?
+        if not isinstance(itemDex,int):
+            itemDex = self.items.index(itemDex)
+        fileName = self.items[itemDex].strip()
+        fileInfo = self.data[fileName]
+        cols = self.cols
+        for colDex in range(self.numCols):
+            col = cols[colDex]
+            if col == 'File':
+                value = fileName
+            elif col == 'Modified':
+                value = formatDate(fileInfo[1])
+            else:
+                value = '-'
+            if mode and (colDex == 0):
+                self.list.InsertStringItem(itemDex, value)
+            else:
+                self.list.SetStringItem(itemDex, colDex, value)
+        #--Image
+        #--Selection State
+        if fileName in selected:
+            self.list.SetItemState(itemDex,wx.LIST_STATE_SELECTED,wx.LIST_STATE_SELECTED)
+        else:
+            self.list.SetItemState(itemDex,0,wx.LIST_STATE_SELECTED)
+
+    #--Sort Items
+    def SortItems(self,col=None,reverse=-2):
+        (col, reverse) = self.GetSortSettings(col,reverse)
+        settings['bash.screens.sort'] = col
+        data = self.data
+        #--Start with sort by name
+        self.items.sort()
+        if col == 'File':
+            pass #--Done by default
+        elif col == 'Modified':
+            self.items.sort(key=lambda a: data[a][1])
+        else:
+            raise BashError(_('Unrecognized sort key: ')+col)
+        #--Ascending
+        if reverse: self.items.reverse()
+
+    #--Events ---------------------------------------------
+    #--Column Resize
+    def OnColumnResize(self,event):
+        colDex = event.GetColumn()
+        colName = self.cols[colDex]
+        self.colWidths[colName] = self.list.GetColumnWidth(colDex)
+        settings.setChanged('bash.screens.colWidths')
+
+    def OnItemSelected(self,event=None):
+        """..."""
+        name = event.GetText()
+        if name in self.data.keys():
+            self.commandLine.SetValue(self.data[name][0])
+
+            self.arguments.SetValue(self.data[name][1])
+            desc = self.data[name][2]
+            if (desc.startswith('"') and desc.endswith('"')) or (desc.startswith("'") and desc.endswith("'")):
+                self.description.SetValue(eval(desc))
+            else:
+                self.description.SetValue(desc)
+
+    def OnItemActivated(self, event=None):
+        """Launching the utility."""
+        name = event.GetText()
+        if name in self.data.keys():
+            u = self.data[name][0]
+            try:
+                if u.lower() == "mish":
+                    import mish
+                    argsList = self.data[name][1].split()
+                    sys_argv_org = sys.argv
+                    mish.sys.argv = ["mish"] + argsList
+                    print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nMISH output.\n\nArguments: %s\n"%self.arguments.Value
+                    mish.callables.main()
+                    sys.argv = sys_argv_org
+                    #
+                    return # <-- bad hack ?
+
+                cwd = os.getcwd()
+                os.chdir(os.path.split(u)[0])
+                if u.strip('"').strip("'")[-4:].lower() in (".bat", ".cmd", ".btm"):
+                    arguments = ""
+                    argsList = self.data[name][1].split()
+                    if len(argsList) >0:
+                        for a in argsList:
+                            arguments += " %s"%a
+                    os.system(u+arguments)
+                else:
+                    arguments = (os.path.split(u)[0],) + tuple(self.data[name][1].split())
+                    os.spawnv(os.P_NOWAIT, u.strip('"'), arguments)
+                os.chdir(cwd)
+            except Exception, exc:
+                WarningMessage(self, _("A problem has occured when opening `%s`.\nYou should edit `utils.dcg` and update the corresponding line.\n\nError shouted by OS:\n%s"%(u, exc)))
+                raise exc
+
+    def NewItem(self):
+        """Adds a new utility to the list."""
+        dialog = UtilsDialog(self, new=True)
+        if dialog.ShowModal() != wx.ID_OK:
+            dialog.Destroy()
+            return
+        result = dialog.result
+        if result:
+            if result[0] not in ("", None) and result[1] not in ("", None):
+                self.data[result[0]] = result[1:]
+                self.data.save()
+                self.DoItemSort(FakeColumnEvent(0))
+                self.RefreshUI()
+
+    def ModifyItem(self):
+        """Modification of an item.
+        This function modifies an item or does nothing."""
+        names = self.GetSelected()
+        item = self.list.GetFirstSelected()
+        # for name in names:
+        idx = 0
+        while idx < len(names):
+            name = names[idx]
+            dialog = UtilsDialog(self, new=False, data=((name,) + self.data[name]))
+            if dialog.ShowModal() != wx.ID_OK:
+                dialog.Destroy()
+                return
+            result = dialog.result
+            if result:
+                if result[0] not in ("", None) and result[1] not in ("", None):
+                    if result[0] != name:
+                        self.list.DeleteItem(item)
+                        self.data.pop(name)
+                        listItem = wx.ListItem()
+                        listItem.SetText(result[0])
+                        self.list.InsertItem(listItem)
+                    self.data[result[0]] = result[1:]
+                    self.data.save()
+            idx += 1
+            item = self.list.GetNextSelected(item)
+        self.DoItemSort(FakeColumnEvent(0))
+        self.RefreshUI()
+
+    def DeleteItem(self):
+        """Deletes an item.
+        This function deletes the selected item or does nothing."""
+        names = self.GetSelected()
+        for name in names:
+            self.list.DeleteItem(self.list.GetFirstSelected())
+            self.data.pop(name)
+        self.data.save()
+        self.commandLine.SetValue("")
+        self.arguments.SetValue("")
+        self.description.SetValue("")
+        self.DoItemSort(FakeColumnEvent(0))
+        self.RefreshUI()
+
+class UtilsPanel(NotebookPanel):
+    """Utilities tab."""
+    def __init__(self,parent):
+        """Initialize."""
+        wx.Panel.__init__(self, parent, -1)
+        #--Left
+        sashPos = settings.get('bash.screens.sashPos',120)
+        left = self.left = leftSash(self,defaultSize=(sashPos,100),onSashDrag=self.OnSashDrag)
+        right = self.right =  wx.Panel(self,style=wx.NO_BORDER)
+        #--Contents
+        global utilsList
+        utilsList = UtilsList(left)
+        utilsList.SetSizeHints(100,100)
+        # screensList.picture = balt.Picture(right,256,192)
+        #--Events
+        self.Bind(wx.EVT_SIZE,self.OnSize)
+        #--Layout
+        left.SetSizer(hSizer((utilsList,1,wx.GROW),((10,0),0)))
+        self.gCommandLine = wx.TextCtrl(right,-1)
+        self.gArguments = wx.TextCtrl(right,-1)
+        self.gDescription = wx.TextCtrl(right,-1,style=wx.TE_MULTILINE)
+        utilsList.commandLine = self.gCommandLine
+        utilsList.arguments = self.gArguments
+        utilsList.description = self.gDescription
+        right.SetSizer(vSizer((self.gCommandLine,0,wx.GROW),
+                        (self.gArguments,0,wx.GROW),
+                        (self.gDescription,1,wx.GROW)))
+        wx.LayoutAlgorithm().LayoutWindow(self, right)
+
+    def SetStatusCount(self):
+        """Sets status bar count field."""
+        # text = _('Screens: %d') % (len(screensList.data.data),)
+        # statusBar.SetStatusText(text,2)
+
+    def OnSashDrag(self,event):
+        """Handle sash moved."""
+        wMin,wMax = 80,self.GetSizeTuple()[0]-80
+        sashPos = max(wMin,min(wMax,event.GetDragRect().width))
+        self.left.SetDefaultSize((sashPos,10))
+        wx.LayoutAlgorithm().LayoutWindow(self, self.right)
+        # screensList.picture.Refresh()
+        settings['bash.screens.sashPos'] = sashPos
+
+    def OnSize(self,event=None):
+        wx.LayoutAlgorithm().LayoutWindow(self, self.right)
+
+    def OnShow(self):
+        """Panel is shown. Update self.data."""
+        if bosh.utilsData.refresh():
+            utilsList.RefreshUI()
+        self.SetStatusCount()
+
+#------------------------------------------------------------------------------
+#-# D.C.-G.
+#-# MashNotebook modified for utils panel.
 class MashNotebook(wx.Notebook):
     def __init__(self, parent, id):
         wx.Notebook.__init__(self, parent, id)
+        #-#
+        self.AddPage(UtilsPanel(self),_("Utilities"))
+        #-#
         self.AddPage(InstallersPanel(self),_("Installers"))
         self.AddPage(ModPanel(self),_("Mods"))
         self.AddPage(SavePanel(self),_("Saves"))
         self.AddPage(ScreensPanel(self),_("Screenshots"))
         #--Selection
         pageIndex = settings['mash.page']
-        if settings['bash.installers.fastStart'] and pageIndex == 0:
+        #-# Canged for Utilities page
+        # if settings['bash.installers.fastStart'] and pageIndex == 0:
+        if settings['bash.installers.fastStart'] and pageIndex == 1:
+        #-#
             pageIndex = 1
         self.SetSelection(pageIndex)
         #--Events
@@ -2755,7 +3159,7 @@ class MashStatusBar(wx.StatusBar):
 class MashFrame(wx.Frame):
     """Main application frame."""
     def __init__(self, parent=None,pos=wx.DefaultPosition,size=(400,500),
-             style = wx.DEFAULT_FRAME_STYLE):
+            style = wx.DEFAULT_FRAME_STYLE):
         """Initialization."""
         #--Singleton
         global mashFrame
@@ -2869,6 +3273,12 @@ class MashFrame(wx.Frame):
         mosh.modInfos.table.save()
         for index in range(self.notebook.GetPageCount()):
             self.notebook.GetPage(index).OnCloseWindow()
+        #-#
+        if settingsWindow:
+            settingsWindow.Destroy()
+        gInstallers.SaveCfgFile()
+        #-#
+        event.Skip()
         settings.save()
         self.Destroy()
 
@@ -3161,7 +3571,7 @@ class DocBrowser(wx.Frame):
             else:
                 self.plainText.LoadFile(docPath)
                 self.SetDocType('txt')
-        
+
     #--Set Doc Type
     def SetDocType(self,docType):
         """Shows the plainText or htmlText view depending on document type (i.e. file name extension)."""
@@ -3248,7 +3658,103 @@ class JournalBrowser(wx.Frame):
         self.Destroy()
 
 #------------------------------------------------------------------------------
-class HelpBrowser(wx.Frame):
+#-# D.C.-G.
+#
+# Modified in order to display the content on a left panel.
+# TODO: put the content in a notebook, and add indexing
+#    and research functions.
+
+from mysh import HTMLHelpParser
+
+def SetHtmlHelpParser(self, hhp):
+    """Sets the HtmlHelpParser to be used to get the help pages.
+
+    hhp = class mysh.HtmlHelpParser"""
+    self.hhp = hhp
+
+def OnHyperLink(self, event):
+    """..."""
+    if self.target and self.hhp:
+        src = self.hhp.GetPage(event.URL.split("#")[-1])
+        if src[0]: self.target.Navigate(src[0], src[1])
+    event.Cancel = True
+
+
+class DCGHelpBrowser(wx.Frame):
+    """Help Browser frame."""
+    def __init__(self):
+        """Intialize."""
+        #--Data
+        self.data = None
+        self.counter = 0
+        #--Singleton
+        global helpBrowser
+        helpBrowser = self
+        #--Window
+        pos = settings.get('mash.help.pos',(-1,-1))
+        size = settings.get('mash.help.size',(400,600))
+        wx.Frame.__init__(self, mashFrame, -1, _('Help'), pos, size,
+            style=wx.DEFAULT_FRAME_STYLE)
+        self.SetBackgroundColour(wx.NullColour)
+        self.SetSizeHints(250,250)
+        #--Application Icons
+        self.SetIcons(images['mash.icons2'].GetIconBundle())
+        #--Sizers
+        #--Doc fields
+        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        sashPos = 250
+        left = self.left = leftSash(self,defaultSize=(sashPos,200),onSashDrag=self.OnSashDrag)
+        right = self.right =  wx.Panel(self,style=wx.NO_BORDER)
+
+        #--Doc display
+        self.htmlContent = TOCHtmlWindow(left, -1, style = wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.htmlText  = HelpPage(right, -1, style = wx.NO_FULL_REPAINT_ON_RESIZE)
+        left.SetSizer(vSizer((self.htmlContent, 1, wx.GROW),((10,0),0)))
+        right.SetSizer(vSizer((self.htmlText, 1, wx.GROW|wx.ALIGN_RIGHT|wx.EXPAND)))
+        mainSizer.Add(left,1,wx.GROW)
+        mainSizer.Add(right,1,wx.GROW)
+        #--Layout
+        self.SetSizer(mainSizer)
+        #--Events
+        wx.EVT_CLOSE(self, self.OnCloseWindow)
+        wx.EVT_SIZE(self, self.OnSize)
+        #--Document
+        path = os.path.join(os.getcwd(),'content.html')
+        self.hhp = hhp = HTMLHelpParser()
+        hhp.SetSrc(path)
+        hhp.ReadData()
+        hhp.Parse()
+        self.htmlContent.SetHtmlData(hhp.content)
+        self.htmlContent.SetHtmlHelpParser(hhp)
+        self.htmlContent.Navigate(hhp)
+        self.htmlContent.SetTarget(self.htmlText, defaultView=hhp.GetPage("Intro"))
+        wx.LayoutAlgorithm().LayoutWindow(self, right)
+
+    #--Window Closing
+    def OnCloseWindow(self, event):
+        """Handle window close event.
+        Remember window size, position, etc."""
+        settings['mash.help.show'] = False
+        if not self.IsIconized() and not self.IsMaximized():
+            settings['mash.help.pos'] = self.GetPosition()
+            settings['mash.help.size'] = self.GetSizeTuple()
+        self.Destroy()
+
+    def OnSashDrag(self,event):
+        """Handle sash moved."""
+        wMin,wMax = 80,self.GetSizeTuple()[0]-80
+        sashPos = max(wMin,min(wMax,event.GetDragRect().width))
+        self.left.SetDefaultSize((sashPos,10))
+        wx.LayoutAlgorithm().LayoutWindow(self, self.right)
+        settings['bash.screens.sashPos'] = sashPos
+
+    def OnSize(self,event=None):
+        wx.LayoutAlgorithm().LayoutWindow(self, self.right)
+
+#-# Original class
+
+class HtmlHelpBrowser(wx.Frame):
     """Help Browser frame."""
     def __init__(self):
         """Intialize."""
@@ -3291,6 +3797,13 @@ class HelpBrowser(wx.Frame):
             settings['mash.help.size'] = self.GetSizeTuple()
         self.Destroy()
 
+
+#-# This line sets the actual help browser.
+#-# TODO (or not): let the user chose between the 'classic' view
+#-#    or the 'helpbook' style.
+HelpBrowser = DCGHelpBrowser
+# HelpBrowser = HtmlHelpBrowser
+
 #------------------------------------------------------------------------------
 class MashApp(wx.App):
     """Mash Application class."""
@@ -3306,8 +3819,8 @@ class MashApp(wx.App):
             wx.Locale(wx.LOCALE_LOAD_DEFAULT)
         #--MWFrame
         frame = MashFrame(
-             pos=settings['mash.framePos'], 
-             size=settings['mash.frameSize'])
+            pos=settings['mash.framePos'], 
+            size=settings['mash.frameSize'])
         self.SetTopWindow(frame)
         frame.Show()
         #--DocBrowser, JournalBrowser
@@ -3317,8 +3830,15 @@ class MashApp(wx.App):
             JournalBrowser().Show()
         if settings.get('mash.help.show'):
             HelpBrowser().Show()
+        #-# D.C.-G. for SettingsWindow
+        if settings['mash.settings.show']:
+            global settingsWindow
+            settingsWindow = SettingsWindow()
+            settingsWindow.SetSettings(settings, Inst=mosh.dirs["installers"].s)
+            settingsWindow.Show()
+        #-#
         return True
-    
+
     def SetMWDir(self):
         """Dialog to select Morrowind installation directory. Called by OnInit()."""
         #--Try parent directory.
@@ -3363,7 +3883,7 @@ class MashApp(wx.App):
         mosh.modInfos.refresh()
         mosh.saveInfos = mosh.SaveInfos(os.path.join(mwDir,'Saves'))
         mosh.saveInfos.refresh()
-    
+
     def InitVersion(self):
         """Peform any version to version conversion. Called by OnInit()."""
         version = settings['mash.version']
@@ -3884,7 +4404,7 @@ class File_RevertToBackup:
             wx.EndBusyCursor()
         dialog.Destroy()
         self.window.Refresh(fileName)
-    
+
 #------------------------------------------------------------------------------
 class File_Remove_RefsSafeCells(ListEditorData):
     """Data capsule for load list editing dialog."""
@@ -3919,7 +4439,7 @@ class File_Remove_RefsSafeCells(ListEditorData):
         self.data.append(newCell)
         self.data.sort(key=lambda a: a.lower())
         return newCell
-       
+
     def remove(self,item):
         """Remove a safe cell."""
         settings.setChanged('mash.refRemovers.safeCells')
@@ -4406,7 +4926,7 @@ class Installers_AnnealAll(Link):
             progress.Destroy()
             self.data.refresh(what='NS')
             gInstallers.RefreshUIMods()
-        
+
 #------------------------------------------------------------------------------
 class Installers_AutoAnneal(Link):
     """Toggle autoAnneal setting."""
@@ -4419,7 +4939,7 @@ class Installers_AutoAnneal(Link):
     def Execute(self,event):
         """Handle selection."""
         settings['bash.installers.autoAnneal'] ^= True
-        
+
 #------------------------------------------------------------------------------
 class Installers_Enabled(Link):
     """Flips installer state."""
@@ -4443,7 +4963,7 @@ class Installers_Enabled(Link):
         else:
             gInstallers.gList.gList.DeleteAllItems()
             gInstallers.RefreshDetails(None)
-        
+
 #------------------------------------------------------------------------------
 class Installers_ConflictsReportShowsInactive(Link):
     """Toggles option to show lower on conflicts report."""
@@ -4457,7 +4977,7 @@ class Installers_ConflictsReportShowsInactive(Link):
         """Handle selection."""
         settings['bash.installers.conflictsReport.showInactive'] ^= True
         self.gTank.RefreshUI()
-        
+
 #------------------------------------------------------------------------------
 class Installers_ConflictsReportShowsLower(Link):
     """Toggles option to show lower on conflicts report."""
@@ -4471,7 +4991,7 @@ class Installers_ConflictsReportShowsLower(Link):
         """Handle selection."""
         settings['bash.installers.conflictsReport.showLower'] ^= True
         self.gTank.RefreshUI()
-        
+
 #------------------------------------------------------------------------------
 class Installers_AvoidOnStart(Link):
     """Ensures faster bash startup by preventing Installers from being startup tab."""
@@ -4484,7 +5004,7 @@ class Installers_AvoidOnStart(Link):
     def Execute(self,event):
         """Handle selection."""
         settings['bash.installers.fastStart'] ^= True
-        
+
 #------------------------------------------------------------------------------
 class Installers_Refresh(Link):
     """Refreshes all Installers data."""
@@ -4520,7 +5040,7 @@ class Installers_RemoveEmptyDirs(Link):
     def Execute(self,event):
         """Handle selection."""
         settings['bash.installers.removeEmptyDirs'] ^= True
-        
+
 #------------------------------------------------------------------------------
 class Installers_SortActive(Link):
     """Sort by type."""
@@ -4605,7 +5125,7 @@ class Installer_Anneal(InstallerLink):
             progress.Destroy()
             self.data.refresh(what='NS')
             gInstallers.RefreshUIMods()
-        
+
 #------------------------------------------------------------------------------
 class Installer_Delete(balt.Tank_Delete):
     """Deletes selected file from tank."""
@@ -4738,6 +5258,18 @@ class Installer_Move(InstallerLink):
         self.gTank.RefreshUI()
 
 #------------------------------------------------------------------------------
+#-# D.C.-G.
+#-# Added to avoid errors when the installers path is unreachable.
+class Installers_Open(balt.Tank_Open):
+    """Open selected file(s) from the menu."""
+    def AppendToMenu(self,menu,window,data):
+        Link.AppendToMenu(self,menu,window,data)
+        menuItem = wx.MenuItem(menu,self.id,_('Open...'))
+        menu.AppendItem(menuItem)
+        if not os.access(mosh.dirs["installers"].s, os.W_OK):
+            menuItem.Enable(False)
+            # print menuItem.Enabled
+#-#
 class Installer_Open(balt.Tank_Open):
     """Open selected file(s)."""
     def AppendToMenu(self,menu,window,data):
@@ -6020,7 +6552,7 @@ class Save_Duplicate(File_Duplicate):
         saveInfo.writeHedr()
         #--Repopulate
         self.window.Refresh(detail=destName)
-        
+
 #------------------------------------------------------------------------------
 class Save_LoadMasters(Link):
     """Sets the load list to the save game's masters."""
@@ -6186,7 +6718,7 @@ class Save_RepairAll(Link):
         fileInfo = self.window.data[fileName]
         if fileInfo.getStatus() > 10:
             WarningMessage(self.window,
-               _( "File master list is out of date. Please edit masters before attempting repair."))
+            _( "File master list is out of date. Please edit masters before attempting repair."))
             return
         progress = None
         dialog = None
@@ -6313,7 +6845,7 @@ class Save_UpdateWorldMap(Link):
         fileInfo = self.window.data[fileName]
         if fileInfo.getStatus() > 10:
             WarningMessage(self.window,
-               _( "File master list is out of date. Please edit masters before attempting repair."))
+            _( "File master list is out of date. Please edit masters before attempting repair."))
             return
         progress = None
         dialog = None
@@ -6600,7 +7132,7 @@ class AutoQuit_Button(Link):
     def __init__(self):
         Link.__init__(self)
         self.gButton = None
-    
+
     def SetState(self,state=None):
         """Sets state related info. If newState != none, sets to new state first. 
         For convenience, returns state when done."""
@@ -6643,6 +7175,71 @@ class App_Help(Link):
             settings['mash.help.show'] = True
         helpBrowser.Raise()
 
+#-# Added D.C.-G. for SettingsWindow.
+# Settings Links -------------------------------------------------------------------
+#------------------------------------------------------------------------------
+class App_Settings(Link):
+    """Show settings window."""
+    def GetBitmapButton(self,window,style=0):
+        if not self.id: self.id = wx.NewId()
+        button = wx.BitmapButton(window,self.id,images['settings'].GetBitmap(),style=style)
+        button.SetToolTip(wx.ToolTip(_("Settings Window")))
+        wx.EVT_BUTTON(button,self.id,self.Execute)
+        return button
+
+    def Execute(self,event):
+        """Handle menu selection."""
+        global settingsWindow
+        if not settingsWindow: 
+            settingsWindow = SettingsWindow()
+            settingsWindow.SetSettings(settings, Inst=mosh.dirs["installers"].s)
+            settingsWindow.Show()
+            settings['mash.settings.show'] = True
+        settingsWindow.Raise()
+#-#
+
+#-# Added D.C.-G. for Utils panel.
+# Utils Links -------------------------------------------------------------------
+#------------------------------------------------------------------------------
+class Utils_Delete(Link):
+    """Create a new utility."""
+    def AppendToMenu(self,menu,window,data):
+        Link.AppendToMenu(self,menu,window,data)
+        menuItem = wx.MenuItem(menu,self.id,_("Delete"))
+        menu.AppendItem(menuItem)
+        menuItem.Enable(True)
+
+    def Execute(self,event):
+        """Handle menu selection."""
+        self.window.DeleteItem()
+
+#------------------------------------------------------------------------------
+class Utils_Modify(Link):
+    """Create a new utility."""
+    def AppendToMenu(self,menu,window,data):
+        Link.AppendToMenu(self,menu,window,data)
+        menuItem = wx.MenuItem(menu,self.id,_("Modify"))
+        menu.AppendItem(menuItem)
+        menuItem.Enable(True)
+
+    def Execute(self,event):
+        """Handle menu selection."""
+        self.window.ModifyItem()
+
+#------------------------------------------------------------------------------
+class Utils_New(Link):
+    """Create a new utility."""
+    def AppendToMenu(self,menu,window,data):
+        Link.AppendToMenu(self,menu,window,data)
+        menuItem = wx.MenuItem(menu,self.id,_("New"))
+        menu.AppendItem(menuItem)
+        menuItem.Enable(True)
+
+    def Execute(self,event):
+        """Handle menu selection."""
+        self.window.NewItem()
+#-#
+
 # Initialization --------------------------------------------------------------
 def InitSettings():
     """Initialize settings (configuration store). First, read from file, then
@@ -6653,26 +7250,28 @@ def InitSettings():
     settings.loadDefaults(settingDefaults)
     mosh.initDirs()
 
+#-# D.C.-G. for SettingsWindow
 def InitImages():
     """Initialize images (icons, checkboxes, etc.)."""
-    scriptPath = os.path.dirname(os.path.realpath(__file__))
-    imgPath    = scriptPath + '/images/'
-
+    imgPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
     #--Standard
-    images['save.on'] = Image(imgPath + r'save_on.png',wx.BITMAP_TYPE_PNG)
-    images['save.off'] = Image(imgPath + r'save_off.png',wx.BITMAP_TYPE_PNG)
+    images['save.on'] = Image(os.path.join(imgPath, r'save_on.png'),wx.BITMAP_TYPE_PNG)
+    images['save.off'] = Image(os.path.join(imgPath, r'save_off.png'),wx.BITMAP_TYPE_PNG)
     #--Misc
-    images['morrowind'] = Image(imgPath + r'morrowind.png',wx.BITMAP_TYPE_PNG)
-    images['help'] = Image(imgPath + r'help.png',wx.BITMAP_TYPE_PNG)
+    images['morrowind'] = Image(os.path.join(imgPath, r'morrowind.png'),wx.BITMAP_TYPE_PNG)
+    images['help'] = Image(os.path.join(imgPath, r'help.png'),wx.BITMAP_TYPE_PNG)
     #--Tools
-    images['doc.on'] = Image(imgPath + r'doc_on.png',wx.BITMAP_TYPE_PNG)
+    images['doc.on'] = Image(os.path.join(imgPath, r'doc_on.png'),wx.BITMAP_TYPE_PNG)
     #--Checkboxes
     images['mash.checkboxes'] = Checkboxes()
     images['checkbox.green.on.32'] = (
-        Image(imgPath + r'checkbox_green_on_32.png',wx.BITMAP_TYPE_PNG))
+        Image(os.path.join(imgPath, r'checkbox_green_on_32.png'),wx.BITMAP_TYPE_PNG))
     images['checkbox.blue.on.32'] = (
-        Image(imgPath + r'checkbox_blue_on_32.png',wx.BITMAP_TYPE_PNG))
-    images['checkbox.red.x'] = Image(imgPath + r'checkbox_red_x.png',wx.BITMAP_TYPE_PNG)
+        Image(os.path.join(imgPath, r'checkbox_blue_on_32.png'),wx.BITMAP_TYPE_PNG))
+    images['checkbox.red.x'] = Image(os.path.join(imgPath, r'checkbox_red_x.png'),wx.BITMAP_TYPE_PNG)
+    #-#
+    images["settings"] = Image(os.path.join(imgPath, r"save_on.png"),wx.BITMAP_TYPE_PNG)
+    #-#
     #--Applications Icons
     wryeMashIcons = balt.ImageBundle()
     wryeMashIcons.Add(images['checkbox.green.on'])
@@ -6695,11 +7294,15 @@ def InitImages():
     colors['bash.installers.outOfOrder'] = (0xDF,0xDF,0xC5)
     colors['bash.installers.dirty'] = (0xFF,0xBB,0x33)
 
+#-# D.C.-G. for SettingsWindow
 def InitStatusBar():
     """Initialize status bar links."""
     MashStatusBar.links.append(App_Morrowind())
     MashStatusBar.links.append(AutoQuit_Button())
     MashStatusBar.links.append(App_Help())
+    #-#
+    MashStatusBar.links.append(App_Settings())
+    #-#
 
 def InitMasterLinks():
     """Initialize master list menus."""
@@ -6719,10 +7322,10 @@ def InitMasterLinks():
     MasterList.mainMenu.append(Masters_CopyList())
     MasterList.mainMenu.append(Masters_SyncToLoad())
     MasterList.mainMenu.append(Masters_Update())
-    
+
     #--MasterList: Item Links
     MasterList.itemMenu.append(Master_ChangeTo())
-    
+
 def InitInstallerLinks():
     """Initialize people tab menus."""
     #--Column links
@@ -6732,7 +7335,8 @@ def InitInstallerLinks():
     #InstallersPanel.mainMenu.append(Installers_SortStructure())
     #--Actions
     InstallersPanel.mainMenu.append(SeparatorLink())
-    InstallersPanel.mainMenu.append(balt.Tanks_Open())
+    # InstallersPanel.mainMenu.append(balt.Tanks_Open())
+    InstallersPanel.mainMenu.append(Installers_Open())
     InstallersPanel.mainMenu.append(Installers_Refresh(fullRefresh=False))
     InstallersPanel.mainMenu.append(Installers_Refresh(fullRefresh=True))
     #InstallersPanel.mainMenu.append(Mods_IniTweaks())
@@ -6801,7 +7405,7 @@ def InitModLinks():
     ModList.mainMenu.append(Mods_IniTweaks())
     ModList.mainMenu.append(Mods_LockTimes())
     ModList.mainMenu.append(Mods_Replacers())
-    
+
     #--ModList: Item Links
     if True: #--File
         fileMenu = MenuLink(_("File"))
@@ -6850,7 +7454,7 @@ def InitModLinks():
     ModList.itemMenu.append(File_SortRecords())
     ModList.itemMenu.append(File_Stats())
     ModList.itemMenu.append(Mod_Updaters())
-    
+
 def InitSaveLinks():
     """Initialize save tab menus."""
     #--SaveList: Column Links
@@ -6871,7 +7475,7 @@ def InitSaveLinks():
     SaveList.mainMenu.append(Files_Open())
     SaveList.mainMenu.append(Files_Unhide('save'))
     SaveList.mainMenu.append(Saves_MapGridLines())
-    
+
     #--SaveList: Item Links
     if True: #--File
         fileMenu = MenuLink(_("File")) #>>
@@ -6927,6 +7531,15 @@ def InitLinks():
     InitModLinks()
     InitSaveLinks()
     InitScreenLinks()
+    InitUtilsLinks()
+
+#-# Added D.C.-G. for Utils panel. ------------------------------------------------------------------------
+def InitUtilsLinks():
+    """Initialze the Utils Panel list menu."""
+    UtilsList.mainMenu.append(Utils_New())
+    UtilsList.mainMenu.append(Utils_Modify())
+    UtilsList.mainMenu.append(Utils_Delete())
+#-#
 
 # Main ------------------------------------------------------------------------
 if __name__ == '__main__':
