@@ -2963,7 +2963,7 @@ class UtilsList(List):
                     return # <-- bad hack ?
 
                 cwd = os.getcwd()
-                os.chdir(os.path.split(u)[0])
+                os.chdir(os.path.dirname(u))
                 if u.strip('"').strip("'")[-4:].lower() in (".bat", ".cmd", ".btm"):
                     arguments = ""
                     argsList = self.data[name][1].split()
@@ -2972,7 +2972,7 @@ class UtilsList(List):
                             arguments += " %s"%a
                     os.system(u+arguments)
                 else:
-                    arguments = (os.path.split(u)[0],) + tuple(self.data[name][1].split())
+                    arguments = (os.path.basename(u),) + tuple(self.data[name][1].split())
                     os.spawnv(os.P_NOWAIT, u.strip('"'), arguments)
                 os.chdir(cwd)
             except Exception, exc:
