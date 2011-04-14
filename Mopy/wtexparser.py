@@ -17,9 +17,9 @@ def getHtmlFromLine(line):
     return html
 
 def getHtmlFromHeading(heading):
-    html = ''
+    html = '<strong>' + heading.title + '</strong><br>'
     for line in heading.getTextLines():
-        html += '&nbsp;'*(line.level-1) + getHtmlFromLine(line.text) + '<br>'
+        html += '&nbsp;'*(line.level-1)*2 + getHtmlFromLine(line.text) + '<br>'
     return html
 
 def getHtmlFromHeadings(headings):
@@ -38,6 +38,11 @@ class Text:
         self.text   = text
         self.bold   = False
         self.italic = False
+
+    def mergeWith(self, node):
+        node.bold   = self.bold or node.bold
+        node.italic = self.italic or node.italic
+        return node
 
     def getAsHtml(self):
         """ 
@@ -61,8 +66,15 @@ class Link(Text):
         Text.__init__(self, text)
         self.href = href
 
+    def mergeWith(self, node):
+        node            = Text.mergeWith(self,node)
+        linkNode        = Link(node.text, self.href)
+        linkNode.bold   = node.bold
+        linkNode.italic = node.italic
+        return linkNode
+
     def getAsHtml(self):
-        html = Link.getAsHtml(self)
+        html = Text.getAsHtml(self)
         return '<a href=' + self.href + '>' + html + '</a>'
 
 class Node:
@@ -192,53 +204,78 @@ class Parser:
 
     
     def parseText(self, text):
-        """This seperates text into bold, italic, links etc and returns it as a list
-        
-        TODO this doesn't cope with bold inside link text
-        """
-        result = []
+        """This seperates text into bold, italic, links etc and returns it as a list"""
+        origanalText = text
+        result       = []
 
-        formattingRegex = '\\*\\*(.*?)\\*\\*'           \
-                        + '|'                           \
-                        + '__(.*?)__'                   \
-                        + '|'                           \
-                        +  '~~(.*?)~~'                  
+        #matches bold, italic and both
+        formattingRegex = '__(.*)__'                \
+                        + '|'                       \
+                        + '~~(.*)~~'                \
+                        + '|'                       \
+                        +  '\\*\\*(.*)\\*\\*'                  
 
-        linkRegex       = '\\[\\['              \
-                        +   '([^\\|])\\|([^\\]])' \
-                        + '\\]\\]'  
+        #matches a url in the form [[href|text]]
+        linkRegex       = '\\[\\['                  \
+                        +   '([^\\|]*)\\|([^\\]]*)' \
+                        + '\\]\\]'
 
+        #the last line of this matches anything, that isn't
+        #assumed to be the start of some of the above formatting
         regex           = formattingRegex               \
                         + '|'                           \
                         + linkRegex                     \
                         + '|'                           \
-                        + '(.+)'
+                        + '(.*?(?=\\*\\*|__|~~|\\[\\[|$))'
 
-        matches = re.findall(regex, text.strip())
-        if len(matches) == 0:
+        #while we can keep making matches. the text variable is reduced with every match and
+        #then just the remained considered.
+        while len(text):
+            match = re.match(regex, text)
+            if match == None:
+                return result
+
+            bold, italic, both, linkHref, linkText, otherwise = match.groups()
+            matchText = bold or italic or both or otherwise or None
+            if matchText != None:
+                t = Text(matchText)
+
+                t.bold   = bold != None 
+                t.italic = italic != None 
+                if not (t.bold or t.italic):
+                    t.bold = t.italic = both != None 
+                result.append(t)
+
+            elif linkHref != None and linkText != None:
+                print "Link:" + linkHref
+                t = Link(linkText, linkHref)
+                result.append(t)
+
+            #trim off the matched text, if we didn't match anything
+            #we break the loop
+            matchLength = len(match.group(0))
+            if matchLength == 0:
+                break
+            text = text[matchLength:]
+
+        #our base case, if the text result is exactly the same as the input, then 
+        #we assume that there is nothing more to parse
+        if len(result) == 1 and result[0].text == origanalText:
             return result
-        match   = matches[0] #TODO fix, this is a bit ugly
 
-        bold, italic, both, linkHref, linkText, otherwise = match
-        text = bold or italic or both or otherwise or None
-        if text != None:
-            t = Text(text)
+        #at all the text, look down a level and merge if required
+        mergedResults = []
+        for r in result:
+            newResults = self.parseText(r.text)
+            #copy the things from this level downwards
+            for newResult in newResults:
+                newResult = r.mergeWith(newResult)
+                mergedResults.append(newResult)
 
-            t.bold   = bold != ''
-
-            t.italic = italic != '' 
-            if not (t.bold or t.italic):
-                t.bold = t.italic = both != ''
-            result.append(t)
-        else:
-            assert False, "Doesn't handle links yet"
-            #todo link formatting
-            pass
-
-        return result
+        return mergedResults 
 
     def parseTextLine(self, line):
-        match = re.match('([\\s]*)\\*(.+)', line)
+        match = re.match('([\\s]*)\\* (.+)', line)
 
         if self.currentHeading.textNode == None or self.currentText == None:
             self.currentText = self.currentHeading.textNode = Node(None, 0)
@@ -314,11 +351,20 @@ class TestParser(unittest.TestCase):
         self.assertEquals(bold, result.bold)
 
     def test_parseText(self):
-        self.textHelper('**Text**', True, False, 'Text')
+        self.textHelper('__Text__', True, False, 'Text')
         self.textHelper('*Text**', False, False, '*Text**')
-        self.textHelper('__Text__', False, True, 'Text')
-        self.textHelper('~~Text~~', True, True, 'Text')
+        self.textHelper('~~Text~~', False, True, 'Text')
+        self.textHelper('**Text**', True, True, 'Text')
 
+    def test_parseTextEx(self):
+        inText = 'Hello **World**'
+        result = Parser().parseText(inText)
+        self.assertEquals(2, len(result))
+    def test_parseLink(self):
+        inText = '[[#|Test]]'
+        result = Parser().parseText(inText)[0]
+        self.assertEquals('Test', result.text)
+        self.assertEquals('#', result.href)
 
 
 if __name__ == '__main__':
