@@ -17,9 +17,9 @@ def getHtmlFromLine(line):
     return html
 
 def getHtmlFromHeading(heading):
-    html = ''
+    html = '<strong>' + heading.title + '</strong><br>'
     for line in heading.getTextLines():
-        html += '&nbsp;'*(line.level-1) + getHtmlFromLine(line.text) + '<br>'
+        html += '&nbsp;'*(line.level-1)*2 + getHtmlFromLine(line.text) + '<br>'
     return html
 
 def getHtmlFromHeadings(headings):
@@ -62,7 +62,7 @@ class Link(Text):
         self.href = href
 
     def getAsHtml(self):
-        html = Link.getAsHtml(self)
+        html = Text.getAsHtml(self)
         return '<a href=' + self.href + '>' + html + '</a>'
 
 class Node:
@@ -194,51 +194,67 @@ class Parser:
     def parseText(self, text):
         """This seperates text into bold, italic, links etc and returns it as a list
         
-        TODO this doesn't cope with bold inside link text
+        TODO this doesn't cope with a link with formatted text inside
         """
         result = []
 
-        formattingRegex = '\\*\\*(.*?)\\*\\*'           \
-                        + '|'                           \
-                        + '__(.*?)__'                   \
-                        + '|'                           \
-                        +  '~~(.*?)~~'                  
+        formattingRegex = '__(.*)__'                \
+                        + '|'                       \
+                        + '~~(.*)~~'                \
+                        + '|'                       \
+                        +  '\\*\\*(.*)\\*\\*'                  
 
-        linkRegex       = '\\[\\['              \
-                        +   '([^\\|])\\|([^\\]])' \
-                        + '\\]\\]'  
+        linkRegex       = '\\[\\['                  \
+                        +   '([^\\|]*)\\|([^\\]]*)' \
+                        + '\\]\\]'
 
         regex           = formattingRegex               \
                         + '|'                           \
                         + linkRegex                     \
                         + '|'                           \
-                        + '(.+)'
+                        + '(.*?(?=\\*\\*|__|~~|\\[\\[|$))'
 
-        matches = re.findall(regex, text.strip())
-        if len(matches) == 0:
-            return result
-        match   = matches[0] #TODO fix, this is a bit ugly
+        text = text.strip()
+        while len(text):
+            match = re.match(regex, text)
+            if match == None:
+                return result
 
-        bold, italic, both, linkHref, linkText, otherwise = match
-        text = bold or italic or both or otherwise or None
-        if text != None:
-            t = Text(text)
+            bold, italic, both, linkHref, linkText, otherwise = match.groups()
+            matchText = bold or italic or both or otherwise or None
+            if matchText != None:
+                t = Text(matchText)
+                t.bold   = bold != None 
+                t.italic = italic != None 
+                if not (t.bold or t.italic):
+                    t.bold = t.italic = both != None 
 
-            t.bold   = bold != ''
+                if ( re.search(linkRegex, matchText) != None ):
+                    newResults = self.parseText(matchText)
+                    #copy the outside things down
+                    for newResult in newResults:
+                        if t.bold:
+                            newResult.bold = True
+                        if t.italic:
+                            newResult.bold = True
+                        result.append(newResult)
+                else:
+                    result.append(t)
 
-            t.italic = italic != '' 
-            if not (t.bold or t.italic):
-                t.bold = t.italic = both != ''
-            result.append(t)
-        else:
-            assert False, "Doesn't handle links yet"
-            #todo link formatting
-            pass
+            elif linkHref != None and linkText != None:
+                t = Link(linkText, linkHref)
+                result.append(t)
+
+            #could happen, and it would lock the program if it did
+            matchLength = len(match.group(0))
+            if matchLength == 0:
+                break
+            text = text[matchLength:]
 
         return result
 
     def parseTextLine(self, line):
-        match = re.match('([\\s]*)\\*(.+)', line)
+        match = re.match('([\\s]*)\\* (.+)', line)
 
         if self.currentHeading.textNode == None or self.currentText == None:
             self.currentText = self.currentHeading.textNode = Node(None, 0)
@@ -314,11 +330,20 @@ class TestParser(unittest.TestCase):
         self.assertEquals(bold, result.bold)
 
     def test_parseText(self):
-        self.textHelper('**Text**', True, False, 'Text')
+        self.textHelper('__Text__', True, False, 'Text')
         self.textHelper('*Text**', False, False, '*Text**')
-        self.textHelper('__Text__', False, True, 'Text')
-        self.textHelper('~~Text~~', True, True, 'Text')
+        self.textHelper('~~Text~~', False, True, 'Text')
+        self.textHelper('**Text**', True, True, 'Text')
 
+    def test_parseTextEx(self):
+        inText = 'Hello **World**'
+        result = Parser().parseText(inText)
+        self.assertEquals(2, len(result))
+    def test_parseLink(self):
+        inText = '[[#|Test]]'
+        result = Parser().parseText(inText)[0]
+        self.assertEquals('Test', result.text)
+        self.assertEquals('#', result.href)
 
 
 if __name__ == '__main__':
