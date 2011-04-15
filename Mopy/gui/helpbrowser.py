@@ -1,8 +1,8 @@
 import wx
 import wx.html
-import wtexparser
 import os
-from balt import spacer, hSizer, vSizer, hsbSizer, vsbSizer, leftSash
+import wtexparser
+from balt import spacer, vSizer, leftSash
 from mosh import _
 
 class TocHtmlWindow(wx.TreeCtrl):
