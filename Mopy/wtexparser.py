@@ -14,16 +14,16 @@ def dfFlattenNodeTree(heading, maxLevel=0):
 def getHtmlFromHeadings(headings):
     """Generates HTML for a heading and all decendents based on Wrye's format"""
 
-    def htmlDecorator(obj,  prop, curText):
+    def htmlDecorator(obj,  prop, val, text):
         """ This function is passed into the text to decorate it depening on text properties """
         mapping = {
-            'bold'   : lambda t : '<strong>' + t + '</strong>', 
-            'italic' : lambda t : '<em>' + t + '</em>', 
-            'href'   : lambda t : '<a href="' + obj.href + '">' + t + '</a>', 
+            'bold'   : lambda: text if val == False else '<strong>' + text + '</strong>', 
+            'italic' : lambda: text if val == False else '<em>' + text + '</em>', 
+            'href'   : lambda: '<a href="' + obj.href + '">' + text + '</a>', 
         }
         if prop in mapping:
-            return mapping[prop](curText)
-        return curText
+            return mapping[prop]()
+        return text
 
     def getHtmlFromLine(line):
         html = ''
@@ -37,9 +37,9 @@ def getHtmlFromHeadings(headings):
             html += '&nbsp;'*(line.level-1)*2 + getHtmlFromLine(line.text) + '<br>'
         return html
 
-    html = ''
+    html = '<p>' +  getHtmlFromHeading(headings) + '</p>'
     for heading in dfFlattenNodeTree(headings):
-        html += '<p>' + getHtmlFromHeading(heading) + '<p>'
+        html += '<p>' + getHtmlFromHeading(heading) + '</p>'
     return html
    
 class Text:
@@ -65,11 +65,11 @@ class Text:
         """ 
         Decorates the text by passing each property through the given function.
         The function should be of the form
-            function(textObject, propertyName, currentTextToModify)
+            function(textObject, propertyName, propertyValue, currentTextToModify)
         """
         html = self.text
-        for name in vars(self).keys():
-            html += function(self,name,html)
+        for name,value in vars(self).iteritems():
+            html = function(self,name,value,html)
 
         return html
 
@@ -228,7 +228,6 @@ class Parser:
 
         #while we can keep making matches. the text variable is reduced with every match and
         #then just the remained considered.
-        text = text.strip()
         while len(text):
             match = re.match(regex, text)
             if match == None:
@@ -297,6 +296,15 @@ class Parser:
                                            lambda p: TextNode(p, level, text))
 
 import unittest
+class TestHtml(unittest.TestCase):
+    def testGenerate(self):
+        wtex = "= The Name \n* Some Text"
+        p = Parser()
+        p.parseString(wtex)
+        html = getHtmlFromHeadings(p.getHeading("The Name"))
+        self.assertEqual('<p><strong>The Name</strong><br>Some Text<br></p>', html)
+
+
 class TestParser(unittest.TestCase):
     def test_parseSimpleHeading(self):
         wtex = "= The Name "
