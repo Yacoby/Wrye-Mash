@@ -319,7 +319,7 @@ ID_REVERT_FIRST  = 6101
 ID_BACKUP_NOW    = 6102
 
 #--Label Menus
-ID_LOADERS   = IdList(10000,90,'SAVE','EDIT','NONE') 
+ID_LOADERS   = IdList(10000,90,'SAVE','EDIT','ALL','NONE') 
 ID_REMOVERS  = IdList(10100,90,'EDIT','EDIT_CELLS')
 ID_REPLACERS = IdList(10200,90,'EDIT')
 ID_GROUPS    = IdList(10300,90,'EDIT','NONE')
@@ -5341,6 +5341,7 @@ class Mods_LoadList:
 
     def AppendToMenu(self,menu,window,data):
         self.window = window
+        menu.Append(ID_LOADERS.ALL,_('All'))
         menu.Append(ID_LOADERS.NONE,_('None'))
         menu.Append(ID_LOADERS.SAVE,_('Save List...')) 
         menu.Append(ID_LOADERS.EDIT,_('Edit Lists...')) 
@@ -5356,6 +5357,7 @@ class Mods_LoadList:
             menu.FindItemById(ID_LOADERS.SAVE).Enable(False)
         #--Events
         wx.EVT_MENU(window,ID_LOADERS.NONE,self.DoNone)
+        wx.EVT_MENU(window,ID_LOADERS.ALL,self.DoAll)
         wx.EVT_MENU(window,ID_LOADERS.SAVE,self.DoSave)
         wx.EVT_MENU(window,ID_LOADERS.EDIT,self.DoEdit)
         wx.EVT_MENU_RANGE(window,ID_LOADERS.BASE,ID_LOADERS.MAX,self.DoList)
@@ -5364,6 +5366,17 @@ class Mods_LoadList:
         loadFiles = mosh.mwIniFile.loadFiles[:]
         for loadFile in loadFiles:
             mosh.modInfos.unload(loadFile,0)
+        mosh.mwIniFile.safeSave()
+        #--Refresh entries
+        self.window.PopulateItems()
+
+    def DoAll(self,event):
+        for loadFile in mosh.modInfos.data:
+            try:
+                mosh.modInfos.load(loadFile,False)
+            except mosh.MaxLoadedError:
+                ErrorMessage(self.window,_("Unable to add mod %s because load list is full.") % (loadFile,))
+                break
         mosh.mwIniFile.safeSave()
         #--Refresh entries
         self.window.PopulateItems()
