@@ -51,11 +51,9 @@ if sys.prefix not in set(os.environ['PATH'].split(';')):
     os.environ['PATH'] += ';'+sys.prefix
 
 try:
-    pass
-    #import wx.lib.iewin
-except ValueError:
+    import wx.lib.iewin
+except (ValueError, ImportError):
     print 'Failed to import ie. Features may not be available and there may be lots of errrors!'
-    import wx.html
 
 #-# D.C.-G. for SettingsWindow
 from gui.settings import SettingsWindow
