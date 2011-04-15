@@ -1,14 +1,23 @@
+"""
+This is a parser for Wrye Mashes documentation format. It also contains functions to convert it into html
+"""
+
 import re
 
 def dfFlattenNodeTree(heading, maxLevel=0):
     """Flattens a node, and all decendents into a generator"""
     if maxLevel != 0 and heading.level > maxLevel:
         return
+    yield heading
     for child in heading.children:
-        yield child 
         for decendent in dfFlattenNodeTree(child, maxLevel):
             yield decendent
 
+def dfFlattenDescendants(heading, maxLevel=0):
+    """Flattens all decendents into a generator"""
+    for child in heading.children:
+        for decendent in dfFlattenNodeTree(child, maxLevel):
+            yield decendent
 
 
 def getHtmlFromHeadings(headings):
@@ -37,7 +46,7 @@ def getHtmlFromHeadings(headings):
             html += '&nbsp;'*(line.level-1)*2 + getHtmlFromLine(line.text) + '<br>'
         return html
 
-    html = '<p>' +  getHtmlFromHeading(headings) + '</p>'
+    html = ''
     for heading in dfFlattenNodeTree(headings):
         html += '<p>' + getHtmlFromHeading(heading) + '</p>'
     return html
@@ -100,7 +109,7 @@ class HeadingNode(Node):
         """
         if self.textNode == None:
             return
-        for n in dfFlattenNodeTree(self.textNode):
+        for n in dfFlattenDescendants(self.textNode):
             yield n
 
 
@@ -142,7 +151,7 @@ class Parser:
 
     def getHeadings(self, maxLevel=0):
         """Gives a generator of all headings"""
-        for h in dfFlattenNodeTree(self.root, maxLevel):
+        for h in dfFlattenDescendants(self.root, maxLevel):
             yield h
 
     def parseString(self, wtex):
