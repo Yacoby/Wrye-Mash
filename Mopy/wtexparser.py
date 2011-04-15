@@ -209,6 +209,8 @@ class Parser:
         result       = []
 
         #matches bold, italic and both
+        result = []
+
         formattingRegex = '__(.*)__'                \
                         + '|'                       \
                         + '~~(.*)~~'                \
@@ -230,6 +232,7 @@ class Parser:
 
         #while we can keep making matches. the text variable is reduced with every match and
         #then just the remained considered.
+        text = text.strip()
         while len(text):
             match = re.match(regex, text)
             if match == None:
@@ -244,15 +247,14 @@ class Parser:
                 t.italic = italic != None 
                 if not (t.bold or t.italic):
                     t.bold = t.italic = both != None 
+
                 result.append(t)
 
             elif linkHref != None and linkText != None:
-                print "Link:" + linkHref
                 t = Link(linkText, linkHref)
                 result.append(t)
 
-            #trim off the matched text, if we didn't match anything
-            #we break the loop
+            #could happen, and it would lock the program if it did
             matchLength = len(match.group(0))
             if matchLength == 0:
                 break
