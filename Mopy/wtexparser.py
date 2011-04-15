@@ -10,72 +10,69 @@ def dfFlattenNodeTree(heading, maxLevel=0):
             yield decendent
 
 
-def getHtmlFromLine(line):
-    html = ''
-    for text in line:
-        html += text.getAsHtml()
-    return html
-
-def getHtmlFromHeading(heading):
-    html = '<strong>' + heading.title + '</strong><br>'
-    for line in heading.getTextLines():
-        html += '&nbsp;'*(line.level-1)*2 + getHtmlFromLine(line.text) + '<br>'
-    return html
 
 def getHtmlFromHeadings(headings):
+    """Generates HTML for a heading and all decendents based on Wrye's format"""
+
+    def htmlDispatch(obj,  prop, curText):
+        """ This function is passed into the text to transform it depening on text properties """
+        mapping = {
+            'bold'   : lambda t : '<strong>' + t + '</strong>', 
+            'italic' : lambda t : '<em>' + t + '</em>', 
+            'href'   : lambda t : '<a href="' + obj.href + '">' + t + '</a>', 
+        }
+        if prop in mapping:
+            return mapping[prop](curText)
+        return curText
+
+    def getHtmlFromLine(line):
+        html = ''
+        for text in line:
+            html += text.transform(htmlDispatch)
+        return html
+
+    def getHtmlFromHeading(heading):
+        html = '<strong>' + heading.title + '</strong><br>'
+        for line in heading.getTextLines():
+            html += '&nbsp;'*(line.level-1)*2 + getHtmlFromLine(line.text) + '<br>'
+        return html
+
     html = ''
     for heading in dfFlattenNodeTree(headings):
         html += '<p>' + getHtmlFromHeading(heading) + '<p>'
     return html
    
 class Text:
-    """Base type for a stream of characters
-
-    This is used in that a string of text is broken up into an array of objects
-    of this base type to represent bold etc
     """
+        A class that holds properties of an text, and can merge with other text
+    """
+
+
     def __init__(self, text):
         self.text   = text
         self.bold   = False
         self.italic = False
 
-    def mergeWith(self, node):
-        node.bold   = self.bold or node.bold
-        node.italic = self.italic or node.italic
-        return node
+    def mergeWith(self, text):
+        """ This merges two Text classes, however, if a property exists in the object the function belongs to
+            it won't be overwitten by text unless it is False"""
+        for name, val in text.__dict__.iteritems():
+            if name in self.__dict__:
+                self.__dict__[name] = self.__dict__[name] or val
+            else:
+                self.__dict__[name] = val
 
-    def getAsHtml(self):
+    def transform(self, function):
         """ 
-        Gets the text in html, with the current formatting settings taken into account
-        
-        I don't like this being here, but the other solution is much wose. The question is why does 
-        this have anything to do with the class. If we followed this aproch and wanted it in 20 diffrent
-        formats then we would mess this class up with 20 diffrent methods
+        Transforms the text by passing each property through the given function.
+        The function should be of the form
+            function(textObject, propertyName, currentTextToModify)
         """
         html = self.text
-        if self.bold:
-            html = '<strong>' + html + '</strong>'
-        if self.italic:
-            html = '<em>' + html + '</em>'
+        for name in vars(self).keys():
+            html += function(self,name,html)
+
         return html
-
-
-class Link(Text):
-    """Holds a link"""
-    def __init__(self, text, href):
-        Text.__init__(self, text)
-        self.href = href
-
-    def mergeWith(self, node):
-        node            = Text.mergeWith(self,node)
-        linkNode        = Link(node.text, self.href)
-        linkNode.bold   = node.bold
-        linkNode.italic = node.italic
-        return linkNode
-
-    def getAsHtml(self):
-        html = Text.getAsHtml(self)
-        return '<a href=' + self.href + '>' + html + '</a>'
 
 class Node:
     def __init__(self, parent, level):
@@ -239,19 +236,18 @@ class Parser:
                 return result
 
             bold, italic, both, linkHref, linkText, otherwise = match.groups()
-            matchText = bold or italic or both or otherwise or None
+            matchText = bold or italic or both or linkText or otherwise or None
             if matchText != None:
                 t = Text(matchText)
 
-                t.bold   = bold != None 
+                t.bold   = bold   != None 
                 t.italic = italic != None 
                 if not (t.bold or t.italic):
                     t.bold = t.italic = both != None 
 
-                result.append(t)
+                if linkHref != None:
+                    t.href = linkHref
 
-            elif linkHref != None and linkText != None:
-                t = Link(linkText, linkHref)
                 result.append(t)
 
             #could happen, and it would lock the program if it did
@@ -271,7 +267,7 @@ class Parser:
             newResults = self.parseText(r.text)
             #copy the things from this level downwards
             for newResult in newResults:
-                newResult = r.mergeWith(newResult)
+                newResult.mergeWith(r) #copy properties down
                 mergedResults.append(newResult)
 
         return mergedResults 
@@ -354,7 +350,6 @@ class TestParser(unittest.TestCase):
 
     def test_parseText(self):
         self.textHelper('__Text__', True, False, 'Text')
-        self.textHelper('*Text**', False, False, '*Text**')
         self.textHelper('~~Text~~', False, True, 'Text')
         self.textHelper('**Text**', True, True, 'Text')
 
@@ -362,6 +357,7 @@ class TestParser(unittest.TestCase):
         inText = 'Hello **World**'
         result = Parser().parseText(inText)
         self.assertEquals(2, len(result))
+
     def test_parseLink(self):
         inText = '[[#|Test]]'
         result = Parser().parseText(inText)[0]
