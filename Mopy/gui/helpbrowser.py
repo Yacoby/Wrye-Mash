@@ -40,6 +40,30 @@ class TocHtmlWindow(wx.TreeCtrl):
             newTreeNode = self.AppendItem(treeNode, child.title)
             self.AddToTree(child, newTreeNode)
 
+    def FindItemByText(self, text, currentItem, transform=lambda t:t):
+        """ Searches each node for a text match
+            text: the text to mactch
+            currentItem: the item to start from
+            transform: a method that alters the currentItem text
+                       before it is compared with text
+        """
+        if transform(self.GetItemText(currentItem)) == text:
+            return currentItem
+
+        (child, cookie) = self.GetFirstChild(currentItem)
+        while child.IsOk():
+            itm = self.FindItemByText(text, child, transform) 
+            if itm != None:
+                return itm
+            (child,cookie) = self.GetNextChild(currentItem, cookie)
+        return None
+        
+    def GoTo(self, name):
+        """ Selects an item that has a text match with name"""
+        item = self.FindItemByText(name,self.treeRoot, lambda t: t.replace(' ', ''))
+        if item != None:
+            self.SelectItem(item, True)
+
 
 class HelpPage(wx.html.HtmlWindow):
     """Class for the pages of the help window.
@@ -55,7 +79,14 @@ class HelpPage(wx.html.HtmlWindow):
         if href[:1] != '#':
             wx.LaunchDefaultBrowser(href)
         else:
-            wx.html.HtmlWindow.OnLinkClicked(self, link)
+            anchor = href[1:]
+            if self.HasAnchor(anchor):
+                wx.html.HtmlWindow.OnLinkClicked(self, link)
+            else:
+                self.toc.GoTo(anchor)
+
+    def SetTocObj(self, toc):
+        self.toc = toc
 
     def TocSelChanged(self, name):
         heading = self.parser.getHeading(name) 
@@ -96,11 +127,11 @@ class HelpBrowser(wx.Frame):
         left  = self.left  = leftSash(self,defaultSize=(sashPos,100),onSashDrag=self.OnSashDrag)
         right = self.right =  wx.Panel(self,style=wx.NO_BORDER)
 
-        self.htmlContent = TocHtmlWindow(left, -1, style = wx.NO_FULL_REPAINT_ON_RESIZE)
-        self.htmlText    = HelpPage(right, -1, style = wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.htmlToc  = TocHtmlWindow(left, -1, style = wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.htmlText = HelpPage(right, -1, style = wx.NO_FULL_REPAINT_ON_RESIZE)
 
 
-        left.SetSizer(vSizer((self.htmlContent, 1, wx.GROW)))
+        left.SetSizer(vSizer((self.htmlToc, 1, wx.GROW)))
         right.SetSizer(vSizer((self.htmlText, 1, wx.GROW|wx.ALIGN_RIGHT|wx.EXPAND)))
 
         mainSizer.Add(left,1,wx.GROW)
@@ -111,11 +142,13 @@ class HelpBrowser(wx.Frame):
         wx.EVT_CLOSE(self, self.OnCloseWindow)
 
         #--Content
-        self.htmlContent.AddSelListener(self.htmlText.TocSelChanged)
+        self.htmlToc.AddSelListener(self.htmlText.TocSelChanged)
+        self.htmlText.SetTocObj(self.htmlToc)
+
         path = os.path.join(os.getcwd(), 'Wrye Mash.txt')
         txt  = open(path).read()
         self.htmlText.SetHtmlData(txt)
-        self.htmlContent.SetHtmlData(txt)
+        self.htmlToc.SetHtmlData(txt)
 
 
         wx.LayoutAlgorithm().LayoutWindow(self, right)
