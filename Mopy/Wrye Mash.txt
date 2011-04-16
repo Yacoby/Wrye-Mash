@@ -1,6 +1,6 @@
 = Wrye Mash ==================================================================
-=== Latest Version: [[http://wrye.ufrealms.net | Wrye Morrowind]] 
-=== Discussion: [[http://www.elderscrolls.com/forums/index.php?showforum=12 | Elder Scrolls Forums]]
+* Latest Version: [[http://wrye.ufrealms.net | Wrye Morrowind]] 
+* Discussion: [[http://www.elderscrolls.com/forums/index.php?showforum=12 | Elder Scrolls Forums]]
 
 == Contents ===================================================================
 {{CONTENTS=2}}
