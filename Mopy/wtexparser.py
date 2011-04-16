@@ -1,5 +1,6 @@
 """
-This is a parser for Wrye Mashes documentation format. It also contains functions to convert it into html
+This is a parser for Wrye Mashes documentation format. 
+It also contains functions to convert it into html
 """
 
 import re
@@ -21,14 +22,19 @@ def dfFlattenDescendants(heading, maxLevel=0):
 
 
 def getHtmlFromHeadings(headings):
-    """Generates HTML for a heading and all decendents based on Wrye's format. Due to wx.html not supporting css,
-     everything is done with HTML"""
+    """
+    Generates HTML for a heading and all decendents based on Wrye's format.
+    Due to wx.html not supporting css, everything is done with HTML
+    """
 
     def htmlDecorator(obj,  prop, val, text):
-        """ This function is passed into the text to decorate it depening on text properties """
+        """
+        This function is passed into the text to decorate it
+        depening on text properties
+        """
         mapping = {
-            'bold'   : lambda: text if val == False else '<strong>' + text + '</strong>', 
-            'italic' : lambda: text if val == False else '<em>' + text + '</em>', 
+            'bold'   : lambda: text if not val else '<strong>' + text + '</strong>', 
+            'italic' : lambda: text if not val else '<em>' + text + '</em>', 
             'href'   : lambda: '<a href="' + obj.href + '">' + text + '</a>', 
         }
         if prop in mapping:
@@ -42,28 +48,34 @@ def getHtmlFromHeadings(headings):
         return html
 
     def getHtmlFromHeading(heading):
-        html = '<a name="' + heading.title.replace(' ','') + '"><strong>' + heading.title + '</strong><br>'
+        html =  ('<a name="' + heading.title.replace(' ','')  
+                +  '"></a><strong>' + heading.title + '</strong><br>')
         for line in heading.getTextLines():
-            html += '&nbsp;'*(line.level-1)*2 + getHtmlFromLine(line.text) + '<br>'
+            html += ('&nbsp;'*(line.level-1)*2
+                    + getHtmlFromLine(line.text) + '<br>')
         return html
 
     html = ''
     for heading in dfFlattenNodeTree(headings):
         html += '<p>' + getHtmlFromHeading(heading) + '</p>'
     return html
-   
+
+
 class Text:
     """
-        A class that holds properties of an text, and can merge with other Text objects
+    A class that holds properties of an text and can merge with other
+    Text objects
     """
     def __init__(self, text):
-        self.text   = text
-        self.bold   = False
+        self.text = text
+        self.bold = False
         self.italic = False
 
     def mergeWith(self, text):
-        """ This merges two Text classes, however, if a property exists in the object the function belongs to
-            it won't be overwitten by text unless it is False. (This is to account for properties such as bold)
+        """
+        This merges two Text classes, however, if a property exists in the
+        object the function belongs to it won't be overwitten by text 
+        unless it is False. (This is to account for properties such as bold)
         """
         for name, val in text.__dict__.iteritems():
             if name in self.__dict__:
@@ -75,19 +87,23 @@ class Text:
         """ 
         Decorates the text by passing each property through the given function.
         The function should be of the form
-            function(textObject, propertyName, propertyValue, currentTextToModify)
+            function(textObject,
+                     propertyName,
+                     propertyValue,
+                     currentTextToModify)
         """
         html = self.text
         for name,value in vars(self).iteritems():
             html = function(self,name,value,html)
-
         return html
+
 
 class Node:
     def __init__(self, parent, level):
-        self.level    = level
+        self.level = level
         self.children = []
-        self.parent   = parent
+        self.parent = parent
+
 
 class HeadingNode(Node):
     """
@@ -106,7 +122,7 @@ class HeadingNode(Node):
 
     def getTextLines(self):
         """
-            returns a generator contain all the text in this node
+        returns a generator contain all the text in this node
         """
         if self.textNode == None:
             return
@@ -117,9 +133,9 @@ class HeadingNode(Node):
 class TextNode(Node):
     def __init__(self, parent, level, text):
         """
-            parent: the parent node
-            level : the distance down the tree, assuming the root is 0
-            text  : a list of Text objects
+        parent: the parent node
+        level : the distance down the tree, assuming the root is 0
+        text  : a list of Text objects
         """
         Node.__init__(self, parent, level)
         self.text = text
@@ -131,20 +147,25 @@ class TextNode(Node):
             result += n.text
         return result
 
-class Parser:
-    """A rough parser for Wrye's wtex format. It doesn't handle it as quite as well as his converter
-    
-    It parses headings into a tree of nodes. Each heading can contain a tree of text nodes below 
-    it (not connected to the heading node tree).
 
-    Each text node contains the parsed text, where each node corisponds to a line
+class Parser:
+    """A parser for Wrye's wtex format.
+    
+    There are some things it has yet to support such as {{CONTENT=#}}
+    
+    It parses headings into a tree of nodes. Each heading can contain a tree of
+    text nodes below it (not connected to the heading node tree).  Each text 
+    node contains the parsed text, where each node corisponds to a line
     """
     def __init__(self):
         self.root = self.currentHeading = Node(None, 0);
-        self.currentText    = None
+        self.currentText = None
 
     def getHeading(self, title):
-        """Gets the first heading with the given title or None if no heading can be found. This is O(n)"""
+        """
+        Gets the first heading with the given title or None if no heading
+        can be found. This is O(n)
+        """
         for h in self.getHeadings():
             if h.title == title:
                 return h
@@ -161,8 +182,7 @@ class Parser:
             
     def parseLine(self, line):
         """Decides what type of line it is and then parses it"""
-        #some sort of heading
-        if line[:1] == '=':
+        if line.startswith('='):
             self.parseHeading(line)
         else:
             self.parseTextLine(line)
@@ -175,7 +195,7 @@ class Parser:
         self.currentHeading = self.insert(self.currentHeading,
                                           level,
                                           lambda p: HeadingNode(p, level, text))
-        assert self.currentHeading!=None, "The current heading shouldn't be None"
+        assert self.currentHeading!=None,"The current heading shouldn't be None"
 
         #we have stopped parsing text, so flag this. This will cause the
         #text to be added to the new current node rather than the old one
@@ -199,56 +219,66 @@ class Parser:
         #we need to move up the tree, so try doing it by one
         #and recheck everything
         elif level <= currentNode.level:
-            assert currentNode.parent != None, "At " + str(currentNode.level) + ", there was no parent when searching for level " + str(level-1)
+            assert currentNode.parent != None, ("At " + str(currentNode.level) 
+                                                + ", there was no parent when"
+                                                + " searching for level "
+                                                + str(level-1))
+
             return self.insert(currentNode.parent, level, creator)
         elif level > currentNode.level:
-            #we don't really know how to move down the tree, but we shal cheat and add it at the best possible level
+            #we don't really know how to move down the tree,
+            #but we shal cheat and add it at the best possible level
             newNode       = creator(currentNode)
             newNode.level = currentNode.level + 1 
             currentNode.children.append(newNode)
             return newNode
         else:
-            raise Exception("This shouldn't have happend, but once it did so is always worth checking for :P")
+            raise Exception("This shouldn't have happend")
 
-    
     def parseText(self, text):
-        """This seperates text into bold, italic, links etc and returns it as a list. It supports nested formatting"""
+        """
+        This seperates text into bold, italic, links etc and returns it as
+        a list. It supports nested formatting
+        """
         origanalText = text
         result       = []
 
         #matches bold, italic and both
-        formattingRegex = '__(.*)__'                \
-                        + '|'                       \
-                        + '~~(.*)~~'                \
-                        + '|'                       \
-                        +  '\\*\\*(.*)\\*\\*'                  
+        formattingRegex = ('__(.*)__'
+                          + '|'
+                          + '~~(.*)~~'
+                          + '|'
+                          +  '\\*\\*(.*)\\*\\*')                  
 
         #matches a url in the form [[href|text]] or [[href]]
-        linkRegex       = '\\[\\['                  \
-                        +   '([^\\|]*)\\|([^\\]]*)' \
-                        + '\\]\\]'                  \
-                        + '|'                       \
-                        + '\\[\\['                  \
-                        +   '([^\\]]*)'              \
-                        + '\\]\\]' 
+        linkRegex       = ('\\[\\['
+                          +   '([^\\|]*)\\|([^\\]]*)' 
+                          + '\\]\\]'
+                          + '|'
+                          + '\\[\\['
+                          +   '([^\\]]*)'
+                          + '\\]\\]' )
 
         #the last line of this matches anything, that isn't
         #assumed to be the start of some of the above formatting
-        regex           = formattingRegex               \
-                        + '|'                           \
-                        + linkRegex                     \
-                        + '|'                           \
-                        + '(.*?(?=\\*\\*|__|~~|\\[\\[|$))'
+        regex           = (formattingRegex               
+                          + '|'                           
+                          + linkRegex                     
+                          + '|'                           
+                          + '(.*?(?=\\*\\*|__|~~|\\[\\[|$))')
 
-        #while we can keep making matches. the text variable is reduced with every match and
-        #then just the remained considered.
-        while len(text):
+        #while we can keep making matches. the text variable
+        #is reduced with every match and then just the remained considered.
+        while text:
             match = re.match(regex, text)
-            if match == None:
+            if not match:
                 return result
 
-            bold, italic, both, linkHref, linkText, onlyLinkText, otherwise = match.groups()
-            matchText = bold or italic or both or linkText or onlyLinkText or otherwise or None
+            (bold, italic, both, linkHref,
+             linkText, onlyLinkText, otherwise) = match.groups()
+
+            matchText = (bold or italic or both
+                         or linkText or onlyLinkText or otherwise or None)
             if matchText != None:
                 t = Text(matchText)
 
@@ -257,7 +287,7 @@ class Parser:
                 if not (t.bold or t.italic):
                     t.bold = t.italic = both != None 
 
-                if linkHref != None or onlyLinkText != None:
+                if linkHref or onlyLinkText:
                     t.href = linkHref or onlyLinkText
                     #converts links that are just # to # and then their text
                     if t.href == '#':
@@ -267,37 +297,39 @@ class Parser:
                 result.append(t)
 
             #could happen, and it would lock the program if it did
-            matchLength = len(match.group(0))
-            if matchLength == 0:
+            if not match.group():
                 break
-            text = text[matchLength:]
+            text = text[len(match.group(0)):]
 
-        #our base case, if the matched text result is exactly the same as the input, then 
-        #we assume that there is nothing more to parse
+        #our base case, if the matched text result is exactly the same 
+        #as the input, then we assume that there is nothing more to parse
         if len(result) == 1 and result[0].text == origanalText:
             return result
 
-        #at all the text, look down a level at the text within each match and merge if required
+        #at all the text, look down a level at the text within each match
+        #and merge if required
         mergedResults = []
         for r in result:
             newResults = self.parseText(r.text)
             #copy the things from this level downwards
             for newResult in newResults:
-                newResult.mergeWith(r) #copy properties down from this level to the one below
+                newResult.mergeWith(r) 
                 mergedResults.append(newResult)
 
         return mergedResults 
 
     def parseTextLine(self, line):
-        """ Parses a line of text that is either text, or starts "   * TEXT", where the number of spaces before the * indicates
-            the indentation level
+        """
+        Parses a line of text that is either text, or starts
+        "   * TEXT", where the number of spaces before the * indicates
+        the indentation level
         """
         match = re.match('([\\s]*)\\* (.+)', line)
 
-        if self.currentHeading.textNode == None or self.currentText == None:
+        if not self.currentHeading.textNode or not self.currentText:
             self.currentText = self.currentHeading.textNode = Node(None, 0)
 
-        if match == None:
+        if not match:
             node = TextNode(self.currentText,
                             1,
                             self.parseText(line))
@@ -313,6 +345,7 @@ class Parser:
                                            level,
                                            lambda p: TextNode(p, level, text))
 
+
 import unittest
 class TestHtml(unittest.TestCase):
     def testGenerate(self):
@@ -320,7 +353,10 @@ class TestHtml(unittest.TestCase):
         p = Parser()
         p.parseString(wtex)
         html = getHtmlFromHeadings(p.getHeading("The Name"))
-        self.assertEqual('<p><strong id="The Name">The Name</strong><br>Some Text<br></p>', html)
+        expected = ( '<p><a name="TheName"></a>'
+                   + '<strong id="The Name">The Name</strong><br>'
+                   + 'Some Text<br></p>')
+        self.assertEqual(expected, html)
 
 
 class TestParser(unittest.TestCase):

@@ -1,13 +1,17 @@
+import os
+
 import wx
 import wx.html
-import os
-import wtexparser
+
 from balt import spacer, vSizer, leftSash
 from mosh import _
+import wtexparser
 
 class TocHtmlWindow(wx.TreeCtrl):
-    """Contains the table of content of the help file.
-    Typically, this is the left panel of the help window."""
+    """
+    Contains the table of content of the help file.
+    Typically, this is the left panel of the help window.
+    """
 
     def SetHtmlData(self, data):
         """data : str : html text"""
@@ -26,8 +30,8 @@ class TocHtmlWindow(wx.TreeCtrl):
 
     def AddSelListener(self, f):
         """
-            This, when given a funcction will call that function with the name of the
-            newly selected item when the selection changes
+        This, when given a funcction will call that function with the name of 
+        the newly selected item when the selection changes
         """
         def PrepForSending(func, event):
             item = event.GetItem()
@@ -41,11 +45,13 @@ class TocHtmlWindow(wx.TreeCtrl):
             self.AddToTree(child, newTreeNode)
 
     def FindItemByText(self, text, currentItem, transform=lambda t:t):
-        """ Searches each node for a text match
-            text: the text to mactch
-            currentItem: the item to start from
-            transform: a method that alters the currentItem text
-                       before it is compared with text
+        """
+        Searches each node for a text match
+
+        text: the text to mactch
+        currentItem: the item to start from
+        transform: a method that alters the currentItem text
+                   before it is compared with text
         """
         if transform(self.GetItemText(currentItem)) == text:
             return currentItem
@@ -60,8 +66,10 @@ class TocHtmlWindow(wx.TreeCtrl):
         
     def GoTo(self, name):
         """ Selects an item that has a text match with name"""
-        item = self.FindItemByText(name,self.treeRoot, lambda t: t.replace(' ', ''))
-        if item != None:
+        item = self.FindItemByText(name,
+                                   self.treeRoot,
+                                   lambda t: t.replace(' ', ''))
+        if item is not None:
             self.SelectItem(item, True)
 
 
@@ -76,7 +84,7 @@ class HelpPage(wx.html.HtmlWindow):
 
     def OnLinkClicked(self, link):
         href = link.GetHref()
-        if href[:1] != '#':
+        if not href.startswith('#'):
             wx.LaunchDefaultBrowser(href)
         else:
             anchor = href[1:]
@@ -90,10 +98,11 @@ class HelpPage(wx.html.HtmlWindow):
 
     def TocSelChanged(self, name):
         heading = self.parser.getHeading(name) 
-        if heading != None:
+        if heading is not None:
             self.SetPage(wtexparser.getHtmlFromHeadings(heading))
         else:
             self.SetPage('')
+
 
 class HelpBrowser(wx.Frame):
     """Help Browser frame."""
@@ -111,7 +120,8 @@ class HelpBrowser(wx.Frame):
         pos  = settings.get('mash.help.pos',(-1,-1))
         size = settings.get('mash.help.size',(400,600))
 
-        wx.Frame.__init__(self, mashFrame, -1, _('Help'), pos, size, style=wx.DEFAULT_FRAME_STYLE)
+        wx.Frame.__init__(self, mashFrame, -1, _('Help'), pos,
+                          size, style=wx.DEFAULT_FRAME_STYLE)
 
         self.SetBackgroundColour(wx.NullColour)
         self.SetSizeHints(250,250)
@@ -124,11 +134,14 @@ class HelpBrowser(wx.Frame):
         sashPos = 250
         if 'mash.help.sashPos' in settings:
             sashPos = settings['mash.help.sashPos']
-        left  = self.left  = leftSash(self,defaultSize=(sashPos,100),onSashDrag=self.OnSashDrag)
+        left = self.left = leftSash(self,defaultSize=(sashPos,100),
+                                    onSashDrag=self.OnSashDrag)
         right = self.right =  wx.Panel(self,style=wx.NO_BORDER)
 
-        self.htmlToc  = TocHtmlWindow(left, -1, style = wx.NO_FULL_REPAINT_ON_RESIZE)
-        self.htmlText = HelpPage(right, -1, style = wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.htmlToc = TocHtmlWindow(left, -1,
+                                     style=wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.htmlText = HelpPage(right, -1,
+                                 style=wx.NO_FULL_REPAINT_ON_RESIZE)
 
 
         left.SetSizer(vSizer((self.htmlToc, 1, wx.GROW)))
@@ -146,10 +159,9 @@ class HelpBrowser(wx.Frame):
         self.htmlText.SetTocObj(self.htmlToc)
 
         path = os.path.join(os.getcwd(), 'Wrye Mash.txt')
-        txt  = open(path).read()
+        txt = open(path).read()
         self.htmlText.SetHtmlData(txt)
         self.htmlToc.SetHtmlData(txt)
-
 
         wx.LayoutAlgorithm().LayoutWindow(self, right)
 
@@ -159,11 +171,8 @@ class HelpBrowser(wx.Frame):
         sashPos = max(wMin,min(wMax,event.GetDragRect().width))
         self.left.SetDefaultSize((sashPos,10))
         wx.LayoutAlgorithm().LayoutWindow(self, self.right)
-        # screensList.picture.Refresh()
         self.settings['mash.help.sashPos'] = sashPos
 
-
-    #--Window Closing
     def OnCloseWindow(self, event):
         """Handle window close event.
         Remember window size, position, etc."""
