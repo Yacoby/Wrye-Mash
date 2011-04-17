@@ -1,4 +1,4 @@
-= Wrye Mash ==================================================================
+= Yacoby's Wrye Mash Fork =====================================================
 * Latest Version: [[http://wrye.ufrealms.net | Wrye Morrowind]] 
 * Discussion: [[http://www.elderscrolls.com/forums/index.php?showforum=12 | Elder Scrolls Forums]]
 
@@ -1078,6 +1078,13 @@ The Mash distribution includes additional files that assist in its operation and
 
 == Versions ===================================================================
 {{CONTENTS=0}}
+=== 85 [In Development]
+* Merged changes with Wrye Mash Standalone
+* Added Ctrl Based mod sorting
+* Improved startup logging
+* Added a "Load All" method (SCOs changes)
+* Totally trashed the help browser trying to remove wx.lib.ie dependacy
+
 === 84 [2/5/2009]
 * [[#|Installers Tab]]: Fix a bug with espm filtering of aliased mods.
 * Baltization: Switch some code to balt.
