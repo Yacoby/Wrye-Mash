@@ -14,9 +14,6 @@ import mosh
 from mosh import _
 from mosh import AbstractError, ArgumentError, StateError, UncodedError
 from mosh import formatInteger,formatDate
-bosh = mosh #--Cheap compatibility for imported code.
-
-#--Python
 import cStringIO
 import os
 import re
@@ -35,8 +32,6 @@ import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from wx.lib.evtmgr import eventManager
 import wx.html
-
-#--Balt
 import balt
 from balt import tooltip, fill, bell
 from balt import bitmapButton, button, toggleButton, checkBox, staticText, spinCtrl
@@ -44,6 +39,18 @@ from balt import leftSash, topSash
 from balt import spacer, hSizer, vSizer, hsbSizer, vsbSizer
 from balt import colors, images, Image
 from balt import Links, Link, SeparatorLink, MenuLink
+from gui.settings import SettingsWindow
+
+from gui.helpbrowser import HelpBrowser
+import conf
+
+bosh = mosh #--Cheap compatibility for imported code.
+
+#--Python
+
+
+
+#--Balt
 
 #--Internet Explorer 
 #  - Make sure that python root directory is in PATH, so can access dll's.
@@ -56,7 +63,6 @@ except (ValueError, ImportError):
     print 'Failed to import ie. Features may not be available and there may be lots of errrors!'
 
 #-# D.C.-G. for SettingsWindow
-from gui.settings import SettingsWindow
 settingsWindow = None
 #-#
 
@@ -71,184 +77,6 @@ docBrowser = None
 journalBrowser = None
 helpBrowser = None
 gInstallers = None
-
-# Settings --------------------------------------------------------------------
-settings = None
-
-#--Load config/defaults
-settingDefaults = {
-    #-# SettingsWindow
-    'mash.settings.show':False,
-    #--Morrowind Directory
-    #get the parent of the current directory
-    'mwDir': os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-    #--Wrye Mash
-    'mash.version': 0,
-    'mash.readme': (0,'84 DCG'),
-    'mash.framePos': (-1,-1),
-    'mash.frameSize': (600,500),
-    'mash.frameSize.min': (400,500),
-    'mash.page':0,
-    #--Wrye Mash: Windows
-    'mash.window.sizes': {},
-    #--Wrye Mash: Load Lists
-    'mash.loadLists.data': {
-        'Bethesda ESMs': [
-            'Morrowind.esm',
-            'Tribunal.esm',
-            'Bloodmoon.esm',
-            ],
-        },
-    #--Wrye Mash: Statistics
-    'mash.fileStats.cols': ['Type','Count','Size'],
-    'mash.fileStats.sort': 'Type',
-    'mash.fileStats.colReverse': {
-        'Count':1,
-        'Size':1,
-        },
-    'mash.fileStats.colWidths': {
-        'Type':50,
-        'Count':50,
-        'Size':75,
-        },
-    'mash.fileStats.colAligns': {
-        'Count':1,
-        'Size':1,
-        },
-    #-# Added for Utilities page.
-    'bash.utils.page':0,
-    #-#
-    #--Installers
-    'bash.installers.page':1,
-    'bash.installers.enabled': True,
-    'bash.installers.autoAnneal': True,
-    'bash.installers.fastStart': True,
-    'bash.installers.removeEmptyDirs':True,
-    'bash.installers.skipDistantLOD':False,
-    'bash.installers.sortProjects':True,
-    'bash.installers.sortActive':False,
-    'bash.installers.sortStructure':False,
-    'bash.installers.conflictsReport.showLower':True,
-    'bash.installers.conflictsReport.showInactive':False,
-    #--Wrye Bash: Screens
-    'bash.screens.cols': ['File'],
-    'bash.screens.sort': 'File',
-    'bash.screens.colReverse': {
-        'Modified':1,
-        },
-    'bash.screens.colWidths': {
-        'File':150,
-        'Modified':150,
-        'Size':75,
-        },
-    'bash.screens.colAligns': {},
-    #--Wrye Mash: Group and Rating
-    'mash.mods.groups': ['Body','Bethesda','Clothes','Creature','Fix','Last','Test','Game','GFX','Location','Misc.','NPC','Quest','Race','Resource','Sound'],
-    'mash.mods.ratings': ['+','1','2','3','4','5','=','~'],
-    #--Wrye Mash: RefRemovers
-    'mash.refRemovers.data': {
-        },
-    'mash.refRemovers.safeCells': [
-        _("Balmora, Caius Cosades' House"),
-        _("Indarys Manor"),
-        _("Raven Rock, Factor's Estate"),
-        _("Rethan Manor"),
-        _("Skaal Village, The Blodskaal's House"),
-        _("Solstheim, Thirsk"),
-        _("Tel Uvirith, Tower Lower"),
-        _("Tel Uvirith, Tower Upper"),
-        ],
-    #--Wrye Mash: RefReplacers
-    'mash.refReplacers.data': {
-        },
-    #--Wrye Mash: Col (Sort) Names
-    'mash.colNames': {
-        'Author': _('Author'),
-        'Cell': _('Cell'),
-        'Count': _('Count'),
-        'Day': _('Day'),
-        'File': _('File'),
-        'Rating': _('Rating'),
-        'Group': _('Group'),
-        'Load Order': _('Load Order'),
-        'Modified': _('Modified'),
-        'Num': _('Num'),
-        'Player': _('Player'),
-        'Rating':_('Rating'),
-        'Save Name': _('Save Name'),
-        'Size': _('Size'),
-        'Status': _('Status'),
-        'Type': _('Type'),
-        'Version': _('Version'),
-        },
-    #--Wrye Mash: Masters
-    'mash.masters.cols': ['File','Num'],
-    'mash.masters.esmsFirst': 1,
-    'mash.masters.selectedFirst': 0,
-    'mash.masters.sort': 'Load Order',
-    'mash.masters.colReverse': {},
-    'mash.masters.colWidths': {
-        'File':80,
-        'Num':20,
-        },
-    'mash.masters.colAligns': {
-        'Num':1,
-        },
-    #--Wrye Mash: Mod Notes
-    'mash.modNotes.show': False,
-    'mash.modNotes.size': (200,300),
-    'mash.modNotes.pos': wx.DefaultPosition,
-    #--Wrye Mash: Mod Docs
-    'mash.modDocs.show': False,
-    'mash.modDocs.size': (300,400),
-    'mash.modDocs.pos': wx.DefaultPosition,
-    'mash.modDocs.dir': None,
-    #--Wrye Mash: Mods
-    'mash.mods.cols': ['File','Rating','Group','Modified','Size','Author'],
-    'mash.mods.esmsFirst': 1,
-    'mash.mods.selectedFirst': 0,
-    'mash.mods.sort': 'File',
-    'mash.mods.colReverse': {},
-    'mash.mods.colWidths': {
-        'File':200,
-        'Rating':20,
-        'Group':20,
-        'Rating':20,
-        'Modified':150,
-        'Size':75,
-        'Author':100,
-        },
-    'mash.mods.colAligns': {
-        'Size':1,
-        },
-    'mash.mods.renames': {},
-    #--Wrye Mash: Journal
-    'mash.journal.show': False,
-    'mash.journal.size': (300,400),
-    'mash.journal.pos': wx.DefaultPosition,
-    #--Wrye Mash: Save Sets
-    'mash.saves.sets': [],
-    #--Wrye Mash: Saves
-    'mash.saves.cols': ['File','Modified','Size','Save Name','Player','Cell'],
-    'mash.saves.sort': 'Modified',
-    'mash.saves.colReverse': {
-        'Modified':1,
-        },
-    'mash.saves.colWidths': {
-        'File':150,
-        'Modified':150,
-        'Size':75,
-        'Save Name':100,
-        'Player':100,
-        'Cell':150,
-        'Day':30,
-        },
-    'mash.saves.colAligns': {
-        'Size':1,
-        },
-    #--Wrye Mash: World Map Reapir
-    'mash.worldMap.gridLines':True,
-    }
 
 # Exceptions ------------------------------------------------------------------
 class MashError(mosh.MoshError):
@@ -351,8 +179,8 @@ def InfoMessage(parent,message,title=_('Information'),style=(wx.OK|wx.ICON_INFOR
 
 def LogMessage(parent,message,logText,title='',style=0,asDialog=True):
     #--Query Dialog
-    pos = settings.get('mash.message.log.pos',wx.DefaultPosition)
-    size = settings.get('mash.message.log.size',(400,400))
+    pos = conf.settings.get('mash.message.log.pos',wx.DefaultPosition)
+    size = conf.settings.get('mash.message.log.size',(400,400))
     if asDialog:
         window = wx.Dialog(parent,-1,title,pos=pos,size=size,
             style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
@@ -370,8 +198,8 @@ def LogMessage(parent,message,logText,title='',style=0,asDialog=True):
     if asDialog:
         window.ShowModal()
         #--Done
-        settings['mash.message.log.pos'] = window.GetPosition()
-        settings['mash.message.log.size'] = window.GetSizeTuple()
+        conf.settings['mash.message.log.pos'] = window.GetPosition()
+        conf.settings['mash.message.log.size'] = window.GetSizeTuple()
         window.Destroy()
     else:
         window.Show()
@@ -380,7 +208,7 @@ def ContinueQuery(parent,message,continueKey,title=_('Warning')):
     """Shows a modal continue query if value of continueKey is false. Returns True to continue.
     Also provides checkbox "Don't show this in future." to set continueKey to true."""
     #--ContinueKey set?
-    if settings.get(continueKey): return wx.ID_OK
+    if conf.settings.get(continueKey): return wx.ID_OK
     #--Generate/show dialog
     dialog = wx.Dialog(parent,-1,title,size=(350,200),style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
     sizer = wx.BoxSizer(wx.VERTICAL)
@@ -398,7 +226,7 @@ def ContinueQuery(parent,message,continueKey,title=_('Warning')):
     #--Get continue key setting and return
     result = dialog.ShowModal()
     if checkBox.GetValue():
-        settings[continueKey] = 1
+        conf.settings[continueKey] = 1
     return result
 
 def DirDialog(parent,message=_('Choose a directory.'),defaultPath=''):
@@ -654,9 +482,9 @@ class ListEditorDialog(wx.Dialog):
                 wx.EVT_BUTTON(self,wx.ID_DELETE,self.DoRemove)
             sizer.Add(sizer_v1,0,wx.EXPAND)
         #--Done
-        if data.__class__ in settings['mash.window.sizes']:
+        if data.__class__ in conf.settings['mash.window.sizes']:
             self.SetSizer(sizer)
-            self.SetSize(settings['mash.window.sizes'][data.__class__])
+            self.SetSize(conf.settings['mash.window.sizes'][data.__class__])
         else:
             self.SetSizerAndFit(sizer)
 
@@ -731,7 +559,7 @@ class ListEditorDialog(wx.Dialog):
     def OnCloseWindow(self, event):
         """Handle window close event.
         Remember window size, position, etc."""
-        sizes = settings.getChanged('mash.window.sizes')
+        sizes = conf.settings.getChanged('mash.window.sizes')
         sizes[self.data.__class__] = self.GetSizeTuple()
         self.Destroy()
 
@@ -942,11 +770,11 @@ class MasterList(List):
     def __init__(self,parent,fileInfo):
         self.parent = parent
         #--Columns
-        self.cols = settings['mash.masters.cols']
-        self.colNames = settings['mash.colNames']
-        self.colWidths = settings['mash.masters.colWidths']
-        self.colAligns = settings['mash.masters.colAligns']
-        self.colReverse = settings['mash.masters.colReverse'].copy()
+        self.cols = conf.settings['mash.masters.cols']
+        self.colNames = conf.settings['mash.colNames']
+        self.colWidths = conf.settings['mash.masters.colWidths']
+        self.colAligns = conf.settings['mash.masters.colAligns']
+        self.colReverse = conf.settings['mash.masters.colReverse'].copy()
         #--Data/Items
         self.edited = False
         self.fileInfo = fileInfo
@@ -957,9 +785,9 @@ class MasterList(List):
         self.oldMasters = []
         self.newMasters = []
         self.allMasters = [] #--Used for sorting
-        self.sort = settings['mash.masters.sort']
-        self.esmsFirst = settings['mash.masters.esmsFirst']
-        self.selectedFirst = settings['mash.masters.selectedFirst']
+        self.sort = conf.settings['mash.masters.sort']
+        self.esmsFirst = conf.settings['mash.masters.esmsFirst']
+        self.selectedFirst = conf.settings['mash.masters.selectedFirst']
         #--Links
         self.mainMenu = MasterList.mainMenu
         self.itemMenu = MasterList.itemMenu
@@ -987,7 +815,7 @@ class MasterList(List):
                 self.allMasters.append(newName)
             self.ReList()
             self.PopulateItem(itemDex)
-            settings.getChanged('mash.mods.renames')[masterInfo.oldName] = newName
+            conf.settings.getChanged('mash.mods.renames')[masterInfo.oldName] = newName
         elif newName == '':
             event.Veto()
         else:
@@ -1118,7 +946,7 @@ class MasterList(List):
         #--Ascending
         if reverse: self.items.reverse()
         #--ESMs First?
-        settings['mash.masters.esmsFirst'] = self.esmsFirst
+        conf.settings['mash.masters.esmsFirst'] = self.esmsFirst
         if self.esmsFirst or col == 'Load Order':
             self.items.sort(key=lambda a:data[a].name[-1].lower())
 
@@ -1213,7 +1041,7 @@ class MasterList(List):
             #--Missing Master?
             if not masterInfo.modInfo:
                 masterName = masterInfo.name
-                newName = settings['mash.mods.renames'].get(masterName,None)
+                newName = conf.settings['mash.mods.renames'].get(masterName,None)
                 #--Rename?
                 if newName and mosh.modInfos.has_key(newName):
                     masterInfo.setName(newName)
@@ -1258,7 +1086,7 @@ class MasterList(List):
         colDex = event.GetColumn()
         colName = self.cols[colDex]
         self.colWidths[colName] = self.list.GetColumnWidth(colDex)
-        settings.setChanged('mash.masters.colWidths')
+        conf.settings.setChanged('mash.masters.colWidths')
 
     #--Event: Left Down
     def OnLeftDown(self,event):
@@ -1331,17 +1159,17 @@ class ModList(List):
 
     def __init__(self,parent):
         #--Columns
-        self.cols = settings['mash.mods.cols']
-        self.colAligns = settings['mash.mods.colAligns']
-        self.colNames = settings['mash.colNames']
-        self.colReverse = settings.getChanged('mash.mods.colReverse')
-        self.colWidths = settings['mash.mods.colWidths']
+        self.cols = conf.settings['mash.mods.cols']
+        self.colAligns = conf.settings['mash.mods.colAligns']
+        self.colNames = conf.settings['mash.colNames']
+        self.colReverse = conf.settings.getChanged('mash.mods.colReverse')
+        self.colWidths = conf.settings['mash.mods.colWidths']
         #--Data/Items
         self.data = data = mosh.modInfos
         self.details = None #--Set by panel
-        self.sort = settings['mash.mods.sort']
-        self.esmsFirst = settings['mash.mods.esmsFirst']
-        self.selectedFirst = settings['mash.mods.selectedFirst']
+        self.sort = conf.settings['mash.mods.sort']
+        self.esmsFirst = conf.settings['mash.mods.esmsFirst']
+        self.selectedFirst = conf.settings['mash.mods.selectedFirst']
         #--Links
         self.mainMenu = ModList.mainMenu
         self.itemMenu = ModList.itemMenu
@@ -1433,7 +1261,7 @@ class ModList(List):
     #--Sort Items
     def SortItems(self,col=None,reverse=-2):
         (col, reverse) = self.GetSortSettings(col,reverse)
-        settings['mash.mods.sort'] = col
+        conf.settings['mash.mods.sort'] = col
         loadFiles = mosh.mwIniFile.loadFiles
         data = self.data
         #--Start with sort by name
@@ -1463,11 +1291,11 @@ class ModList(List):
         #--Ascending
         if reverse: self.items.reverse()
         #--ESMs First?
-        settings['mash.mods.esmsFirst'] = self.esmsFirst
+        conf.settings['mash.mods.esmsFirst'] = self.esmsFirst
         if self.esmsFirst or col == 'Load Order':
             self.items.sort(lambda a,b: cmp(a[-4:].lower(),b[-4:].lower()))
         #--Selected First?
-        settings['mash.mods.selectedFirst'] = self.selectedFirst
+        conf.settings['mash.mods.selectedFirst'] = self.selectedFirst
         if self.selectedFirst:
             self.items.sort(lambda a,b: cmp(b in loadFiles, a in loadFiles))
 
@@ -1479,7 +1307,7 @@ class ModList(List):
         fileInfo = self.data[self.items[hitItem]]
         if not docBrowser: 
             DocBrowser().Show()
-            settings['mash.modDocs.show'] = True
+            conf.settings['mash.modDocs.show'] = True
         docBrowser.SetMod(fileInfo.name)
         docBrowser.Raise()
 
@@ -1495,7 +1323,7 @@ class ModList(List):
         colDex = event.GetColumn()
         colName = self.cols[colDex]
         self.colWidths[colName] = self.list.GetColumnWidth(colDex)
-        settings.setChanged('mash.mods.colWidths')
+        conf.settings.setChanged('mash.mods.colWidths')
 
     #--Event: Left Down
     def OnLeftDown(self,event):
@@ -1594,7 +1422,7 @@ class ModList(List):
         if event.ControlDown() == False :
             return
 
-        if settings['mash.mods.sort'] != 'Modified':
+        if conf.settings['mash.mods.sort'] != 'Modified':
             print 'Must be sorted by Modified to enable ctrl based sorting'
             return
         
@@ -1760,7 +1588,7 @@ class ModDetails(wx.Window):
         """Event: Clicked Doc Browser button."""
         if not docBrowser: 
             DocBrowser().Show()
-            settings['mash.modDocs.show'] = True
+            conf.settings['mash.modDocs.show'] = True
         if self.modInfo:
             docBrowser.SetMod(self.modInfo.name)
         docBrowser.Raise()
@@ -1851,7 +1679,7 @@ class ModDetails(wx.Window):
         if changeName:
             (oldName,newName) = (modInfo.name,self.fileStr.strip())
             modList.items[modList.items.index(oldName)] = newName
-            settings.getChanged('mash.mods.renames')[oldName] = newName
+            conf.settings.getChanged('mash.mods.renames')[oldName] = newName
             mosh.modInfos.rename(oldName,newName)
             fileName = newName
         #--Change hedr?
@@ -1929,15 +1757,15 @@ class SaveList(List):
 
     def __init__(self,parent):
         #--Columns
-        self.cols = settings['mash.saves.cols']
-        self.colAligns = settings['mash.saves.colAligns']
-        self.colNames = settings['mash.colNames']
-        self.colReverse = settings.getChanged('mash.saves.colReverse')
-        self.colWidths = settings['mash.saves.colWidths']
+        self.cols = conf.settings['mash.saves.cols']
+        self.colAligns = conf.settings['mash.saves.colAligns']
+        self.colNames = conf.settings['mash.colNames']
+        self.colReverse = conf.settings.getChanged('mash.saves.colReverse')
+        self.colWidths = conf.settings['mash.saves.colWidths']
         #--Data/Items
         self.data = data = mosh.saveInfos
         self.details = None #--Set by panel
-        self.sort = settings['mash.saves.sort']
+        self.sort = conf.settings['mash.saves.sort']
         #--Links
         self.mainMenu = SaveList.mainMenu
         self.itemMenu = SaveList.itemMenu
@@ -2009,7 +1837,7 @@ class SaveList(List):
     #--Sort Items
     def SortItems(self,col=None,reverse=-2):
         (col, reverse) = self.GetSortSettings(col,reverse)
-        settings['mash.saves.sort'] = col
+        conf.settings['mash.saves.sort'] = col
         data = self.data
         #--Start with sort by name
         self.items.sort(lambda a,b: cmp(a.lower(),b.lower()))
@@ -2044,7 +1872,7 @@ class SaveList(List):
         colDex = event.GetColumn()
         colName = self.cols[colDex]
         self.colWidths[colName] = self.list.GetColumnWidth(colDex)
-        settings.setChanged('mash.saves.colWidths')
+        conf.settings.setChanged('mash.saves.colWidths')
 
     def OnItemSelected(self,event=None):
         saveName = self.items[event.m_itemIndex]
@@ -2195,7 +2023,7 @@ class SaveDetails(wx.Window):
         """Event: Clicked Journal Browser button."""
         if not journalBrowser: 
             JournalBrowser().Show()
-            settings['mash.journal.show'] = True
+            conf.settings['mash.journal.show'] = True
         if self.saveInfo:
             journalBrowser.SetSave(self.saveInfo.name)
         journalBrowser.Raise()
@@ -2360,7 +2188,7 @@ class InstallersPanel(SashTankPanel):
             gPage = wx.TextCtrl(self.gNotebook,-1,style=wx.TE_MULTILINE|wx.TE_READONLY|wx.HSCROLL,name=name)
             self.gNotebook.AddPage(gPage,title)
             self.infoPages.append([gPage,False])
-        self.gNotebook.SetSelection(settings['bash.installers.page'])
+        self.gNotebook.SetSelection(conf.settings['bash.installers.page'])
         self.gNotebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED,self.OnShowInfoPage)
         #--Sub-Intallers
         self.gSubList = wx.CheckListBox(right,-1)
@@ -2402,11 +2230,11 @@ class InstallersPanel(SashTankPanel):
 
     def OnShow(self):
         """Panel is shown. Update self.data."""
-        if settings.get('bash.installers.isFirstRun',True):
-            settings['bash.installers.isFirstRun'] = False
+        if conf.settings.get('bash.installers.isFirstRun',True):
+            conf.settings['bash.installers.isFirstRun'] = False
             message = _("Do you want to enable Installers If you do, Bash will first need to initialize some data. If you have many mods installed, this can take on the order of five minutes.\n\nIf you prefer to not enable Installers at this time, you can always enable it later from the column header context menu.")
-            settings['bash.installers.enabled'] = balt.askYes(self,fill(message,80),self.data.title)
-        if not settings['bash.installers.enabled']: return
+            conf.settings['bash.installers.enabled'] = balt.askYes(self,fill(message,80),self.data.title)
+        if not conf.settings['bash.installers.enabled']: return
         if self.refreshing: return
         data = self.gList.data
         if not self.refreshed or (self.frameActivated and (
@@ -2448,7 +2276,7 @@ class InstallersPanel(SashTankPanel):
     #--Details view (if it exists)
     def SaveDetails(self):
         """Saves details if they need saving."""
-        settings['bash.installers.page'] = self.gNotebook.GetSelection()
+        conf.settings['bash.installers.page'] = self.gNotebook.GetSelection()
         if not self.detailsItem: return
         if not self.gComments.IsModified(): return
         installer = self.data[self.detailsItem]
@@ -2621,14 +2449,14 @@ class ScreensList(List):
 
     def __init__(self,parent):
         #--Columns
-        self.cols = settings['bash.screens.cols']
-        self.colAligns = settings['bash.screens.colAligns']
-        self.colNames = settings['mash.colNames']
-        self.colReverse = settings.getChanged('bash.screens.colReverse')
-        self.colWidths = settings['bash.screens.colWidths']
+        self.cols = conf.settings['bash.screens.cols']
+        self.colAligns = conf.settings['bash.screens.colAligns']
+        self.colNames = conf.settings['mash.colNames']
+        self.colReverse = conf.settings.getChanged('bash.screens.colReverse')
+        self.colWidths = conf.settings['bash.screens.colWidths']
         #--Data/Items
         self.data = bosh.screensData = bosh.ScreensData()
-        self.sort = settings['bash.screens.sort']
+        self.sort = conf.settings['bash.screens.sort']
         #--Links
         self.mainMenu = ScreensList.mainMenu
         self.itemMenu = ScreensList.itemMenu
@@ -2684,7 +2512,7 @@ class ScreensList(List):
     #--Sort Items
     def SortItems(self,col=None,reverse=-2):
         (col, reverse) = self.GetSortSettings(col,reverse)
-        settings['bash.screens.sort'] = col
+        conf.settings['bash.screens.sort'] = col
         data = self.data
         #--Start with sort by name
         self.items.sort()
@@ -2703,7 +2531,7 @@ class ScreensList(List):
         colDex = event.GetColumn()
         colName = self.cols[colDex]
         self.colWidths[colName] = self.list.GetColumnWidth(colDex)
-        settings.setChanged('bash.screens.colWidths')
+        conf.settings.setChanged('bash.screens.colWidths')
 
     def OnItemSelected(self,event=None):
         fileName = self.items[event.m_itemIndex]
@@ -2718,7 +2546,7 @@ class ScreensPanel(NotebookPanel):
         """Initialize."""
         wx.Panel.__init__(self, parent, -1)
         #--Left
-        sashPos = settings.get('bash.screens.sashPos',120)
+        sashPos = conf.settings.get('bash.screens.sashPos',120)
         left = self.left = leftSash(self,defaultSize=(sashPos,100),onSashDrag=self.OnSashDrag)
         right = self.right =  wx.Panel(self,style=wx.NO_BORDER)
         #--Contents
@@ -2745,7 +2573,7 @@ class ScreensPanel(NotebookPanel):
         self.left.SetDefaultSize((sashPos,10))
         wx.LayoutAlgorithm().LayoutWindow(self, self.right)
         screensList.picture.Refresh()
-        settings['bash.screens.sashPos'] = sashPos
+        conf.settings['bash.screens.sashPos'] = sashPos
 
     def OnSize(self,event=None):
         wx.LayoutAlgorithm().LayoutWindow(self, self.right)
@@ -2846,14 +2674,14 @@ class UtilsList(List):
 
     def __init__(self,parent):
         #--Columns
-        self.cols = settings['bash.screens.cols']
-        self.colAligns = settings['bash.screens.colAligns']
-        self.colNames = settings['mash.colNames']
-        self.colReverse = settings.getChanged('bash.screens.colReverse')
-        self.colWidths = settings['bash.screens.colWidths']
+        self.cols = conf.settings['bash.screens.cols']
+        self.colAligns = conf.settings['bash.screens.colAligns']
+        self.colNames = conf.settings['mash.colNames']
+        self.colReverse = conf.settings.getChanged('bash.screens.colReverse')
+        self.colWidths = conf.settings['bash.screens.colWidths']
         #--Data/Items
         self.data = bosh.utilsData = bosh.UtilsData()
-        self.sort = settings['bash.screens.sort']
+        self.sort = conf.settings['bash.screens.sort']
         #--Links
         self.mainMenu = UtilsList.mainMenu
         self.itemMenu = UtilsList.itemMenu
@@ -2910,7 +2738,7 @@ class UtilsList(List):
     #--Sort Items
     def SortItems(self,col=None,reverse=-2):
         (col, reverse) = self.GetSortSettings(col,reverse)
-        settings['bash.screens.sort'] = col
+        conf.settings['bash.screens.sort'] = col
         data = self.data
         #--Start with sort by name
         self.items.sort()
@@ -2929,7 +2757,7 @@ class UtilsList(List):
         colDex = event.GetColumn()
         colName = self.cols[colDex]
         self.colWidths[colName] = self.list.GetColumnWidth(colDex)
-        settings.setChanged('bash.screens.colWidths')
+        conf.settings.setChanged('bash.screens.colWidths')
 
     def OnItemSelected(self,event=None):
         """..."""
@@ -3041,7 +2869,7 @@ class UtilsPanel(NotebookPanel):
         """Initialize."""
         wx.Panel.__init__(self, parent, -1)
         #--Left
-        sashPos = settings.get('bash.screens.sashPos',120)
+        sashPos = conf.settings.get('bash.screens.sashPos',120)
         left = self.left = leftSash(self,defaultSize=(sashPos,100),onSashDrag=self.OnSashDrag)
         right = self.right =  wx.Panel(self,style=wx.NO_BORDER)
         #--Contents
@@ -3076,7 +2904,7 @@ class UtilsPanel(NotebookPanel):
         self.left.SetDefaultSize((sashPos,10))
         wx.LayoutAlgorithm().LayoutWindow(self, self.right)
         # screensList.picture.Refresh()
-        settings['bash.screens.sashPos'] = sashPos
+        conf.settings['bash.screens.sashPos'] = sashPos
 
     def OnSize(self,event=None):
         wx.LayoutAlgorithm().LayoutWindow(self, self.right)
@@ -3101,10 +2929,10 @@ class MashNotebook(wx.Notebook):
         self.AddPage(SavePanel(self),_("Saves"))
         self.AddPage(ScreensPanel(self),_("Screenshots"))
         #--Selection
-        pageIndex = settings['mash.page']
+        pageIndex = conf.settings['mash.page']
         #-# Canged for Utilities page
         # if settings['bash.installers.fastStart'] and pageIndex == 0:
-        if settings['bash.installers.fastStart'] and pageIndex == 1:
+        if conf.settings['bash.installers.fastStart'] and pageIndex == 1:
         #-#
             pageIndex = 1
         self.SetSelection(pageIndex)
@@ -3166,7 +2994,7 @@ class MashFrame(wx.Frame):
         mashFrame = self
         #--Window
         wx.Frame.__init__(self, parent, -1, 'Wrye Mash', pos, size,style)
-        minSize = settings['mash.frameSize.min']
+        minSize = conf.settings['mash.frameSize.min']
         self.SetSizeHints(minSize[0],minSize[1])
         self.SetTitle()
         #--Application Icons
@@ -3190,9 +3018,9 @@ class MashFrame(wx.Frame):
     def SetTitle(self,title=None):
         """Set title. Set to default if no title supplied."""
         if not title:
-            title = "Wrye Mash %s" % (settings['mash.readme'][1],)
-            if 'mash.profile' in settings:
-                title += ': ' + settings['mash.profile']
+            title = "Wrye Mash %s" % (conf.settings['mash.readme'][1],)
+            if 'mash.profile' in conf.settings:
+                title += ': ' + conf.settings['mash.profile']
         wx.Frame.SetTitle(self,title)
 
     def SetStatusCount(self):
@@ -3267,9 +3095,9 @@ class MashFrame(wx.Frame):
         self.CleanSettings()
         if docBrowser: docBrowser.DoSave()
         if not self.IsIconized() and not self.IsMaximized():
-            settings['mash.framePos'] = self.GetPosition()
-            settings['mash.frameSize'] = self.GetSizeTuple()
-        settings['mash.page'] = self.notebook.GetSelection()
+            conf.settings['mash.framePos'] = self.GetPosition()
+            conf.settings['mash.frameSize'] = self.GetSizeTuple()
+        conf.settings['mash.page'] = self.notebook.GetSelection()
         mosh.modInfos.table.save()
         for index in range(self.notebook.GetPageCount()):
             self.notebook.GetPage(index).OnCloseWindow()
@@ -3279,7 +3107,7 @@ class MashFrame(wx.Frame):
         gInstallers.SaveCfgFile()
         #-#
         event.Skip()
-        settings.save()
+        conf.settings.save()
         self.Destroy()
 
     def CleanSettings(self):
@@ -3294,7 +3122,7 @@ class MashFrame(wx.Frame):
         #--Clean backup
         for fileInfos in (mosh.modInfos,mosh.saveInfos):
             goodNames = set(fileInfos.data.keys())
-            backupDir = os.path.join(fileInfos.dir,settings['mosh.fileInfo.backupDir'])
+            backupDir = os.path.join(fileInfos.dir,conf.settings['mosh.fileInfo.backupDir'])
             if not os.path.isdir(backupDir): continue
             for name in sorted(os.listdir(backupDir)):
                 path = os.path.join(backupDir,name)
@@ -3318,8 +3146,8 @@ class DocBrowser(wx.Frame):
         global docBrowser
         docBrowser = self
         #--Window
-        pos = settings['mash.modDocs.pos']
-        size = settings['mash.modDocs.size']
+        pos = conf.settings['mash.modDocs.pos']
+        size = conf.settings['mash.modDocs.size']
         wx.Frame.__init__(self, mashFrame, -1, _('Doc Browser'), pos, size,
             style=wx.DEFAULT_FRAME_STYLE)
         self.SetBackgroundColour(wx.NullColour)
@@ -3440,8 +3268,8 @@ class DocBrowser(wx.Frame):
         if modName in self.data:
             (docsDir,fileName) = os.path.split(self.data[modName])
         else:
-            docsDir = (settings['mash.modDocs.dir'] or
-                os.path.join(settings['mwDir'],'Data Files'))
+            docsDir = (conf.settings['mash.modDocs.dir'] or
+                os.path.join(conf.settings['mwDir'],'Data Files'))
             fileName = ''
         #--Dialog
         dialog = wx.FileDialog(self,_("Select doc for %s:") % (modName,),
@@ -3451,7 +3279,7 @@ class DocBrowser(wx.Frame):
             return None
         path = dialog.GetPath()
         dialog.Destroy()
-        settings['mash.modDocs.dir'] = os.path.split(path)[0]
+        conf.settings['mash.modDocs.dir'] = os.path.split(path)[0]
         if modName not in self.data:
             self.modNameList.Append(modName)
         self.data[modName] = path
@@ -3479,7 +3307,7 @@ class DocBrowser(wx.Frame):
             if os.path.exists(newHtml): os.remove(newHtml)
             if os.path.exists(oldHtml): os.rename(oldHtml,newHtml)
         #--Remember change
-        settings['mosh.workDir'] = os.path.split(path)[0]
+        conf.settings['mosh.workDir'] = os.path.split(path)[0]
         self.data[modName] = path
         self.SetMod(modName)
 
@@ -3595,10 +3423,10 @@ class DocBrowser(wx.Frame):
         """Handle window close event.
         Remember window size, position, etc."""
         self.DoSave()
-        settings['mash.modDocs.show'] = False
+        conf.settings['mash.modDocs.show'] = False
         if not self.IsIconized() and not self.IsMaximized():
-            settings['mash.modDocs.pos'] = self.GetPosition()
-            settings['mash.modDocs.size'] = self.GetSizeTuple()
+            conf.settings['mash.modDocs.pos'] = self.GetPosition()
+            conf.settings['mash.modDocs.size'] = self.GetSizeTuple()
         self.Destroy()
 
 #------------------------------------------------------------------------------
@@ -3615,8 +3443,8 @@ class JournalBrowser(wx.Frame):
         global journalBrowser
         journalBrowser = self
         #--Window
-        pos = settings['mash.journal.pos']
-        size = settings['mash.journal.size']
+        pos = conf.settings['mash.journal.pos']
+        size = conf.settings['mash.journal.size']
         wx.Frame.__init__(self, mashFrame, -1, _('Journal'), pos, size,
             style=wx.DEFAULT_FRAME_STYLE)
         self.SetBackgroundColour(wx.NullColour)
@@ -3651,13 +3479,12 @@ class JournalBrowser(wx.Frame):
     def OnCloseWindow(self, event):
         """Handle window close event.
         Remember window size, position, etc."""
-        settings['mash.journal.show'] = False
+        conf.settings['mash.journal.show'] = False
         if not self.IsIconized() and not self.IsMaximized():
-            settings['mash.journal.pos'] = self.GetPosition()
-            settings['mash.journal.size'] = self.GetSizeTuple()
+            conf.settings['mash.journal.pos'] = self.GetPosition()
+            conf.settings['mash.journal.size'] = self.GetSizeTuple()
         self.Destroy()
 
-from gui.helpbrowser import HelpBrowser
 
 #------------------------------------------------------------------------------
 class MashApp(wx.App):
@@ -3674,22 +3501,22 @@ class MashApp(wx.App):
             wx.Locale(wx.LOCALE_LOAD_DEFAULT)
         #--MWFrame
         frame = MashFrame(
-            pos=settings['mash.framePos'], 
-            size=settings['mash.frameSize'])
+            pos=conf.settings['mash.framePos'], 
+            size=conf.settings['mash.frameSize'])
         self.SetTopWindow(frame)
         frame.Show()
         #--DocBrowser, JournalBrowser
-        if settings['mash.modDocs.show']:
+        if conf.settings['mash.modDocs.show']:
             DocBrowser().Show()
-        if settings['mash.journal.show']:
+        if conf.settings['mash.journal.show']:
             JournalBrowser().Show()
-        if settings.get('mash.help.show'):
-            HelpBrowser(mashFrame, images, settings).Show()
+        if conf.settings.get('mash.help.show'):
+            HelpBrowser(mashFrame, images, conf.settings).Show()
         #-# D.C.-G. for SettingsWindow
-        if settings['mash.settings.show']:
+        if conf.settings['mash.settings.show']:
             global settingsWindow
             settingsWindow = SettingsWindow()
-            settingsWindow.SetSettings(settings, Inst=mosh.dirs["installers"].s)
+            settingsWindow.SetSettings(conf.settings, Inst=mosh.dirs["installers"].s)
             settingsWindow.Show()
         #-#
         return True
@@ -3699,11 +3526,11 @@ class MashApp(wx.App):
         #--Try parent directory.
         parentDir = os.path.split(os.getcwd())[0]
         if os.path.exists(os.path.join(parentDir,'Morrowind.ini')):
-            settings['mwDir'] = parentDir
+            conf.settings['mwDir'] = parentDir
             mosh.dirs['app'] = GPath(parentDir)
             return True
         #--Already set?
-        if os.path.exists(os.path.join(settings['mwDir'],'Morrowind.ini')): 
+        if os.path.exists(os.path.join(conf.settings['mwDir'],'Morrowind.ini')): 
             return True
         #--Ask user through dialog.
         while True:
@@ -3716,7 +3543,7 @@ class MashApp(wx.App):
                 return False
             #--Valid Morrowind install directory?
             elif os.path.exists(os.path.join(mwDir,'Morrowind.ini')): 
-                settings['mwDir'] = mwDir
+                conf.settings['mwDir'] = mwDir
                 mosh.dirs['app'] = GPath(mwDir)
                 return True
             #--Retry?
@@ -3730,7 +3557,7 @@ class MashApp(wx.App):
 
     def InitData(self):
         """Initialize all data. Called by OnInit()."""
-        mwDir = settings['mwDir']
+        mwDir = conf.settings['mwDir']
         mosh.dirs['app'] = GPath(mwDir)
         mosh.mwIniFile = mosh.MWIniFile(mwDir)
         mosh.mwIniFile.refresh()
@@ -3741,15 +3568,15 @@ class MashApp(wx.App):
 
     def InitVersion(self):
         """Peform any version to version conversion. Called by OnInit()."""
-        version = settings['mash.version']
+        version = conf.settings['mash.version']
         #--Version 0.42: MTimes from settings to ModInfos.table.
         if version < 42:
             mtimeKey = 'mosh.modInfos.mtimes'
-            if mtimeKey in settings:
+            if mtimeKey in conf.settings:
                 modCol = mosh.modInfos.table.getColumn('mtime')
-                for key,value in settings[mtimeKey].items():
+                for key,value in conf.settings[mtimeKey].items():
                     modCol[key] = value[0]
-                del settings[mtimeKey]
+                del conf.settings[mtimeKey]
         #--Version 0.50 (0.60?): Genre to group
         if version < 60:
             colGenre = mosh.modInfos.table.getColumn('genre')
@@ -3758,31 +3585,31 @@ class MashApp(wx.App):
                 colGroup[fileName] = colGenre[fileName]
                 del colGenre[fileName]
                 print fileName
-            if settings['mash.mods.sort'] == 'Genre':
-                settings['mash.mods.sort'] = 'Group'
-            colWidths = settings['mash.mods.colWidths']
+            if conf.settings['mash.mods.sort'] == 'Genre':
+                conf.settings['mash.mods.sort'] = 'Group'
+            colWidths = conf.settings['mash.mods.colWidths']
             if 'Genre' in colWidths:
                 colWidths['Group'] = colWidths['Genre']
                 del colWidths['Genre']
-                settings.setChanged('mash.mods.colWidths')
+                conf.settings.setChanged('mash.mods.colWidths')
         #--Version 0.71: Convert refRemoversdata to tuples
-        if version < 71 and 'mash.refRemovers.data' in settings:
+        if version < 71 and 'mash.refRemovers.data' in conf.settings:
             import types
-            data = settings['mash.refRemovers.data']
+            data = conf.settings['mash.refRemovers.data']
             for remover,path in data.items():
                 if isinstance(path,types.StringTypes):
                     data[remover] = (path,)
-            settings.setChanged('mash.refRemovers.data')
+            conf.settings.setChanged('mash.refRemovers.data')
         #--Current version
-        settings['mash.version'] = 71
+        conf.settings['mash.version'] = 71
         #--Version from readme
-        readme = GPath(settings['mwDir']).join('Mopy','Wrye Mash.txt')
-        if readme.exists() and readme.mtime != settings['mash.readme'][0]:
+        readme = GPath(conf.settings['mwDir']).join('Mopy','Wrye Mash.txt')
+        if readme.exists() and readme.mtime != conf.settings['mash.readme'][0]:
             reVersion = re.compile("^=== ([\.\d]+) \[")
             for line in readme.open():
                 maVersion = reVersion.match(line)
                 if maVersion:
-                    settings['mash.readme'] = (readme.mtime,maVersion.group(1))
+                    conf.settings['mash.readme'] = (readme.mtime,maVersion.group(1))
                     break
 
 # Links -----------------------------------------------------------------------
@@ -3850,7 +3677,7 @@ class Files_SortBy(Link):
     def __init__(self,sortCol,prefix=''):
         Link.__init__(self)
         self.sortCol = sortCol
-        self.sortName = settings['mash.colNames'][sortCol]
+        self.sortName = conf.settings['mash.colNames'][sortCol]
         self.prefix = prefix
 
     def AppendToMenu(self,menu,window,data):
@@ -3878,7 +3705,7 @@ class Files_Unhide(Link):
     def Execute(self,event):
         """Handle menu selection."""
         destDir = self.window.data.dir
-        srcDir = os.path.join(destDir,settings['mosh.fileInfo.hiddenDir'])
+        srcDir = os.path.join(destDir,conf.settings['mosh.fileInfo.hiddenDir'])
         if self.type == 'mod':
             wildcard = 'Morrowind Mod Files (*.esp;*.esm)|*.esp;*.esm'
         elif self.type == 'save':
@@ -3986,7 +3813,7 @@ class File_Hide(Link):
         if ContinueQuery(self.window,message,'mash.hideFiles.continue',_('Hide Files')) != wx.ID_OK:
             return
         #--Do it
-        destRoot = os.path.join(self.window.data.dir,settings['mosh.fileInfo.hiddenDir'])
+        destRoot = os.path.join(self.window.data.dir,conf.settings['mosh.fileInfo.hiddenDir'])
         fileInfos = self.window.data
         fileGroups = fileInfos.table.getColumn('group')
         for fileName in self.data:
@@ -4019,7 +3846,7 @@ class File_MoveTo(Link):
 
     def Execute(self,event):
         """Handle menu selection."""
-        destDir = os.path.join(self.window.data.dir,settings['mosh.fileInfo.hiddenDir'])
+        destDir = os.path.join(self.window.data.dir,conf.settings['mosh.fileInfo.hiddenDir'])
         destDir = DirDialog(self.window,_('Move To...'),destDir)
         if not destDir: return
         #--Do it
@@ -4149,7 +3976,7 @@ class File_RevertToSnapshot(Link):
         fileName = fileInfo.name
         #--Snapshot finder
         destDir = self.window.data.dir
-        srcDir = os.path.join(destDir,settings['mosh.fileInfo.snapshotDir'])
+        srcDir = os.path.join(destDir,conf.settings['mosh.fileInfo.snapshotDir'])
         wildcard = fileInfo.getNextSnapshot()[2]
         #--File dialog
         if not os.path.exists(srcDir): os.makedirs(srcDir)
@@ -4224,7 +4051,7 @@ class File_RevertToBackup:
         menuItem = wx.MenuItem(menu,ID_REVERT_BACKUP,_('Revert to Backup'))
         menu.AppendItem(menuItem)
         self.backup = os.path.join(self.fileInfo.dir,
-            settings['mosh.fileInfo.backupDir'],self.fileInfo.name)
+            conf.settings['mosh.fileInfo.backupDir'],self.fileInfo.name)
         menuItem.Enable(singleSelect and os.path.exists(self.backup))
         #--First Backup item
         wx.EVT_MENU(window,ID_REVERT_FIRST,self.Execute)
@@ -4265,7 +4092,7 @@ class File_Remove_RefsSafeCells(ListEditorData):
     """Data capsule for load list editing dialog."""
     def __init__(self,parent):
         """Initialize."""
-        self.data = settings['mash.refRemovers.safeCells']
+        self.data = conf.settings['mash.refRemovers.safeCells']
         self.data.sort(key=lambda a: a.lower())
         #--GUI
         ListEditorData.__init__(self,parent)
@@ -4290,14 +4117,14 @@ class File_Remove_RefsSafeCells(ListEditorData):
         #--Already have it?
         if newCell in self.data:
             return None
-        settings.setChanged('mash.refRemovers.safeCells')
+        conf.settings.setChanged('mash.refRemovers.safeCells')
         self.data.append(newCell)
         self.data.sort(key=lambda a: a.lower())
         return newCell
 
     def remove(self,item):
         """Remove a safe cell."""
-        settings.setChanged('mash.refRemovers.safeCells')
+        conf.settings.setChanged('mash.refRemovers.safeCells')
         self.data.remove(item)
         return True
 
@@ -4306,7 +4133,7 @@ class File_Remove_RefsData(ListEditorData):
     """Data capsule for ref remover editing dialog."""
     def __init__(self,parent):
         """Initialize."""
-        self.data = settings['mash.refRemovers.data']
+        self.data = conf.settings['mash.refRemovers.data']
         #--GUI
         ListEditorData.__init__(self,parent)
         self.showAdd = True
@@ -4320,7 +4147,7 @@ class File_Remove_RefsData(ListEditorData):
     def add(self):
         """Adds a new ref remover."""
         #--File dialog
-        workDir = settings.get('mosh.workDir',settings['mwDir'])
+        workDir = conf.settings.get('mosh.workDir',conf.settings['mwDir'])
         dialog = wx.FileDialog(self.parent,_('Select Ref Remover file or files:'),
             workDir,'', '*.*', wx.OPEN|wx.MULTIPLE)
         if dialog.ShowModal() != wx.ID_OK: 
@@ -4331,14 +4158,14 @@ class File_Remove_RefsData(ListEditorData):
         if len(paths) == 0: 
             return None
         elif len(paths) == 1:
-            settings.setChanged('mash.refRemovers.data')
+            conf.settings.setChanged('mash.refRemovers.data')
             name = os.path.splitext(os.path.basename(paths[0]))[0]
         else:
             root,number = _('Combo %d'),1
             while (root % (number,)) in self.data:
                 number += 1
             name = root % (number,)
-        settings['mosh.workDir'] = os.path.split(paths[0])[0]
+        conf.settings['mosh.workDir'] = os.path.split(paths[0])[0]
         self.data[name] = paths
         return name
 
@@ -4350,14 +4177,14 @@ class File_Remove_RefsData(ListEditorData):
                 _('Name must be between 1 and 64 characters long.'))
             return False
         #--Rename
-        settings.setChanged('mash.refRemovers.data')
+        conf.settings.setChanged('mash.refRemovers.data')
         self.data[newName] = self.data[oldName]
         del self.data[oldName]
         return newName
 
     def remove(self,item):
         """Removes load list."""
-        settings.setChanged('mash.refRemovers.data')
+        conf.settings.setChanged('mash.refRemovers.data')
         del self.data[item]
         return True
 
@@ -4366,8 +4193,8 @@ class File_Remove_Refs:
     """Add ref remover links."""
     def __init__(self):
         """Initialize."""
-        self.safeCells = settings['mash.refRemovers.safeCells'] 
-        self.removers = settings['mash.refRemovers.data']
+        self.safeCells = conf.settings['mash.refRemovers.safeCells'] 
+        self.removers = conf.settings['mash.refRemovers.data']
 
     def GetItems(self):
         items = self.removers.keys()
@@ -4454,7 +4281,7 @@ class File_Replace_RefsData(ListEditorData):
     """Data capsule for ref replacer editing dialog."""
     def __init__(self,parent):
         """Initialize."""
-        self.data = settings['mash.refReplacers.data']
+        self.data = conf.settings['mash.refReplacers.data']
         #--GUI
         ListEditorData.__init__(self,parent)
         self.showAdd = True
@@ -4468,7 +4295,7 @@ class File_Replace_RefsData(ListEditorData):
     def add(self):
         """Adds a new ref replacer."""
         #--File dialog
-        workDir = settings.get('mosh.workDir',settings['mwDir'])
+        workDir = conf.settings.get('mosh.workDir',conf.settings['mwDir'])
         dialog = wx.FileDialog(self.parent,_('Select Ref Replacer list file:'),
             workDir,'', '*.*', wx.OPEN)
         if dialog.ShowModal() != wx.ID_OK: 
@@ -4476,8 +4303,8 @@ class File_Replace_RefsData(ListEditorData):
             return None
         path = dialog.GetPath()
         dialog.Destroy()
-        settings['mosh.workDir'] = os.path.split(path)[0]
-        settings.setChanged('mash.refReplacers.data')
+        conf.settings['mosh.workDir'] = os.path.split(path)[0]
+        conf.settings.setChanged('mash.refReplacers.data')
         name = os.path.splitext(os.path.basename(path))[0]
         self.data[name] = path
         return name
@@ -4490,14 +4317,14 @@ class File_Replace_RefsData(ListEditorData):
                 _('Name must be between 1 and 64 characters long.'))
             return False
         #--Rename
-        settings.setChanged('mash.refReplacers.data')
+        conf.settings.setChanged('mash.refReplacers.data')
         self.data[newName] = self.data[oldName]
         del self.data[oldName]
         return newName
 
     def remove(self,item):
         """Removes replacer."""
-        settings.setChanged('mash.refReplacers.data')
+        conf.settings.setChanged('mash.refReplacers.data')
         del self.data[item]
         return True
 
@@ -4506,7 +4333,7 @@ class File_Replace_Refs:
     """Add ref replacer links."""
     def __init__(self):
         """Initialize."""
-        self.replacers = settings['mash.refReplacers.data']
+        self.replacers = conf.settings['mash.refReplacers.data']
 
     def GetItems(self):
         items = self.replacers.keys()
@@ -4552,7 +4379,7 @@ class File_Replace_Refs:
             #--Source Mod?
             srcModName = refReplacer.srcModName
             if srcModName and srcModName not in mosh.modInfos:
-                renames = settings['mash.mods.renames']
+                renames = conf.settings['mash.mods.renames']
                 if srcModName in renames:
                     srcModName = renames[srcModName]
                     refReplacer.srcModName = srcModName
@@ -4676,14 +4503,14 @@ class File_SortRecords(Link):
 class File_StatsList(List):
     def __init__(self,parent,data):
         #--Columns
-        self.cols = settings['mash.fileStats.cols']
-        self.colNames = settings['mash.colNames']
-        self.colWidths = settings['mash.fileStats.colWidths']
-        self.colAligns = settings['mash.fileStats.colAligns']
-        self.colReverse = settings['mash.fileStats.colReverse'].copy()
+        self.cols = conf.settings['mash.fileStats.cols']
+        self.colNames = conf.settings['mash.colNames']
+        self.colWidths = conf.settings['mash.fileStats.colWidths']
+        self.colAligns = conf.settings['mash.fileStats.colAligns']
+        self.colReverse = conf.settings['mash.fileStats.colReverse'].copy()
         #--Data/Items
         self.data = data
-        self.sort = settings['mash.fileStats.sort']
+        self.sort = conf.settings['mash.fileStats.sort']
         #--Links
         self.mainMenu = []
         self.itemMenu = []
@@ -4789,11 +4616,11 @@ class Installers_AutoAnneal(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_('Auto-Anneal'),kind=wx.ITEM_CHECK)
         menu.AppendItem(menuItem)
-        menuItem.Check(settings['bash.installers.autoAnneal'])
+        menuItem.Check(conf.settings['bash.installers.autoAnneal'])
 
     def Execute(self,event):
         """Handle selection."""
-        settings['bash.installers.autoAnneal'] ^= True
+        conf.settings['bash.installers.autoAnneal'] ^= True
 
 #------------------------------------------------------------------------------
 class Installers_Enabled(Link):
@@ -4802,15 +4629,15 @@ class Installers_Enabled(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_('Enabled'),kind=wx.ITEM_CHECK)
         menu.AppendItem(menuItem)
-        menuItem.Check(settings['bash.installers.enabled'])
+        menuItem.Check(conf.settings['bash.installers.enabled'])
 
     def Execute(self,event):
         """Handle selection."""
-        enabled = settings['bash.installers.enabled']
+        enabled = conf.settings['bash.installers.enabled']
         message = _("Do you want to enable Installers? If you do, Bash will first need to initialize some data. If there are many new mods to process, then this may take on the order of five minutes.")
         if not enabled and not balt.askYes(self.gTank,fill(message,80),self.title): 
             return
-        enabled = settings['bash.installers.enabled'] = not enabled
+        enabled = conf.settings['bash.installers.enabled'] = not enabled
         if enabled:
             gInstallers.refreshed = False
             gInstallers.OnShow()
@@ -4826,11 +4653,11 @@ class Installers_ConflictsReportShowsInactive(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_('Show Inactive Conflicts'),kind=wx.ITEM_CHECK)
         menu.AppendItem(menuItem)
-        menuItem.Check(settings['bash.installers.conflictsReport.showInactive'])
+        menuItem.Check(conf.settings['bash.installers.conflictsReport.showInactive'])
 
     def Execute(self,event):
         """Handle selection."""
-        settings['bash.installers.conflictsReport.showInactive'] ^= True
+        conf.settings['bash.installers.conflictsReport.showInactive'] ^= True
         self.gTank.RefreshUI()
 
 #------------------------------------------------------------------------------
@@ -4840,11 +4667,11 @@ class Installers_ConflictsReportShowsLower(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_('Show Lower Conflicts'),kind=wx.ITEM_CHECK)
         menu.AppendItem(menuItem)
-        menuItem.Check(settings['bash.installers.conflictsReport.showLower'])
+        menuItem.Check(conf.settings['bash.installers.conflictsReport.showLower'])
 
     def Execute(self,event):
         """Handle selection."""
-        settings['bash.installers.conflictsReport.showLower'] ^= True
+        conf.settings['bash.installers.conflictsReport.showLower'] ^= True
         self.gTank.RefreshUI()
 
 #------------------------------------------------------------------------------
@@ -4854,11 +4681,11 @@ class Installers_AvoidOnStart(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_('Avoid at Startup'),kind=wx.ITEM_CHECK)
         menu.AppendItem(menuItem)
-        menuItem.Check(settings['bash.installers.fastStart'])
+        menuItem.Check(conf.settings['bash.installers.fastStart'])
 
     def Execute(self,event):
         """Handle selection."""
-        settings['bash.installers.fastStart'] ^= True
+        conf.settings['bash.installers.fastStart'] ^= True
 
 #------------------------------------------------------------------------------
 class Installers_Refresh(Link):
@@ -4868,7 +4695,7 @@ class Installers_Refresh(Link):
         self.fullRefresh = fullRefresh
 
     def AppendToMenu(self,menu,window,data):
-        if not settings['bash.installers.enabled']: return
+        if not conf.settings['bash.installers.enabled']: return
         Link.AppendToMenu(self,menu,window,data)
         self.title = (_('Refresh Data'),_('Full Refresh'))[self.fullRefresh]
         menuItem = wx.MenuItem(menu,self.id,self.title)
@@ -4890,11 +4717,11 @@ class Installers_RemoveEmptyDirs(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_('Clean Data Directory'),kind=wx.ITEM_CHECK)
         menu.AppendItem(menuItem)
-        menuItem.Check(settings['bash.installers.removeEmptyDirs'])
+        menuItem.Check(conf.settings['bash.installers.removeEmptyDirs'])
 
     def Execute(self,event):
         """Handle selection."""
-        settings['bash.installers.removeEmptyDirs'] ^= True
+        conf.settings['bash.installers.removeEmptyDirs'] ^= True
 
 #------------------------------------------------------------------------------
 class Installers_SortActive(Link):
@@ -4903,10 +4730,10 @@ class Installers_SortActive(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_("Sort by Active"),kind=wx.ITEM_CHECK)
         menu.AppendItem(menuItem)
-        menuItem.Check(settings['bash.installers.sortActive'])
+        menuItem.Check(conf.settings['bash.installers.sortActive'])
 
     def Execute(self,event):
-        settings['bash.installers.sortActive'] ^= True
+        conf.settings['bash.installers.sortActive'] ^= True
         self.gTank.SortItems()
 
 #------------------------------------------------------------------------------
@@ -4916,10 +4743,10 @@ class Installers_SortProjects(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_("Projects First"),kind=wx.ITEM_CHECK)
         menu.AppendItem(menuItem)
-        menuItem.Check(settings['bash.installers.sortProjects'])
+        menuItem.Check(conf.settings['bash.installers.sortProjects'])
 
     def Execute(self,event):
-        settings['bash.installers.sortProjects'] ^= True
+        conf.settings['bash.installers.sortProjects'] ^= True
         self.gTank.SortItems()
 
 #------------------------------------------------------------------------------
@@ -4929,10 +4756,10 @@ class Installers_SortStructure(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_("Sort by Structure"),kind=wx.ITEM_CHECK)
         menu.AppendItem(menuItem)
-        menuItem.Check(settings['bash.installers.sortStructure'])
+        menuItem.Check(conf.settings['bash.installers.sortStructure'])
 
     def Execute(self,event):
-        settings['bash.installers.sortStructure'] ^= True
+        conf.settings['bash.installers.sortStructure'] ^= True
         self.gTank.SortItems()
 
 # Installer Links -------------------------------------------------------------
@@ -5294,7 +5121,7 @@ class Mods_LoadListData(ListEditorData):
     """Data capsule for load list editing dialog."""
     def __init__(self,parent):
         """Initialize."""
-        self.data = settings['mash.loadLists.data']
+        self.data = conf.settings['mash.loadLists.data']
         #--GUI
         ListEditorData.__init__(self,parent)
         self.showRename = True
@@ -5312,14 +5139,14 @@ class Mods_LoadListData(ListEditorData):
                 _('Name must be between 1 and 64 characters long.'))
             return False
         #--Rename
-        settings.setChanged('mash.loadLists.data')
+        conf.settings.setChanged('mash.loadLists.data')
         self.data[newName] = self.data[oldName]
         del self.data[oldName]
         return newName
 
     def remove(self,item):
         """Removes load list."""
-        settings.setChanged('mash.loadLists.data')
+        conf.settings.setChanged('mash.loadLists.data')
         del self.data[item]
         return True
 
@@ -5327,7 +5154,7 @@ class Mods_LoadListData(ListEditorData):
 class Mods_LoadList:
     """Add load list links."""
     def __init__(self):
-        self.data = settings['mash.loadLists.data']
+        self.data = conf.settings['mash.loadLists.data']
 
     def GetItems(self):
         items = self.data.keys()
@@ -5410,7 +5237,7 @@ class Mods_LoadList:
                     _('Load list name must be between 1 and 64 characters long.'))
             else:
                 self.data[newItem] = mosh.mwIniFile.loadFiles[:]
-                settings.setChanged('mash.loadLists.data')
+                conf.settings.setChanged('mash.loadLists.data')
         #--Not Okay
         else:
             dialog.Destroy()
@@ -5464,7 +5291,7 @@ class Mods_MorrowindIni(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_('Morrowind.ini...'))
         menu.AppendItem(menuItem)
-        self.path = os.path.join(settings['mwDir'],'Morrowind.ini')
+        self.path = os.path.join(conf.settings['mwDir'],'Morrowind.ini')
         menuItem.Enable(os.path.exists(self.path))
 
     def Execute(self,event):
@@ -5501,7 +5328,7 @@ class Mods_LockTimes(Link):
     def Execute(self,event):
         """Handle menu selection."""
         mosh.modInfos.resetMTimes = not mosh.modInfos.resetMTimes
-        settings['mosh.modInfos.resetMTimes'] = mosh.modInfos.resetMTimes
+        conf.settings['mosh.modInfos.resetMTimes'] = mosh.modInfos.resetMTimes
         if mosh.modInfos.resetMTimes:
             mosh.modInfos.refreshMTimes()
         else:
@@ -5579,7 +5406,7 @@ class Mods_IniTweaks(Link):
         #--File dialog
         mitDir = os.path.join(mosh.modInfos.dir,'Mits')
         if not os.path.exists(mitDir):
-            mitDir = settings['mwDir']
+            mitDir = conf.settings['mwDir']
         dialog = wx.FileDialog(self.window,_('INI Tweaks'),mitDir,'', '*.mit', wx.OPEN )
         if dialog.ShowModal() != wx.ID_OK: 
             dialog.Destroy()
@@ -5606,7 +5433,7 @@ class Mod_LabelsData(ListEditorData):
         self.setKey = strings.setKey
         self.addPrompt = strings.addPrompt
         #--Key/type
-        self.data = settings[self.setKey]
+        self.data = conf.settings[self.setKey]
         #--GUI
         ListEditorData.__init__(self,parent)
         self.showAdd = True
@@ -5636,7 +5463,7 @@ class Mod_LabelsData(ListEditorData):
             ErrorMessage(self.parent,
                 _('Name must be between 1 and 64 characters long.'))
             return False
-        settings.setChanged(self.setKey)
+        conf.settings.setChanged(self.setKey)
         self.data.append(newName)
         self.data.sort()
         return newName
@@ -5649,7 +5476,7 @@ class Mod_LabelsData(ListEditorData):
                 _('Name must be between 1 and 64 characters long.'))
             return False
         #--Rename
-        settings.setChanged(self.setKey)
+        conf.settings.setChanged(self.setKey)
         self.data.remove(oldName)
         self.data.append(newName)
         self.data.sort()
@@ -5664,7 +5491,7 @@ class Mod_LabelsData(ListEditorData):
 
     def remove(self,item):
         """Removes group."""
-        settings.setChanged(self.setKey)
+        conf.settings.setChanged(self.setKey)
         self.data.remove(item)
         #--Edit table entries.
         colGroup = self.parent.data.table.getColumn(self.column)
@@ -5680,7 +5507,7 @@ class Mod_Labels:
     """Add mod label links."""
     def __init__(self):
         """Initialize."""
-        self.labels = settings[self.setKey]
+        self.labels = conf.settings[self.setKey]
 
     def GetItems(self):
         items = self.labels[:]
@@ -5801,7 +5628,7 @@ class Mod_Export_Dialogue(Link):
         """Handle menu selection."""
         fileName = self.data[0]
         textName = os.path.splitext(fileName)[0]+'_Dialogue.txt'
-        textDir = settings.get('mosh.workDir',settings['mwDir'])
+        textDir = conf.settings.get('mosh.workDir',conf.settings['mwDir'])
         #--File dialog
         dialog = wx.FileDialog(self.window,_('Export dialogs to:'),textDir,
             textName, '*.*', wx.SAVE|wx.OVERWRITE_PROMPT )
@@ -5811,8 +5638,8 @@ class Mod_Export_Dialogue(Link):
         textPath = dialog.GetPath()
         dialog.Destroy()
         (textDir,textName) = os.path.split(textPath)
-        settings['mosh.workDir'] = textDir
-        settings['mash.dialEdit.path'] = textPath
+        conf.settings['mosh.workDir'] = textDir
+        conf.settings['mash.dialEdit.path'] = textPath
         #--Export
         fileDials = mosh.FileDials(mosh.modInfos[fileName])
         fileDials.load()
@@ -5831,7 +5658,7 @@ class Mod_Export_Scripts(Link):
         """Handle menu selection."""
         fileName = self.data[0]
         textName = os.path.splitext(fileName)[0]+'_Scripts.mws'
-        textDir = settings.get('mosh.workDir',settings['mwDir'])
+        textDir = conf.settings.get('mosh.workDir',conf.settings['mwDir'])
         #--File dialog
         dialog = wx.FileDialog(self.window,_('Export scripts to:'),textDir,
             textName, '*.*', wx.SAVE|wx.OVERWRITE_PROMPT )
@@ -5841,8 +5668,8 @@ class Mod_Export_Scripts(Link):
         textPath = dialog.GetPath()
         dialog.Destroy()
         (textDir,textName) = os.path.split(textPath)
-        settings['mosh.workDir'] = textDir
-        settings['mash.scriptEdit.path'] = textPath
+        conf.settings['mosh.workDir'] = textDir
+        conf.settings['mash.scriptEdit.path'] = textPath
         #--Export
         fileScripts = mosh.FileScripts(mosh.modInfos[fileName])
         fileScripts.load()
@@ -5860,12 +5687,12 @@ class Mod_Import_Dialogue(Link):
     def Execute(self,event):
         """Handle menu selection."""
         fileName = self.data[0]
-        textPath = settings.get('mash.dialEdit.path')
+        textPath = conf.settings.get('mash.dialEdit.path')
         if textPath:
             (textDir,textName) = os.path.split(textPath)
         else:
             textName = os.path.splitext(fileName)[0]+'_Dialogue.txt'
-            textDir = settings.get('mosh.workDir',settings['mwDir'])
+            textDir = conf.settings.get('mosh.workDir',conf.settings['mwDir'])
         #--File dialog
         dialog = wx.FileDialog(self.window,_('Import dialogs from:'),textDir,
             textName, '*.*', wx.OPEN )
@@ -5875,8 +5702,8 @@ class Mod_Import_Dialogue(Link):
         textPath = dialog.GetPath()
         dialog.Destroy()
         (textDir,textName) = os.path.split(textPath)
-        settings['mosh.workDir'] = textDir
-        settings['mash.dialEdit.path'] = textPath
+        conf.settings['mosh.workDir'] = textDir
+        conf.settings['mash.dialEdit.path'] = textPath
         #--Import
         fileInfo = mosh.modInfos[fileName]
         fileInfo.makeBackup()
@@ -5911,7 +5738,7 @@ class Mod_Import_LCVSchedules(Link):
             if textPath:
                 (textDir,textName) = os.path.split(textPath)
             else:
-                textDir = settings.get('mosh.workDir',settings['mwDir'])
+                textDir = conf.settings.get('mosh.workDir',conf.settings['mwDir'])
                 textName = 'LCV Schedules.etxt'
             dialog = wx.FileDialog(self.window,caption,textDir,
                 textName, '*.*', wx.OPEN )
@@ -6022,12 +5849,12 @@ class Mod_Import_Scripts(Link):
     def Execute(self,event):
         """Handle menu selection."""
         fileName = self.data[0]
-        textPath = settings.get('mash.scriptEdit.path')
+        textPath = conf.settings.get('mash.scriptEdit.path')
         if textPath:
             (textDir,textName) = os.path.split(textPath)
         else:
             textName = os.path.splitext(fileName)[0]+'_Scripts.mws'
-            textDir = settings.get('mosh.workDir',settings['mwDir'])
+            textDir = conf.settings.get('mosh.workDir',conf.settings['mwDir'])
         #--File dialog
         dialog = wx.FileDialog(self.window,_('Import scripts from:'),textDir,
             textName, '*.*', wx.OPEN )
@@ -6037,8 +5864,8 @@ class Mod_Import_Scripts(Link):
         textPath = dialog.GetPath()
         dialog.Destroy()
         (textDir,textName) = os.path.split(textPath)
-        settings['mosh.workDir'] = textDir
-        settings['mash.dialEdit.path'] = textPath
+        conf.settings['mosh.workDir'] = textDir
+        conf.settings['mash.dialEdit.path'] = textPath
         #--Import
         fileInfo = mosh.modInfos[fileName]
         fileInfo.makeBackup()
@@ -6140,7 +5967,7 @@ class Mod_ShowReadme(Link):
         fileInfo = self.window.data[fileName]
         if not docBrowser: 
             DocBrowser().Show()
-            settings['mash.modDocs.show'] = True
+            conf.settings['mash.modDocs.show'] = True
         docBrowser.SetMod(fileInfo.name)
         docBrowser.Raise()
 
@@ -6280,14 +6107,14 @@ class Saves_ProfilesData(ListEditorData):
         #--Rename
         oldDir,newDir = (os.path.join(self.hidden,dir) for dir in (oldName,newName))
         os.rename(oldDir,newDir)
-        if oldName == settings['mash.profile']:
-            settings['mash.profile'] = newName
+        if oldName == conf.settings['mash.profile']:
+            conf.settings['mash.profile'] = newName
         return newName
 
     def remove(self,profile):
         """Removes load list."""
         #--Can't remove active or Default directory.
-        if profile ==  settings['mash.profile']:
+        if profile ==  conf.settings['mash.profile']:
             ErrorMessage(self.parent,_('Active profile cannot be removed.'))
             return False
         if profile == self.defaultName:
@@ -6312,7 +6139,7 @@ class Saves_Profiles:
         self.idList = ID_PROFILES
 
     def GetItems(self):
-        self.hidden = os.path.join(mosh.saveInfos.dir,settings['mosh.fileInfo.hiddenDir'])
+        self.hidden = os.path.join(mosh.saveInfos.dir,conf.settings['mosh.fileInfo.hiddenDir'])
         self.defaultName = _('Default')
         self.defaultDir = os.path.join(self.hidden,self.defaultName)
         if not os.path.exists(self.defaultDir): os.makedirs(self.defaultDir)
@@ -6330,7 +6157,7 @@ class Saves_Profiles:
         menu.AppendSeparator()
         #--Profiles
         items = self.GetItems()
-        curProfile = settings.get('mash.profile',self.defaultName)
+        curProfile = conf.settings.get('mash.profile',self.defaultName)
         if curProfile not in items: curProfile = self.defaultName
         for id,item in zip(self.idList,items):
             menuItem = wx.MenuItem(menu,id,item,kind=wx.ITEM_CHECK)
@@ -6350,7 +6177,7 @@ class Saves_Profiles:
     def DoList(self,event):
         """Handle selection of label."""
         #--Profile Names
-        arcProfile = settings.get('mash.profile',self.defaultName)
+        arcProfile = conf.settings.get('mash.profile',self.defaultName)
         srcProfile = self.GetItems()[event.GetId()-self.idList.BASE]
         if srcProfile == arcProfile: return
         #--Dirs
@@ -6371,7 +6198,7 @@ class Saves_Profiles:
                 if not os.path.exists(profPath): os.rename(savesPath,profPath)
             arcIniPath = os.path.join(arcDir,'Morrowind.ini')
             shutil.copyfile(mosh.mwIniFile.path, arcIniPath)
-            settings['mash.profile'] = srcProfile
+            conf.settings['mash.profile'] = srcProfile
             #--Move src profile directory saves to saves directory.
             for num,saveName in enumerate(srcFiles):
                 progress(1.0*(arcCount + num)/(arcCount + srcCount),saveName)
@@ -6392,11 +6219,11 @@ class Saves_MapGridLines(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_('World Map Gridlines'),kind=wx.ITEM_CHECK)
         menu.AppendItem(menuItem)
-        menuItem.Check(settings['mash.worldMap.gridLines'])
+        menuItem.Check(conf.settings['mash.worldMap.gridLines'])
 
     def Execute(self,event):
         """Handle menu selection."""
-        settings['mash.worldMap.gridLines'] = not settings['mash.worldMap.gridLines']
+        conf.settings['mash.worldMap.gridLines'] = not conf.settings['mash.worldMap.gridLines']
 
 # Save Links ------------------------------------------------------------------
 #------------------------------------------------------------------------------
@@ -6711,7 +6538,7 @@ class Save_ShowJournal(Link):
         fileName = self.data[0]
         if not journalBrowser: 
             JournalBrowser().Show()
-            settings['mash.journal.show'] = True
+            conf.settings['mash.journal.show'] = True
         journalBrowser.SetSave(fileName)
         journalBrowser.Raise()
 
@@ -6757,7 +6584,7 @@ class Save_UpdateWorldMap(Link):
             progress.setBaseScale()
             fileRefs = mosh.FileRefs(fileInfo,progress=progress)
             fileRefs.refresh()
-            worldRefs.repairWorldMap(fileRefs,settings['mash.worldMap.gridLines'])
+            worldRefs.repairWorldMap(fileRefs,conf.settings['mash.worldMap.gridLines'])
             fileRefs.safeSave()
             progress = progress.Destroy()
             InfoMessage(self.window,_("World map updated."))
@@ -7006,10 +6833,10 @@ class App_Morrowind(Link):
     def Execute(self,event):
         """Handle menu selection."""
         cwd = os.getcwd()
-        os.chdir(settings['mwDir'])
-        os.spawnl(os.P_NOWAIT,os.path.join(settings['mwDir'],'Morrowind.exe'))
+        os.chdir(conf.settings['mwDir'])
+        os.spawnl(os.P_NOWAIT,os.path.join(conf.settings['mwDir'],'Morrowind.exe'))
         os.chdir(cwd)
-        if settings.get('mash.autoQuit.on',False):
+        if conf.settings.get('mash.autoQuit.on',False):
             mashFrame.Close()
 
 #------------------------------------------------------------------------------
@@ -7023,10 +6850,10 @@ class AutoQuit_Button(Link):
         """Sets state related info. If newState != none, sets to new state first. 
         For convenience, returns state when done."""
         if state == None: #--Default
-            state = settings.get('mash.autoQuit.on',False)
+            state = conf.settings.get('mash.autoQuit.on',False)
         elif state == -1: #--Invert
-            state = not settings.get('mash.autoQuit.on',False)
-        settings['mash.autoQuit.on'] = state
+            state = not conf.settings.get('mash.autoQuit.on',False)
+        conf.settings['mash.autoQuit.on'] = state
         image = images[('checkbox.red.off','checkbox.red.x')[state]]
         tip = (_("Auto-Quit Disabled"),_("Auto-Quit Enabled"))[state]
         self.gButton.SetBitmapLabel(image.GetBitmap())
@@ -7057,8 +6884,8 @@ class App_Help(Link):
     def Execute(self,event):
         """Handle menu selection."""
         #if not helpBrowser: 
-        HelpBrowser(mashFrame, images, settings).Show()
-        settings['mash.help.show'] = True
+        HelpBrowser(mashFrame, images, conf.settings).Show()
+        conf.settings['mash.help.show'] = True
 
 #-# Added D.C.-G. for SettingsWindow.
 # Settings Links -------------------------------------------------------------------
@@ -7077,9 +6904,9 @@ class App_Settings(Link):
         global settingsWindow
         if not settingsWindow: 
             settingsWindow = SettingsWindow()
-            settingsWindow.SetSettings(settings, Inst=mosh.dirs["installers"].s)
+            settingsWindow.SetSettings(conf.settings, Inst=mosh.dirs["installers"].s)
             settingsWindow.Show()
-            settings['mash.settings.show'] = True
+            conf.settings['mash.settings.show'] = True
         settingsWindow.Raise()
 #-#
 
@@ -7130,9 +6957,8 @@ def InitSettings():
     """Initialize settings (configuration store). First, read from file, then
     load defaults (defaults will not overwrite items extracted from file)."""
     mosh.initSettings()
-    global settings
-    settings = mosh.settings
-    settings.loadDefaults(settingDefaults)
+    conf.settings = mosh.settings
+    conf.settings.loadDefaults(conf.settingDefaults)
     mosh.initDirs()
 
 #-# D.C.-G. for SettingsWindow
