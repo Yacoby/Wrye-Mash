@@ -354,7 +354,7 @@ class TestHtml(unittest.TestCase):
         p.parseString(wtex)
         html = getHtmlFromHeadings(p.getHeading("The Name"))
         expected = ( '<p><a name="TheName"></a>'
-                   + '<strong id="The Name">The Name</strong><br>'
+                   + '<strong>The Name</strong><br>'
                    + 'Some Text<br></p>')
         self.assertEqual(expected, html)
 
