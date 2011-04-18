@@ -265,7 +265,7 @@ class ProgressDialog(mosh.Progress):
 class Checkboxes(balt.ImageList):
     """Checkboxes ImageList. Used by several List classes."""
     def __init__(self):
-        imgPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
+        imgPath = 'images'
         balt.ImageList.__init__(self,16,16)
         for status in ('on','off'):
             for color in ('purple','blue','green','orange','yellow','red'):
@@ -295,7 +295,7 @@ class Checkboxes(balt.ImageList):
 
 # Icons------------------------------------------------------------------------
 installercons = balt.ImageList(16,16)
-imgPath       = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
+imgPath       = 'images'
 installercons.data.extend({
     #--Off/Archive
     'off.green':  Image(os.path.join(imgPath, r'checkbox_green_off.png'),wx.BITMAP_TYPE_PNG),
@@ -6921,7 +6921,7 @@ def InitSettings():
 #-# D.C.-G. for SettingsWindow
 def InitImages():
     """Initialize images (icons, checkboxes, etc.)."""
-    imgPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
+    imgPath = 'images'
     #--Standard
     globals.images['save.on'] = Image(os.path.join(imgPath, r'save_on.png'),wx.BITMAP_TYPE_PNG)
     globals.images['save.off'] = Image(os.path.join(imgPath, r'save_off.png'),wx.BITMAP_TYPE_PNG)
