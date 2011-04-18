@@ -177,7 +177,7 @@ def LogMessage(parent,message,logText,title='',style=0,asDialog=True):
     else:
         window = wx.Frame(parent,-1,title,pos=pos,size=(200,300),
             style= (wx.RESIZE_BORDER | wx.CAPTION | wx.SYSTEM_MENU | wx.CLOSE_BOX | wx.CLIP_CHILDREN))
-        window.SetIcons(images['mash.icons2'].GetIconBundle())
+        window.SetIcons(globals.images['mash.icons2'].GetIconBundle())
     window.SetSizeHints(200,200)
     sizer = wx.BoxSizer(wx.VERTICAL)
     if message:
@@ -261,9 +261,6 @@ class ProgressDialog(mosh.Progress):
             self.dialog.Destroy()
             self.dialog = None
 
-# Images ----------------------------------------------------------------------
-images = {}
-
 #------------------------------------------------------------------------------
 class Checkboxes(balt.ImageList):
     """Checkboxes ImageList. Used by several List classes."""
@@ -275,7 +272,7 @@ class Checkboxes(balt.ImageList):
                 shortKey = color+'.'+status
                 imageKey = 'checkbox.'+shortKey
                 file = os.path.join(imgPath, r'checkbox_'+color+'_'+status+'.png')
-                image = images[imageKey] = Image(file,wx.BITMAP_TYPE_PNG)
+                image = globals.images[imageKey] = Image(file,wx.BITMAP_TYPE_PNG)
                 self.Add(image,shortKey)
 
     def Get(self,status,on):
@@ -554,7 +551,7 @@ class List(wx.Panel):
         #--ListCtrl
         listId = self.listId = wx.NewId()
         self.list = ListCtrl(self, listId, style=ctrlStyle)
-        self.checkboxes = images['mash.checkboxes']
+        self.checkboxes = globals.images['mash.checkboxes']
         #--Columns
         self.PopulateColumns()
         #--Items
@@ -1150,7 +1147,7 @@ class ModList(List):
         #--Parent init
         List.__init__(self,parent,-1,ctrlStyle=(wx.LC_REPORT))#|wx.SUNKEN_BORDER))
         #--Image List
-        checkboxesIL = images['mash.checkboxes'].GetImageList()
+        checkboxesIL = globals.images['mash.checkboxes'].GetImageList()
         self.list.SetImageList(checkboxesIL,wx.IMAGE_LIST_SMALL)
         #--Events
         wx.EVT_LIST_ITEM_SELECTED(self,self.listId,self.OnItemSelected)
@@ -2963,7 +2960,7 @@ class MashFrame(wx.Frame):
         self.SetSizeHints(minSize[0],minSize[1])
         self.SetTitle()
         #--Application Icons
-        self.SetIcons(images['mash.icons'].GetIconBundle())
+        self.SetIcons(globals.images['mash.icons'].GetIconBundle())
         #--Status Bar
         self.SetStatusBar(MashStatusBar(self))
         #--Sizer
@@ -3121,7 +3118,7 @@ class DocBrowser(wx.Frame):
         self.modNameList = wx.ListBox(self,-1,choices=sorted(self.data.keys()),style=wx.LB_SINGLE|wx.LB_SORT)
         self.modNameList.Bind(wx.EVT_LISTBOX,self.DoSelectMod)
         #--Application Icons
-        self.SetIcons(images['mash.icons2'].GetIconBundle())
+        self.SetIcons(globals.images['mash.icons2'].GetIconBundle())
         #--Set Doc
         self.setButton = wx.Button(self,ID_SET,_("Set Doc..."))
         wx.EVT_BUTTON(self.setButton,ID_SET,self.DoSet)
@@ -3413,7 +3410,7 @@ class JournalBrowser(wx.Frame):
         self.SetBackgroundColour(wx.NullColour)
         self.SetSizeHints(250,250)
         #--Application Icons
-        self.SetIcons(images['mash.icons2'].GetIconBundle())
+        self.SetIcons(globals.images['mash.icons2'].GetIconBundle())
         #--Sizers
         #--Doc fields
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -3474,7 +3471,7 @@ class MashApp(wx.App):
         if conf.settings['mash.journal.show']:
             JournalBrowser().Show()
         if conf.settings.get('mash.help.show'):
-            HelpBrowser(globals.mashFrame, images).Show()
+            HelpBrowser(globals.mashFrame, globals.images).Show()
         #-# D.C.-G. for SettingsWindow
         if conf.settings['mash.settings.show']:
             globals.settingsWindow = SettingsWindow()
@@ -4546,7 +4543,7 @@ class File_Stats(Link):
         fileInfo.getStats()
         frame = wx.Frame(self.window,-1,fileName,size=(200,300),
             style= (wx.RESIZE_BORDER | wx.CAPTION | wx.SYSTEM_MENU | wx.CLOSE_BOX | wx.CLIP_CHILDREN))
-        frame.SetIcons(images['mash.icons2'].GetIconBundle())
+        frame.SetIcons(globals.images['mash.icons2'].GetIconBundle())
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(File_StatsList(frame,fileInfo.stats),1,wx.EXPAND)
         frame.SetSizer(sizer)
@@ -6787,7 +6784,7 @@ class App_Morrowind(Link):
     """Launch Morrowind."""
     def GetBitmapButton(self,window,style=0):
         if not self.id: self.id = wx.NewId()
-        button = wx.BitmapButton(window,self.id,images['morrowind'].GetBitmap(),style=style)
+        button = wx.BitmapButton(window,self.id,globals.images['morrowind'].GetBitmap(),style=style)
         button.SetToolTip(wx.ToolTip(_("Launch Morrowind")))
         wx.EVT_BUTTON(button,self.id,self.Execute)
         return button
@@ -6816,13 +6813,13 @@ class AutoQuit_Button(Link):
         elif state == -1: #--Invert
             state = not conf.settings.get('mash.autoQuit.on',False)
         conf.settings['mash.autoQuit.on'] = state
-        image = images[('checkbox.red.off','checkbox.red.x')[state]]
+        image = globals.images[('checkbox.red.off','checkbox.red.x')[state]]
         tip = (_("Auto-Quit Disabled"),_("Auto-Quit Enabled"))[state]
         self.gButton.SetBitmapLabel(image.GetBitmap())
         self.gButton.SetToolTip(tooltip(tip))
 
     def GetBitmapButton(self,window,style=0):
-        bitmap = images['checkbox.red.off'].GetBitmap()
+        bitmap = globals.images['checkbox.red.off'].GetBitmap()
         gButton = self.gButton = wx.BitmapButton(window,-1,bitmap,style=style)
         gButton.Bind(wx.EVT_BUTTON,self.Execute)
         gButton.SetSize((16,16))
@@ -6838,14 +6835,14 @@ class App_Help(Link):
     """Show help browser."""
     def GetBitmapButton(self,window,style=0):
         if not self.id: self.id = wx.NewId()
-        button = wx.BitmapButton(window,self.id,images['help'].GetBitmap(),style=style)
+        button = wx.BitmapButton(window,self.id,globals.images['help'].GetBitmap(),style=style)
         button.SetToolTip(wx.ToolTip(_("Help File")))
         wx.EVT_BUTTON(button,self.id,self.Execute)
         return button
 
     def Execute(self,event):
         """Handle menu selection."""
-        HelpBrowser(globals.mashFrame, images).Show()
+        HelpBrowser(globals.mashFrame, globals.images).Show()
         conf.settings['mash.help.show'] = True
 
 #-# Added D.C.-G. for SettingsWindow.
@@ -6855,7 +6852,7 @@ class App_Settings(Link):
     """Show settings window."""
     def GetBitmapButton(self,window,style=0):
         if not self.id: self.id = wx.NewId()
-        button = wx.BitmapButton(window,self.id,images['settings'].GetBitmap(),style=style)
+        button = wx.BitmapButton(window,self.id,globals.images['settings'].GetBitmap(),style=style)
         button.SetToolTip(wx.ToolTip(_("Settings Window")))
         wx.EVT_BUTTON(button,self.id,self.Execute)
         return button
@@ -6926,33 +6923,33 @@ def InitImages():
     """Initialize images (icons, checkboxes, etc.)."""
     imgPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
     #--Standard
-    images['save.on'] = Image(os.path.join(imgPath, r'save_on.png'),wx.BITMAP_TYPE_PNG)
-    images['save.off'] = Image(os.path.join(imgPath, r'save_off.png'),wx.BITMAP_TYPE_PNG)
+    globals.images['save.on'] = Image(os.path.join(imgPath, r'save_on.png'),wx.BITMAP_TYPE_PNG)
+    globals.images['save.off'] = Image(os.path.join(imgPath, r'save_off.png'),wx.BITMAP_TYPE_PNG)
     #--Misc
-    images['morrowind'] = Image(os.path.join(imgPath, r'morrowind.png'),wx.BITMAP_TYPE_PNG)
-    images['help'] = Image(os.path.join(imgPath, r'help.png'),wx.BITMAP_TYPE_PNG)
+    globals.images['morrowind'] = Image(os.path.join(imgPath, r'morrowind.png'),wx.BITMAP_TYPE_PNG)
+    globals.images['help'] = Image(os.path.join(imgPath, r'help.png'),wx.BITMAP_TYPE_PNG)
     #--Tools
-    images['doc.on'] = Image(os.path.join(imgPath, r'doc_on.png'),wx.BITMAP_TYPE_PNG)
+    globals.images['doc.on'] = Image(os.path.join(imgPath, r'doc_on.png'),wx.BITMAP_TYPE_PNG)
     #--Checkboxes
-    images['mash.checkboxes'] = Checkboxes()
-    images['checkbox.green.on.32'] = (
+    globals.images['mash.checkboxes'] = Checkboxes()
+    globals.images['checkbox.green.on.32'] = (
         Image(os.path.join(imgPath, r'checkbox_green_on_32.png'),wx.BITMAP_TYPE_PNG))
-    images['checkbox.blue.on.32'] = (
+    globals.images['checkbox.blue.on.32'] = (
         Image(os.path.join(imgPath, r'checkbox_blue_on_32.png'),wx.BITMAP_TYPE_PNG))
-    images['checkbox.red.x'] = Image(os.path.join(imgPath, r'checkbox_red_x.png'),wx.BITMAP_TYPE_PNG)
+    globals.images['checkbox.red.x'] = Image(os.path.join(imgPath, r'checkbox_red_x.png'),wx.BITMAP_TYPE_PNG)
     #-#
-    images["settings"] = Image(os.path.join(imgPath, r"save_on.png"),wx.BITMAP_TYPE_PNG)
+    globals.images["settings"] = Image(os.path.join(imgPath, r"save_on.png"),wx.BITMAP_TYPE_PNG)
     #-#
     #--Applications Icons
     wryeMashIcons = balt.ImageBundle()
-    wryeMashIcons.Add(images['checkbox.green.on'])
-    wryeMashIcons.Add(images['checkbox.green.on.32'])
-    images['mash.icons'] = wryeMashIcons
+    wryeMashIcons.Add(globals.images['checkbox.green.on'])
+    wryeMashIcons.Add(globals.images['checkbox.green.on.32'])
+    globals.images['mash.icons'] = wryeMashIcons
     #--Application Subwindow Icons
     wryeMashIcons2 = balt.ImageBundle()
-    wryeMashIcons2.Add(images['checkbox.blue.on'])
-    wryeMashIcons2.Add(images['checkbox.blue.on.32'])
-    images['mash.icons2'] = wryeMashIcons2
+    wryeMashIcons2.Add(globals.images['checkbox.blue.on'])
+    wryeMashIcons2.Add(globals.images['checkbox.blue.on.32'])
+    globals.images['mash.icons2'] = wryeMashIcons2
     #--Colors
     colors['mash.esm'] = (220,220,255)
     colors['mash.doubleTime.not'] = 'WHITE'

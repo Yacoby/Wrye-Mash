@@ -1,3 +1,4 @@
+images = {}
 screensList = None
 utilsList = None
 gInstallers = None
