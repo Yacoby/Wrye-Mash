@@ -1,0 +1,13 @@
+screensList = None
+utilsList = None
+gInstallers = None
+helpBrowser = None
+journalBrowser = None
+docBrowser = None
+mashFrame = None
+saveDetails = None
+saveList = None
+modDetails = None
+modList = None
+statusBar = None
+settingsWindow = None
