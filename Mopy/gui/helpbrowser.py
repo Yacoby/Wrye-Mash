@@ -3,6 +3,7 @@ import os
 import wx
 import wx.html
 
+import conf 
 from balt import spacer, vSizer, leftSash
 from mosh import _
 import wtexparser
@@ -106,9 +107,8 @@ class HelpPage(wx.html.HtmlWindow):
 
 class HelpBrowser(wx.Frame):
     """Help Browser frame."""
-    def __init__(self, mashFrame,images, settings):
+    def __init__(self, mashFrame,images):
         """Intialize."""
-        self.settings = settings
 
         #--Data
         self.data = None
@@ -117,8 +117,8 @@ class HelpBrowser(wx.Frame):
         global helpBrowser
         helpBrowser = self
         #--Window
-        pos  = settings.get('mash.help.pos',(-1,-1))
-        size = settings.get('mash.help.size',(400,600))
+        pos  = conf.settings.get('mash.help.pos',(-1,-1))
+        size = conf.settings.get('mash.help.size',(400,600))
 
         wx.Frame.__init__(self, mashFrame, -1, _('Help'), pos,
                           size, style=wx.DEFAULT_FRAME_STYLE)
@@ -132,8 +132,8 @@ class HelpBrowser(wx.Frame):
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         sashPos = 250
-        if 'mash.help.sashPos' in settings:
-            sashPos = settings['mash.help.sashPos']
+        if 'mash.help.sashPos' in conf.settings:
+            sashPos = conf.settings['mash.help.sashPos']
         left = self.left = leftSash(self,defaultSize=(sashPos,100),
                                     onSashDrag=self.OnSashDrag)
         right = self.right =  wx.Panel(self,style=wx.NO_BORDER)
@@ -171,13 +171,13 @@ class HelpBrowser(wx.Frame):
         sashPos = max(wMin,min(wMax,event.GetDragRect().width))
         self.left.SetDefaultSize((sashPos,10))
         wx.LayoutAlgorithm().LayoutWindow(self, self.right)
-        self.settings['mash.help.sashPos'] = sashPos
+        conf.settings['mash.help.sashPos'] = sashPos
 
     def OnCloseWindow(self, event):
         """Handle window close event.
         Remember window size, position, etc."""
-        self.settings['mash.help.show'] = False
+        conf.settings['mash.help.show'] = False
         if not self.IsIconized() and not self.IsMaximized():
-            self.settings['mash.help.pos'] = self.GetPosition()
-            self.settings['mash.help.size'] = self.GetSizeTuple()
+            conf.settings['mash.help.pos'] = self.GetPosition()
+            conf.settings['mash.help.size'] = self.GetSizeTuple()
         self.Destroy()

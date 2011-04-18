@@ -60,7 +60,8 @@ if sys.prefix not in set(os.environ['PATH'].split(';')):
 try:
     import wx.lib.iewin
 except (ValueError, ImportError):
-    print 'Failed to import ie. Features may not be available and there may be lots of errrors!'
+    print ( 'Failed to import wx.lib.iewin. '
+          + 'Features may not be available and there may be lots of errrors!')
 
 #-# D.C.-G. for SettingsWindow
 settingsWindow = None
@@ -3511,7 +3512,7 @@ class MashApp(wx.App):
         if conf.settings['mash.journal.show']:
             JournalBrowser().Show()
         if conf.settings.get('mash.help.show'):
-            HelpBrowser(mashFrame, images, conf.settings).Show()
+            HelpBrowser(mashFrame, images).Show()
         #-# D.C.-G. for SettingsWindow
         if conf.settings['mash.settings.show']:
             global settingsWindow
@@ -6883,8 +6884,7 @@ class App_Help(Link):
 
     def Execute(self,event):
         """Handle menu selection."""
-        #if not helpBrowser: 
-        HelpBrowser(mashFrame, images, conf.settings).Show()
+        HelpBrowser(mashFrame, images).Show()
         conf.settings['mash.help.show'] = True
 
 #-# Added D.C.-G. for SettingsWindow.
