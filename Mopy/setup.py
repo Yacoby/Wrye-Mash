@@ -2,15 +2,20 @@
 from distutils.core import setup
 
 # py2exe stuff
-import py2exe, os, sys, imp
+import py2exe, os, sys, imp, glob
 
-#-# retrieving wx install dir for getting msvcp71.dll and gdiplus.dll
-wxDlls = ("MSVCP71.dll","gdiplus.dll")
+#-# retrieving wx install dir for getting gdiplus.dll
+wxDlls = ["gdiplus.dll"]
 import wx
 wxDir = os.path.split(wx.__file__)[0]
 del wx
 wxDlls = [os.path.join(wxDir, a) for a in wxDlls]
 #-#
+
+
+msvcppath = os.path.join(os.path.expandvars('%WINDIR%'), 'winsxs', '*', 'msvcp90.dll')
+msvcrpath = os.path.join(os.path.expandvars('%WINDIR%'), 'winsxs', '*', 'msvcr90.dll')
+msvcDlls = glob.glob(msvcppath) + glob.glob(msvcrpath)
 
 dest_folder = "..\\bin\\Mopy"
 
@@ -29,7 +34,8 @@ f = open("utils.dcg", "w")
 f.write(utils_dcg)
 f.close()
 
-
+#if you are building this you may need to change the public key for the dll files
+#in can be found in the manifest files in %windir%\winsxs\
 manifest_template = '''
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
@@ -52,6 +58,18 @@ manifest_template = '''
 		/>
 	</dependentAssembly>
 </dependency>
+<dependency>
+    <dependentAssembly>
+    <assemblyIdentity
+            type="win32"
+            name="Microsoft.VC90.CRT"
+            version="9.0.21022.8"
+            processorArchitecture="x86"
+            publicKeyToken="1fc8b3b9a1e18e3b"
+            language="*"
+        />
+    </dependentAssembly>
+</dependency>
 </assembly>
 '''
 
@@ -66,8 +84,14 @@ if "-q" not in sys.argv:
 if "py2exe" not in sys.argv:
 	sys.argv.append("py2exe")
 
-prog_resources = ['7z.exe','7z.dll','mash_default.ini','Wrye Mash.html','content.html','Wrye Mash.txt','readme.txt', 'sources.zip',
-				'utils.dcg'] + wxDlls
+prog_resources = ['7z.exe',
+                  '7z.dll',
+                  'mash_default.ini',
+                  'Wrye Mash.html',
+                  'content.html',
+                  'Wrye Mash.txt',
+                  'readme.txt',
+                  'utils.dcg'] + wxDlls + msvcDlls
 
 ## Remove the old 'build' folder
 if os.access('.\\build', os.F_OK):
@@ -79,11 +103,6 @@ if os.access('.\\build', os.F_OK):
 			os.rmdir(os.path.join(root, name))
 			
 	os.rmdir('.\\build')
-
-## Source archive construction
-if os.access('sources.zip', os.F_OK) == True:
-	os.remove('sources.zip')
-os.system('7z a -r -x!@excludes.txt sources.zip @includes.txt')
 
 class Target:
 	def __init__(self, **kw):
@@ -100,12 +119,13 @@ excludes=["Tkconstants","Tkinter","tcl"]
 
 opts = { 'py2exe': { 'includes':includes,
                      'excludes':excludes,
-						"compressed": 1,
-						"optimize": 2,
-						"ascii": 1,
-						#"xref":1,
-						"bundle_files": 1,
-						"dist_dir":dest_folder} }
+                     "packages": ['wx.lib.pubsub'], 
+                     'dll_excludes': ['msvcp90.dll'],
+			         "compressed": 1,
+                     "optimize": 2,
+                     "ascii": 1,
+                     "bundle_files": 1,
+                     "dist_dir":dest_folder} }
 # end of py2exe stuff
 
 prog = Target(
@@ -133,3 +153,13 @@ for fold in folds:
 f = open("utils.dcg", "w")
 f.write(utils_org)
 f.close()
+
+
+#compress if required
+if os.path.exists('upx.exe'):
+    files = ( glob.glob(os.path.join(dest_folder, '*.dll'))
+            + glob.glob(os.path.join(dest_folder, '*.exe')) )
+    #note, --ultra-brute takes ages.
+    #If you want a fast build change it to --best
+    args = ['upx.exe', '--ultra-brute'] + files
+    os.spawnv(os.P_WAIT, 'upx.exe', args)

@@ -55,6 +55,10 @@ def ForceWxVersion():
 CheckWx();
 ForceWxVersion()
 
+#required to be able to run this with py2exe
+from wx.lib.pubsub import setupv1 
+from wx.lib.pubsub import Publisher 
+
 import masher
 
 if len(sys.argv) > 1:
