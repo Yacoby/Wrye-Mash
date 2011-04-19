@@ -1564,7 +1564,7 @@ class SaveDetails(wx.Window):
         wx.Window.__init__(self, parent, -1, style=wx.TAB_TRAVERSAL)
         readOnlyColour = self.GetBackgroundColour()
         #--Singleton
-        saveDetails = self
+        globals.saveDetails = self
         #--Data
         self.saveInfo = None
         self.edited = False
