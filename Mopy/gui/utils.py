@@ -6,9 +6,10 @@ import wx
 import globals
 import conf
 import gui.dialog
-from balt import button, Links, leftSash, hSizer, vSizer
 import mosh
-from mosh import _, formatDate
+
+from balt import button, Links, leftSash, hSizer, vSizer
+from mosh import _
 from types import *
 
 class FakeColumnEvent:
@@ -128,7 +129,7 @@ class UtilsList(gui.List):
             if col == 'File':
                 value = fileName
             elif col == 'Modified':
-                value = formatDate(fileInfo[1])
+                value = mosh.formatDate(fileInfo[1])
             else:
                 value = '-'
             if mode and (colDex == 0):

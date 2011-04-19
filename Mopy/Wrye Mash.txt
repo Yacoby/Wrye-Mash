@@ -1084,6 +1084,8 @@ The Mash distribution includes additional files that assist in its operation and
 * Improved startup logging
 * Added a "Load All" method (SCOs changes)
 * Totally trashed the help browser trying to remove wx.lib.ie dependacy
+* Fixed bug with utilites panel
+* A lot of code refactoring
 
 === 84 [2/5/2009]
 * [[#|Installers Tab]]: Fix a bug with espm filtering of aliased mods.
