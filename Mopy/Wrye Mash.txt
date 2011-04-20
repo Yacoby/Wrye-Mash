@@ -463,6 +463,13 @@ The following commands are available by right clicking on the column header of t
     * Of course, this also may mean that it's badly out of date!
   * **Revert to Snapshot** Reverts the file to a selected snapshot.
 
+=== Using Mlox
+* If Mlox is installed somewhere within the Morrowind directory, Mlox intergration will be avaible
+  * They are accessed through the mod context menu
+  * **Launch Mlox** lanuches mlox (You must have mlox.exe in Mopy/mlox)
+  * **Sort Using Mox** sorts your load list using the mlox rules 
+  * **Revert Changes** reverts the load order to how it was before you sorted it
+
 === Export/Import Dialog
 * From the mods context menu, select **Export: Dialog** to export all dialog
   text to a file, or select **Import: Dialog** to reimport dialog text from a file.
@@ -1086,6 +1093,7 @@ The Mash distribution includes additional files that assist in its operation and
 * Added a "Load All" method (SCOs changes)
 * Totally trashed the help browser trying to remove wx.lib.ie dependacy
 * Fixed bug with utilites panel and programs not starting
+* Added Mlox integration
 * A lot of code refactoring
  * Moved code out of masher.py
  * Settings now is in settings.py

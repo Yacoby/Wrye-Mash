@@ -28,6 +28,7 @@ from types import *
 import bolt
 from bolt import LString,GPath, SubProgress
 
+
 import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from wx.lib.evtmgr import eventManager
@@ -70,6 +71,37 @@ try:
 except (ValueError, ImportError):
     print ( 'Failed to import wx.lib.iewin. '
           + 'Features may not be available and there may be lots of errrors!')
+
+import fnmatch, shutil, imp
+
+def findMlox(start):
+    for root, dirnames, filenames in os.walk(start):
+        try:
+            dirnames.remove('Data Files')
+        except ValueError:
+            pass
+        try:
+            dirnames.remove('Installers')
+        except ValueError:
+            pass
+
+        for filename in fnmatch.filter(filenames, 'mlox.py'):
+            return root
+
+    return None
+
+wd = os.getcwd()
+mlox = findMlox(os.path.dirname(wd))
+
+if mlox:
+    #ugly hack to get around some mlox data loading issues
+    os.chdir(mlox)
+    mlox = imp.load_source('mlox', os.path.join(mlox, 'mlox.py'))
+    os.chdir(wd)
+else:
+    print 'Mlox failed to load'
+    import mlox.fakemlox
+    mlox = mlox.fakemlox
 
 
 # Exceptions ------------------------------------------------------------------
@@ -4747,6 +4779,129 @@ class Mods_IniTweaks(Link):
         gui.dialog.InfoMessage(self.window,_('%s applied.') 
             % (os.path.split(mitPath)[1],),_('INI Tweaks'))
 
+#------------------------------------------------------------------------------
+class MloxLogger(wx.Frame, mlox.logger):
+    """
+    Alters the logger so that it doesn't write to stdout/stderr but to 
+    a dialog box
+    """
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, wx.ID_ANY, "Mlox Log")
+        panel = wx.Panel(self, wx.ID_ANY)
+        self.txtLog = wx.TextCtrl(panel, wx.ID_ANY, size=(300,100),
+                          style = wx.TE_MULTILINE|wx.TE_READONLY|wx.HSCROLL)
+ 
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(self.txtLog, 1, wx.ALL|wx.EXPAND, 5)
+        panel.SetSizer(sizer)
+
+    def add(self, message, *cohort):
+        self.txtLog.WriteText(message + '\n')
+
+    def insert(self, message):
+        self.txtLog.WriteText(message + '\n')
+
+
+class MloxSorter(mlox.loadorder):
+    """ Inherited to allow to integrate updating with mash """
+
+    def update_mod_times(self, files):
+        """
+        Ripped straight out of mlox, just altered to integrate with mash 
+        rather that directly redating files
+        """
+        if mlox.Opt._Game == "Morrowind":
+            mtime_first = 1026943162 # Morrowind.esm
+        else: # Opt._Game == Oblivion
+            mtime_first = 1165600070 # Oblivion.esm
+        if len(files) > 1:
+            mtime_last = int(time.time()) # today
+            # sanity check
+            if mtime_last < 1228683562: # Sun Dec  7 14:59:56 CST 2008
+                mtime_last = 1228683562
+            loadorder_mtime_increment = (mtime_last - mtime_first) / len(files)
+            mtime = mtime_first
+            for p in files:
+                mosh.modInfos[p].setMTime(mtime) 
+                mtime += loadorder_mtime_increment
+
+            mosh.modInfos.refreshDoubleTime()
+            globals.modList.Refresh()
+
+
+class Mods_Mlox():
+    def __init__(self):
+        self.settingsKey = 'mash.ext.mlox.oldorder'
+
+    def HasMlox(self):
+        return os.path.exists(os.path.join(os.path.dirname(mlox.__file__), 'mlox.py'))
+
+    def AddToMenu(self, menu, text):
+        """
+        Adds an item to the menu, but disables it if mlox isn't active
+        returns the id of the item
+        """
+        menuItem = menu.Append(wx.ID_ANY,text)
+        menuItem.Enable(self.HasMlox())
+        return menuItem.GetId()
+
+    def SortWindow(self):
+        self.window.PopulateItems()
+
+    def AppendToMenu(self,menu,window,data):
+        self.window = window
+        launchMloxId = self.AddToMenu(menu, _('Launch Mlox'))
+        sortMloxId = self.AddToMenu(menu, _('Sort Using Mlox'))
+
+        revertItem = menu.Append(wx.ID_ANY, _('Revert Changes'))
+        revertItem.Enable(self.HasMlox() and self.settingsKey in conf.settings)
+        revertId = revertItem.GetId()
+
+        wx.EVT_MENU(window,launchMloxId,self.LaunchMlox)
+        wx.EVT_MENU(window,sortMloxId,self.MloxSort)
+        wx.EVT_MENU(window,revertId,self.MloxRevert)
+
+    def LaunchMlox(self, event):
+        cwd = os.getcwd()
+        os.chdir( os.path.dirname(mlox.__file__) )
+
+        if os.path.exists('mlox.exe'):
+            os.spawnl(os.P_NOWAIT, 'mlox.exe', 'mlox.exe')
+        else:
+            gui.dialog.ErrorMessage(self.window, _('Couldn\'t find mlox.exe to launch'))
+
+        os.chdir(cwd)
+
+    def MloxRevert(self, event):
+        if self.settingsKey in conf.settings:
+            MloxSorter().update_mod_times(conf.settings[self.settingsKey])
+            del conf.settings[self.settingsKey]
+        else:
+            gui.dialog.ErrorMessage(self.window, _('Cannot revert. Nothing to revert to'))
+        
+    def MloxSort(self, event):
+        items = mosh.modInfos.keys()
+        items.sort(key=lambda x:mosh.modInfos[x].mtime)
+
+        conf.settings['mash.ext.mlox.oldorder'] = items
+
+        cwd = os.getcwd()
+        os.chdir( os.path.dirname(mlox.__file__) )
+
+        mlox.Opt.FromFile = False
+        mlox.Opt.GetAll = True
+        mlox.Opt.GUI = False
+        mlox.Opt.Update = True
+        mlox.DBG = False
+
+        logger = MloxLogger(self.window)
+        logger.Show()
+        mlox.Msg = mlox.New = mlox.Old = mlox.Stats = logger
+
+        MloxSorter().update(0)
+        os.chdir(cwd)
+
+
 # Mod Links -------------------------------------------------------------------
 #------------------------------------------------------------------------------
 class Mod_GroupsData:
@@ -6419,6 +6574,10 @@ def InitModLinks():
     if True: #--Load
         loadMenu = MenuLink(_("Load"))
         loadMenu.links.append(Mods_LoadList())
+        ModList.mainMenu.append(loadMenu)
+    if True: #--Load
+        loadMenu = MenuLink(_("Mlox"))
+        loadMenu.links.append(Mods_Mlox())
         ModList.mainMenu.append(loadMenu)
     if True: #--Sort by
         sortMenu = MenuLink(_("Sort by"))
