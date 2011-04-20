@@ -10,10 +10,6 @@
 # Imports ---------------------------------------------------------------------
 #--Localization
 #..Handled by mosh, so import that.
-import mosh
-from mosh import _
-from mosh import AbstractError, ArgumentError, StateError, UncodedError
-from mosh import formatInteger,formatDate
 import cStringIO
 import os
 import re
@@ -25,14 +21,23 @@ import textwrap
 import time
 from types import *
 
-import bolt
-from bolt import LString,GPath, SubProgress
-
+import fnmatch, imp
 
 import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from wx.lib.evtmgr import eventManager
 import wx.html
+
+import mosh
+from mosh import _
+from mosh import AbstractError, ArgumentError, StateError, UncodedError
+from mosh import formatInteger,formatDate
+
+import bolt
+from bolt import LString,GPath, SubProgress
+
+
+
 import balt
 from balt import tooltip, fill, bell
 from balt import bitmapButton, button, toggleButton, checkBox, staticText, spinCtrl
@@ -41,6 +46,7 @@ from balt import spacer, hSizer, vSizer, hsbSizer, vsbSizer
 from balt import colors, images, Image
 from balt import Links, Link, SeparatorLink, MenuLink
 from gui.settings import SettingsWindow
+
 
 import conf
 import globals
@@ -72,7 +78,6 @@ except (ValueError, ImportError):
     print ( 'Failed to import wx.lib.iewin. '
           + 'Features may not be available and there may be lots of errrors!')
 
-import fnmatch, imp
 
 def findMlox(start):
     for root, dirnames, filenames in os.walk(start):
@@ -104,7 +109,6 @@ else:
     mlox = mlox.fakemlox
 
 
-# Exceptions ------------------------------------------------------------------
 # Gui Ids ---------------------------------------------------------------------
 #------------------------------------------------------------------------------
 class IdListIterator:
@@ -1126,7 +1130,7 @@ class ModList(gui.List):
             return
 
         if conf.settings['mash.mods.sort'] != 'Modified':
-            print 'Must be sorted by Modified to enable ctrl based sorting'
+            gui.dialog.ErrorMessage(self.GetParent(), 'The most list must be must be sorted by Modified to enable ctrl based sorting')
             return
         
         selected = self.GetSelected()
