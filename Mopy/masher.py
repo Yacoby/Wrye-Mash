@@ -72,7 +72,7 @@ except (ValueError, ImportError):
     print ( 'Failed to import wx.lib.iewin. '
           + 'Features may not be available and there may be lots of errrors!')
 
-import fnmatch, shutil, imp
+import fnmatch, imp
 
 def findMlox(start):
     for root, dirnames, filenames in os.walk(start):
