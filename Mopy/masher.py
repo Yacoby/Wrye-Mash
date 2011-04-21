@@ -21,8 +21,6 @@ import textwrap
 import time
 from types import *
 
-import fnmatch, imp
-
 import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from wx.lib.evtmgr import eventManager
@@ -36,8 +34,6 @@ from mosh import formatInteger,formatDate
 import bolt
 from bolt import LString,GPath, SubProgress
 
-
-
 import balt
 from balt import tooltip, fill, bell
 from balt import bitmapButton, button, toggleButton, checkBox, staticText, spinCtrl
@@ -47,10 +43,8 @@ from balt import colors, images, Image
 from balt import Links, Link, SeparatorLink, MenuLink
 from gui.settings import SettingsWindow
 
-
 import conf
 import globals
-
 import exception
 
 #general messageboxes
@@ -58,6 +52,10 @@ import gui.dialog
 
 import gui.utils
 from gui.helpbrowser import HelpBrowser
+
+#this hides the complexities of loading mlox and imports mlox to the name mlox
+from mlox.loader import loadMlox
+mlox = importMlox()
 
 bosh = mosh #--Cheap compatibility for imported code.
 
@@ -79,34 +77,6 @@ except (ValueError, ImportError):
           + 'Features may not be available and there may be lots of errrors!')
 
 
-def findMlox(start):
-    for root, dirnames, filenames in os.walk(start):
-        try:
-            dirnames.remove('Data Files')
-        except ValueError:
-            pass
-        try:
-            dirnames.remove('Installers')
-        except ValueError:
-            pass
-
-        for filename in fnmatch.filter(filenames, 'mlox.py'):
-            return root
-
-    return None
-
-wd = os.getcwd()
-mlox = findMlox(os.path.dirname(wd))
-
-if mlox:
-    #ugly hack to get around some mlox data loading issues
-    os.chdir(mlox)
-    mlox = imp.load_source('mlox', os.path.join(mlox, 'mlox.py'))
-    os.chdir(wd)
-else:
-    print 'Mlox failed to load'
-    import mlox.fakemlox
-    mlox = mlox.fakemlox
 
 
 # Gui Ids ---------------------------------------------------------------------
