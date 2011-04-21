@@ -54,7 +54,7 @@ import gui.utils
 from gui.helpbrowser import HelpBrowser
 
 #this hides the complexities of loading mlox and imports mlox to the name mlox
-from mlox.loader import loadMlox
+from mlox.loader import importMlox
 mlox = importMlox()
 
 bosh = mosh #--Cheap compatibility for imported code.
