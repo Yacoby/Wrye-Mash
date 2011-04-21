@@ -1094,6 +1094,7 @@ The Mash distribution includes additional files that assist in its operation and
 * Totally trashed the help browser trying to remove wx.lib.ie dependacy
 * Fixed bug with utilites panel and programs not starting
 * Added Mlox integration
+* Fixed issue with installer and read only files
 * A lot of code refactoring
  * Moved code out of masher.py
  * Settings now is in settings.py
