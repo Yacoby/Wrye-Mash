@@ -39,6 +39,7 @@ import shutil
 import string
 import struct
 import sys
+import stat
 
 import bolt
 from bolt import BoltError
@@ -4024,6 +4025,10 @@ class InstallerArchive(Installer):
 		result = ins.close()
 		if result:
 			raise StateError(_("Extraction failed."))
+        #ensure that no file is read only
+		for thedir, subdirs, files in os.walk(self.tempDir.s):
+ 			for f in files:
+ 				os.chmod(os.path.join(thedir, f),stat.S_IWRITE)
 		#--Done
 		self.tempList.remove()
 
