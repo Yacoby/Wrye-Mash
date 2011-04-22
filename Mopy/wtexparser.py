@@ -250,16 +250,16 @@ class Parser:
                           + '|'
                           + '~~(.*)~~'
                           + '|'
-                          +  '\\*\\*(.*)\\*\\*')                  
+                          +r'\*\*(.*)\*\*')                  
 
         #matches a url in the form [[href|text]] or [[href]]
-        linkRegex       = ('\\[\\['
-                          +   '([^\\|]*)\\|([^\\]]*)' 
-                          + '\\]\\]'
+        linkRegex       = (r'\[\['
+                          +  r'([^\|]*)\|([^\]]*)' 
+                          +r'\]\]'
                           + '|'
-                          + '\\[\\['
-                          +   '([^\\]]*)'
-                          + '\\]\\]' )
+                          +r'\[\['
+                          +  r'([^\]]*)'
+                          +r'\]\]' )
 
         #the last line of this matches anything, that isn't
         #assumed to be the start of some of the above formatting
@@ -267,7 +267,7 @@ class Parser:
                           + '|'                           
                           + linkRegex                     
                           + '|'                           
-                          + '(.*?(?=\\*\\*|__|~~|\\[\\[|$))')
+                          + r'(.*?(?=\*\*|__|~~|\[\[|$))')
 
         #while we can keep making matches. the text variable
         #is reduced with every match and then just the remained considered.
@@ -326,7 +326,7 @@ class Parser:
         "   * TEXT", where the number of spaces before the * indicates
         the indentation level
         """
-        match = re.match('([\\s]*)\\* (.+)', line)
+        match = re.match(r'([\s]*)\* (.+)', line)
 
         if not self.currentHeading.textNode or not self.currentText:
             self.currentText = self.currentHeading.textNode = Node(None, 0)
