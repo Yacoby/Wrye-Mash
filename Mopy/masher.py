@@ -1818,6 +1818,53 @@ class SavePanel(gui.NotebookPanel):
         self.saveDetails.Layout()
 
 #------------------------------------------------------------------------------
+class InstallersList(balt.Tank):
+    """
+    The list of installed packages. Subclass of balt.Tank to allow
+    reordering etal 
+    """
+    def __init__(self,parent,data,icons=None,mainMenu=None,itemMenu=None,
+                 details=None,id=-1,style=(wx.LC_REPORT | wx.LC_SINGLE_SEL)):
+        balt.Tank.__init__(self,parent,data,icons,mainMenu,itemMenu,
+                           details,id,style|wx.LC_EDIT_LABELS)
+
+        self.gList.Bind(wx.EVT_CHAR, self.OnChar)
+
+    def OnChar(self,event):
+        """Char event: Reorder."""
+        ##Ctrl+Up/Ctrl+Down - Move installer up/down install order
+        if event.ControlDown() and event.GetKeyCode() in (wx.WXK_UP,wx.WXK_DOWN):
+            selected = self.GetSelected()
+            if len(selected) < 1:
+                return
+            orderKey = lambda x: self.data.data[x].order
+            maxPos = max(self.data.data[x].order for x in self.data.data)
+            if event.GetKeyCode() == wx.WXK_DOWN:
+                moveMod = 1
+                visibleIndex = self.GetIndex(sorted(self.GetSelected(),key=orderKey)[-1]) + 2
+            else:
+                moveMod = -1
+                visibleIndex = self.GetIndex(sorted(self.GetSelected(),key=orderKey)[0]) - 2
+            for thisFile in sorted(self.GetSelected(),key=orderKey,reverse=(moveMod != -1)):
+                newPos = self.data.data[thisFile].order + moveMod
+                if newPos < 0 or maxPos < newPos:
+                    break
+                self.data.moveArchives([thisFile],newPos)
+            self.data.refresh(what='I')
+            self.RefreshUI()
+            #clamp between 0 and maxpos
+            visibleIndex = max(0, min(maxPos, visibleIndex))
+            self.gList.EnsureVisible(visibleIndex)
+        elif event.GetKeyCode() in (wx.WXK_RETURN,wx.WXK_NUMPAD_ENTER):
+        ##Enter - Open selected Installer/
+            if len(self.GetSelected()):
+                path = self.data.dir.join(self.GetSelected()[0])
+                if path.exists():
+                    path.start()
+        else:
+            event.Skip()
+
+#------------------------------------------------------------------------------
 class InstallersPanel(SashTankPanel):
     """Panel for InstallersTank."""
     mainMenu = Links()
@@ -1835,7 +1882,7 @@ class InstallersPanel(SashTankPanel):
         self.frameActivated = False
         self.fullRefresh = False
         #--Contents
-        self.gList = balt.Tank(left,data, 
+        self.gList = InstallersList(left,data, 
             installercons, InstallersPanel.mainMenu, InstallersPanel.itemMenu,
             details=self, style=wx.LC_REPORT)
         self.gList.SetSizeHints(100,100)

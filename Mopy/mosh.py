@@ -4544,17 +4544,9 @@ class InstallersData(bolt.TankData, DataDict):
 		numItems = len(data)
 		orderKey = lambda x: data[x].order
 		oldList = sorted(data,key=orderKey)
-		while newPos < numItems:
-			posItem = oldList[newPos]
-			if posItem in moveSet: newPos += 1
-			else: break
 		newList = [x for x in oldList if x not in moveSet]
 		moveList.sort(key=orderKey)
-		if newPos < numItems:
-			newPos = newList.index(posItem)
-			newList[newPos:newPos] = moveList
-		else:
-			newList.extend(moveList)
+		newList[newPos:newPos] = moveList
 		for index,archive in enumerate(newList):
 			data[archive].order = index
 		self.setChanged()
