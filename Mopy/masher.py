@@ -6340,7 +6340,7 @@ class App_Morrowind(Link):
         """Handle menu selection."""
         cwd = os.getcwd()
         os.chdir(conf.settings['mwDir'])
-        os.spawnl(os.P_NOWAIT,os.path.join(conf.settings['mwDir'],'Morrowind.exe'))
+        os.spawnl(os.P_NOWAIT,'Morrowind.exe', 'Morrowind.exe')
         os.chdir(cwd)
         if conf.settings.get('mash.autoQuit.on',False):
             globals.mashFrame.Close()
