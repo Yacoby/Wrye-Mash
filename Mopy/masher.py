@@ -4817,27 +4817,24 @@ class Mods_Tes3cmd_Fixit():
             menuItem.Enable(False)
 
     def Execute(self,event):
-        modDir = mosh.modInfos.dir
-        bd = os.path.join(modDir, 'tes3cmdbackups')
-        try:
-            os.makedirs(bd)
-        except os.error:
-            pass
-
         log = gui.LoggerWindow(self.window, 'Tes3cmd Log')
         log.Show()
 
-        out, err = tes3cmd.fixit(backupDir=bd)
+        out, err = tes3cmd.fixit()
 
         if err:
             log.writeLine('Errors')
             log.writeLine('------')
             log.write(err)
+            log.writeLine('------')
+            log.write('\n\n\n')
 
         if out:
             log.writeLine('Output')
             log.writeLine('------')
             log.write(out)
+            log.writeLine('------')
+            log.write('\n\n\n')
 
         self.window.Refresh()
 
@@ -5443,27 +5440,25 @@ class Mod_Tes3cmd_Clean(Link):
 
     def Execute(self,event):
         """Handle menu selection."""
-        modDir = mosh.modInfos.dir
-        bd = os.path.join(modDir, 'tes3cmdbackups')
-        try:
-            os.makedirs(bd)
-        except os.error:
-            pass
 
         log = gui.LoggerWindow(self.window, 'Tes3cmd Log')
         log.Show()
 
-        out, err = tes3cmd.clean(self.data, replace=True, backupDir=bd)
+        out, err = tes3cmd.clean(self.data, replace=True)
 
         if err:
             log.writeLine('Errors')
             log.writeLine('------')
             log.write(err)
+            log.writeLine('------')
+            log.write('\n\n\n')
 
         if out:
             log.writeLine('Output')
             log.writeLine('------')
             log.write(out)
+            log.writeLine('------')
+            log.write('\n\n\n')
 
         self.window.Refresh()
 

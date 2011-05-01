@@ -3,6 +3,20 @@ import subprocess
 
 import conf
 
+def run(args):
+    startupinfo = None
+    if os.name == 'nt':
+        info = subprocess.STARTUPINFO()
+        #WIN32 constant: STARTUPINFO.STARTF_USESHOWWINDOW
+        info.dwFlags |= 0x00000001
+    p = subprocess.Popen(args,
+                         executable=getLocation(),
+                         cwd=getDataDir(),
+                         startupinfo=info,
+                         stderr=subprocess.PIPE,
+                         stdout=subprocess.PIPE) 
+    return p.communicate()
+
 def getDataDir():
     cwd = os.getcwd()
     mwdir = os.path.dirname(cwd)
@@ -30,12 +44,7 @@ def fixit(hideBackups=True, backupDir=None):
     if backupDir:
         args += ['--backup-dir', backupDir]
 
-    p = subprocess.Popen(args,
-                         executable=getLocation(),
-                         cwd=getDataDir(),
-                         stderr=subprocess.PIPE,
-                         stdout=subprocess.PIPE) 
-    return p.communicate()
+    return run(args)
 
 def clean(files, replace=False, hideBackups=True, backupDir=None):
     args = ['tes3cmd.exe', 'clean']
@@ -50,9 +59,4 @@ def clean(files, replace=False, hideBackups=True, backupDir=None):
         args += ['--backup-dir', backupDir]
 
     args += files
-    p = subprocess.Popen(args,
-                         executable=getLocation(),
-                         cwd=getDataDir(),
-                         stderr=subprocess.PIPE,
-                         stdout=subprocess.PIPE) 
-    return p.communicate()
+    return run(args)
