@@ -12,6 +12,27 @@ from mosh import _
 #constant
 wxListAligns = [wx.LIST_FORMAT_LEFT, wx.LIST_FORMAT_RIGHT, wx.LIST_FORMAT_CENTRE]
 
+class LoggerWindow(wx.Frame):
+    """
+    Alters the logger so that it doesn't write to stdout/stderr but to 
+    a dialog box
+    """
+    def __init__(self, parent, title):
+        wx.Frame.__init__(self, parent, wx.ID_ANY, title)
+        panel = wx.Panel(self, wx.ID_ANY)
+        self.txtLog = wx.TextCtrl(panel, wx.ID_ANY, size=(300,100),
+                          style = wx.TE_MULTILINE|wx.TE_READONLY|wx.HSCROLL)
+ 
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(self.txtLog, 1, wx.ALL|wx.EXPAND, 5)
+        panel.SetSizer(sizer)
+
+    def write(self, message):
+        self.txtLog.WriteText(message)
+
+    def writeLine(self, message):
+        self.txtLog.WriteText(message + '\n')
+
 
 class InterfaceError(exception.MashError):
     pass

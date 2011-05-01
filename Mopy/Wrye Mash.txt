@@ -463,12 +463,17 @@ The following commands are available by right clicking on the column header of t
     * Of course, this also may mean that it's badly out of date!
   * **Revert to Snapshot** Reverts the file to a selected snapshot.
 
-=== Using Mlox
-* If Mlox is installed somewhere within the Morrowind directory, Mlox intergration will be avaible
+=== Using mlox
+* If Mlox is installed somewhere within the Morrowind directory, you will be able to use mlox with Wrye Mash
   * They are accessed through the mod context menu
   * **Launch Mlox** lanuches mlox (You must have mlox.exe in Mopy/mlox)
   * **Sort Using Mox** sorts your load list using the mlox rules 
   * **Revert Changes** reverts the load order to how it was before you sorted it
+
+=== Using tes3cmd
+* If tes3cmd is installed in the Morrowind directory or Data Files directory, you will be able to use tes3cmd with Wrye Mash
+  * To use the *clean* command, select any number of mods, right click select Tes3cmd > Clean
+  * To use the *Fixit* command, open the mod context menu and select Tes3cmd > Fixit
 
 === Export/Import Dialog
 * From the mods context menu, select **Export: Dialog** to export all dialog
@@ -1094,6 +1099,7 @@ The Mash distribution includes additional files that assist in its operation and
 * Totally trashed the help browser trying to remove wx.lib.ie dependacy
 * Fixed bug with utilites panel and programs not starting
 * Added Mlox integration
+* Added tes3cmd intergration
 * Fixed issue with installer and read only files
 * Added Ctrl based sorting to the installers tab
 * A lot of code refactoring
