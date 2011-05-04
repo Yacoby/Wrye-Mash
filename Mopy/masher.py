@@ -4780,9 +4780,6 @@ class Mods_Tes3cmd_Fixit():
     def AppendToMenu(self,menu,window,data):
         self.window = window
 
-        #this is broken, so disabled until I get around to fixing it
-        return
-
         menuItem = menu.Append(wx.ID_ANY, _('Fixit'))
         menuId = menuItem.GetId()
 
@@ -4795,19 +4792,20 @@ class Mods_Tes3cmd_Fixit():
         log = gui.LoggerWindow(self.window, 'Tes3cmd Log')
         log.Show()
 
-        out, err = tes3cmd.tes3cmd.fixit()
+        cmd = tes3cmd.Basic()
+        cmd.fixit()
 
-        if err:
+        if cmd.err:
             log.writeLine('Errors')
             log.writeLine('------')
-            log.write(err)
+            log.write(cmd.err)
             log.writeLine('------')
             log.write('\n\n\n')
 
-        if out:
+        if cmd.out:
             log.writeLine('Output')
             log.writeLine('------')
-            log.write(out)
+            log.write(cmd.out)
             log.writeLine('------')
             log.write('\n\n\n')
 

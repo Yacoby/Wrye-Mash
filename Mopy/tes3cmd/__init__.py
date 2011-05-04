@@ -6,8 +6,50 @@ import conf
 
 import Queue as queue
 
-class tes3cmd(threading.Thread):
-    """ A class that manages a tes3cmd process in another thread """
+class HelperMixin:
+    def getSubprocess(self, args):
+        startupinfo = None
+
+        #hides the command promp on NT systems
+        if os.name == 'nt':
+            info = subprocess.STARTUPINFO()
+            #WIN32 constant: STARTUPINFO.STARTF_USESHOWWINDOW
+            info.dwFlags |= 0x00000001
+
+        return subprocess.Popen(args,
+                             executable=getLocation(),
+                             cwd=getDataDir(),
+                             startupinfo=info,
+                             stderr=subprocess.PIPE,
+                             stdout=subprocess.PIPE) 
+    
+    def buildFixitArgs(self, hideBackups, backupDir):
+        args = ['Threaded.exe', 'fixit']
+        if hideBackups:
+            args += ['--hide-backups']
+        if backupDir:
+            args += ['--backup-dir', backupDir]
+        return args
+
+    def buildCleanArgs(self, files, replace, hideBackups, backupDir):
+        args = ['Threaded.exe', 'clean']
+        if replace:
+            args += ['--replace']
+        if hideBackups:
+            args += ['--hide-backups']
+        if backupDir:
+            args += ['--backup-dir', backupDir]
+        args += files
+        return args
+
+
+class Basic(HelperMixin):
+    def fixit(self, hideBackups=True, backupDir=None):
+        args = self.buildFixitArgs(hideBackups, backupDir)
+        self.out, self.err = self.getSubprocess(args).communicate()
+
+class Threaded(threading.Thread, HelperMixin):
+    """ A class that manages a Threaded process in another thread """
 
     def __init__(self, callback=None):
         """
@@ -28,33 +70,12 @@ class tes3cmd(threading.Thread):
         self.msg.put('STOP')
 
     def fixit(self, hideBackups=True, backupDir=None):
-        args = ['tes3cmd.exe', 'fixit']
-
-        if hideBackups:
-            args += ['--hide-backups']
-
-        if backupDir:
-            args += ['--backup-dir', backupDir]
-
-        self.args = args
+        self.args = self.buildFixitArgs(hideBackups, backupDir)
         self.start()
 
     def clean(self, files, replace=False, hideBackups=True, backupDir=None):
         self.files = files
-        args = ['tes3cmd.exe', 'clean']
-
-        if replace:
-            args += ['--replace']
-
-        if hideBackups:
-            args += ['--hide-backups']
-
-        if backupDir:
-            args += ['--backup-dir', backupDir]
-
-        args += files
-        self.args = args
-
+        self.args = self.buildCleanArgs() 
         self.start()
 
     def run(self):
@@ -62,20 +83,7 @@ class tes3cmd(threading.Thread):
         This shouldn't be called directly, use a function like clean
         that correctly sets the state
         """
-        startupinfo = None
-
-        #hides the command promp on NT systems
-        if os.name == 'nt':
-            info = subprocess.STARTUPINFO()
-            #WIN32 constant: STARTUPINFO.STARTF_USESHOWWINDOW
-            info.dwFlags |= 0x00000001
-
-        p = subprocess.Popen(self.args,
-                             executable=getLocation(),
-                             cwd=getDataDir(),
-                             startupinfo=info,
-                             stderr=subprocess.PIPE,
-                             stdout=subprocess.PIPE) 
+        p = self.getSubprocess(self.args)
 
         while p.poll() is None:
             if not self.msg.empty():
