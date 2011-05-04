@@ -3986,6 +3986,7 @@ class InstallerArchive(Installer):
         file = size = crc = isdir = 0
         ins = os.popen('7z.exe l -slt "%s"' % archive.s,'rt')
         for line in ins:
+            line = unicode(line, sys.getfilesystemencoding())
             maList = reList.match(line)
             if maList:
                 key,value = maList.groups()
@@ -4011,7 +4012,7 @@ class InstallerArchive(Installer):
         progress.state,progress.full = 0,len(fileNames)
         #--Dump file list
         out = self.tempList.open('w')
-        out.write('\n'.join(fileNames))
+        out.write('\n'.join(fileNames).encode('utf8'))
         out.close()
         #--Extract files
         self.clearTemp()
@@ -4021,7 +4022,6 @@ class InstallerArchive(Installer):
         reExtracting = re.compile('Extracting\s+(.+)')
         extracted = []
         for line in ins:
-            #print line,
             maExtracting = reExtracting.match(line)
             if maExtracting: 
                 extracted.append(maExtracting.group(1).strip())
