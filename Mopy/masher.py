@@ -59,6 +59,7 @@ from mlox.loader import importMlox
 mlox = importMlox()
 
 import tes3cmd
+import tes3cmd.gui
 
 bosh = mosh #--Cheap compatibility for imported code.
 
@@ -5432,7 +5433,7 @@ class Mod_Tes3cmd_Clean(Link):
     """Import dialog from text file to mod."""
     def AppendToMenu(self,menu,window,data):
         Link.AppendToMenu(self,menu,window,data)
-        menuItem = wx.MenuItem(menu,self.id,_('Clean'))
+        menuItem = wx.MenuItem(menu,self.id,_('Clean Selected'))
         menu.AppendItem(menuItem)
 
         if not tes3cmd.getLocation():
@@ -5441,26 +5442,9 @@ class Mod_Tes3cmd_Clean(Link):
     def Execute(self,event):
         """Handle menu selection."""
 
-        log = gui.LoggerWindow(self.window, 'Tes3cmd Log')
-        log.Show()
-
-        out, err = tes3cmd.clean(self.data, replace=True)
-
-        if err:
-            log.writeLine('Errors')
-            log.writeLine('------')
-            log.write(err)
-            log.writeLine('------')
-            log.write('\n\n\n')
-
-        if out:
-            log.writeLine('Output')
-            log.writeLine('------')
-            log.write(out)
-            log.writeLine('------')
-            log.write('\n\n\n')
-
-        self.window.Refresh()
+        form = tes3cmd.gui.cleaner(self.window, self.data)
+        form.Show()
+        form.Start(self.window.Refresh)
 
 #------------------------------------------------------------------------------
 class Mod_RenumberRefs(Link):
