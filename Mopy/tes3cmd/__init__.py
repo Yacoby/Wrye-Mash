@@ -75,7 +75,7 @@ class Threaded(threading.Thread, HelperMixin):
 
     def clean(self, files, replace=False, hideBackups=True, backupDir=None):
         self.files = files
-        self.args = self.buildCleanArgs() 
+        self.args = self.buildCleanArgs(files, replace, hideBackups, backupDir) 
         self.start()
 
     def run(self):
