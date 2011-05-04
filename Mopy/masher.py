@@ -4776,8 +4776,12 @@ class Mods_IniTweaks(Link):
 
 #------------------------------------------------------------------------------
 class Mods_Tes3cmd_Fixit():
+    
     def AppendToMenu(self,menu,window,data):
         self.window = window
+
+        #this is broken, so disabled until I get around to fixing it
+        return
 
         menuItem = menu.Append(wx.ID_ANY, _('Fixit'))
         menuId = menuItem.GetId()
@@ -4791,7 +4795,7 @@ class Mods_Tes3cmd_Fixit():
         log = gui.LoggerWindow(self.window, 'Tes3cmd Log')
         log.Show()
 
-        out, err = tes3cmd.fixit()
+        out, err = tes3cmd.tes3cmd.fixit()
 
         if err:
             log.writeLine('Errors')
