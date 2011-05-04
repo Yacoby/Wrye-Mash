@@ -2046,7 +2046,7 @@ class InstallersPanel(SashTankPanel):
                 for file in files:
                     buff.write(file)
                     buff.write('\n')
-                return buff.getvalue()
+                return unicode(buff.getvalue(), sys.getfilesystemencoding())
             elif header:
                 return header+'\n'
             else:
