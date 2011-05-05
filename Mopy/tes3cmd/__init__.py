@@ -1,6 +1,7 @@
 import os
 import subprocess
 import threading
+import time
 
 import conf
 
@@ -24,7 +25,7 @@ class HelperMixin:
                              stdout=subprocess.PIPE) 
     
     def buildFixitArgs(self, hideBackups, backupDir):
-        args = ['Threaded.exe', 'fixit']
+        args = ['tes3cmd.exe', 'fixit']
         if hideBackups:
             args += ['--hide-backups']
         if backupDir:
@@ -32,7 +33,7 @@ class HelperMixin:
         return args
 
     def buildCleanArgs(self, files, replace, hideBackups, backupDir):
-        args = ['Threaded.exe', 'clean']
+        args = ['tes3cmd.exe', 'clean']
         if replace:
             args += ['--replace']
         if hideBackups:
@@ -75,7 +76,7 @@ class Threaded(threading.Thread, HelperMixin):
 
     def clean(self, files, replace=False, hideBackups=True, backupDir=None):
         self.files = files
-        self.args = self.buildCleanArgs() 
+        self.args = self.buildCleanArgs(files, replace, hideBackups, backupDir) 
         self.start()
 
     def run(self):
@@ -91,15 +92,13 @@ class Threaded(threading.Thread, HelperMixin):
                 if msg == 'STOP':
                     p.terminate()
                     return
+            time.sleep(0.01)
 
-            out = p.stdout.readline().strip()
-            err = p.stderr.readline().strip()
+        for line in iter(p.stdout.readline,''):
+            self.out += line.strip() + '\n'
 
-            if out:
-                self.out += out
-
-            if err:
-                self.err += err
+        for line in iter(p.stderr.readline,''):
+            self.err += line.strip() + '\n'
 
         if self.callback:
             self.callback()
