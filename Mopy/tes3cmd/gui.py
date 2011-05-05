@@ -68,8 +68,8 @@ class cleaner(tes3cmdgui.cleaner):
         out = self.worker.out
         err = self.worker.err
         
+        stats, cleaned = self.ParseOutput(out)
         for f in self.worker.files:
-            stats, cleaned = self.ParseOutput(out)
             self.output[f] = { 'stats' : stats,
                                'cleaned' : cleaned,
                                'error' : err }
@@ -97,6 +97,9 @@ class cleaner(tes3cmdgui.cleaner):
                 cleaned += line.strip() + '\n'
             elif line.strip().startswith('Cleaning Stats for'):
                 inStats = True
+            elif line.strip().endswith('was not modified'):
+                stats += line + '\n'
+
         return stats, cleaned
 	
     def OnSkip(self, event):
