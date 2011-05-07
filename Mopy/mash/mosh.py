@@ -3625,10 +3625,13 @@ class Installer(object):
         if pending:
             progress(0,_("%s: Calculating CRCs...\n") % rootName)
             progress.setFull(1+len(pending))
+            try:
+                us = unicode(rpFile.s, sys.getfilesystemencoding())
+            except TypeError:
+                us = rpFile.s
             for index,rpFile in enumerate(sorted(pending)):
                 string = (_("%s: Calculating CRCs...\n%s") % 
-                            (rootName,
-                             unicode(rpFile.s, sys.getfilesystemencoding()))
+                            (rootName, us)
                          )
                 progress(index,string)
                 apFile = apRoot.join(norm_ghost.get(rpFile,rpFile))
