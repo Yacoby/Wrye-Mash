@@ -1,6 +1,0 @@
-; utils.dcg
-; File containing the mash utils data
-;
-; Format of a file entry
-;
-; name of the utility; command line to launch the utility; parameters; description of the utility

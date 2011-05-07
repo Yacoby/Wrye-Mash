@@ -1,0 +1,10 @@
+Output saved in: "F:\Bethesda Games\Morrowind\Data Files\Tribunal.esm"
+Original backed up to: "F:\Bethesda Games\Morrowind\Data Files\Tribunal~1.esm"
+
+Cleaning Stats for "F:\Bethesda Games\Morrowind\Data Files\Tribunal.esm":
+             Evil-GMST Bloodmoon:    61
+              Evil-GMST Tribunal:     5
+                duplicate record:  1479
+                       junk-CELL:    14
+             redundant CELL.AMBI:     7
+             redundant CELL.WHGT:     7

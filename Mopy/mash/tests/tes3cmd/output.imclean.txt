@@ -1,0 +1,17 @@
+CLEANING: "C:\Games\Bethesda Softworks\MW Installers\(QSTS) Immersive Chargen v1.25\00 No Character Maker\Immersive Chargen.esp" ...
+Loaded cached Master: <DATADIR>/morrowind.esm
+ Cleaned duplicate record (BOOK): chargen statssheet
+ Cleaned duplicate record (DOOR): chargen exit door
+ Cleaned duplicate object instance (CharGen_cabindoor FRMR: 6034) from CELL: bitter coast region (-1, -9)
+ Cleaned duplicate object instance (Imperial Guard FRMR: 63431) from CELL: seyda neen (-2, -9)
+ Cleaned duplicate object instance (flora_bc_tree_02 FRMR: 24458) from CELL: seyda neen (-2, -9)
+ Cleaned redundant WHGT from CELL: imperial prison ship
+ Cleaned redundant AMBI,WHGT from CELL: seyda neen, census and excise office
+Output saved in: "C:\Games\Bethesda Softworks\MW Installers\(QSTS) Immersive Chargen v1.25\00 No Character Maker\Immersive Chargen.esp"
+Original backed up to: "C:\Games\Bethesda Softworks\MW Installers\(QSTS) Immersive Chargen v1.25\00 No Character Maker\Immersive Chargen~1.esp"
+
+Cleaning Stats for "C:\Games\Bethesda Softworks\MW Installers\(QSTS) Immersive Chargen v1.25\00 No Character Maker\Immersive Chargen.esp":
+       duplicate object instance:     3
+                duplicate record:     2
+             redundant CELL.AMBI:     1
+             redundant CELL.WHGT:     2

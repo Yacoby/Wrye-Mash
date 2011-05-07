@@ -5414,7 +5414,7 @@ class Mod_Tes3cmd_Clean(Link):
     def Execute(self,event):
         """Handle menu selection."""
 
-        form = tes3cmd.gui.cleaner(self.window, self.data)
+        form = tes3cmd.gui.Cleaner(self.window, self.data)
         form.Show()
         form.Start(self.window.Refresh)
 

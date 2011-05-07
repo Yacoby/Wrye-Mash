@@ -20,7 +20,7 @@ msvcDlls = glob.glob(msvcppath) + glob.glob(msvcrpath)
 dest_folder = "..\\bin\\Mopy"
 
 ## Building up the distributable 'utils.dcg'
-f = open("utils.dcg", "r")
+f = open(os.path.join("mash", "utils.dcg"), "r")
 utils_org = f.read()
 f.close()
 utils_dcg = """; utils.dcg
@@ -150,7 +150,7 @@ for fold in folds:
 	dir_util.copy_tree(fold, dest_folder+'\\%s'%fold)
 
 ## Restoring original 'utils.dcg'
-f = open("utils.dcg", "w")
+f = open(os.path.join("mash", "utils.dcg"), "w")
 f.write(utils_org)
 f.close()
 

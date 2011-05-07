@@ -1,0 +1,6 @@
+CLEANING: "M:\Modding\Morrowind\Morrowind Mods\Encounters\Morrowind Comes Alive-BAIN\10 Morrowind Comes Alive Core\MCA - Guards Patch.ESP" ...
+Loaded cached Master: <DATADIR>/morrowind.esm
+Loaded cached Master: <DATADIR>/tribunal.esm
+Loaded cached Master: <DATADIR>/bloodmoon.esm
+Loading Master: mca.esm
+M:\Modding\Morrowind\Morrowind Mods\Encounters\Morrowind Comes Alive-BAIN\10 Morrowind Comes Alive Core\MCA - Guards Patch.ESP was not modified
