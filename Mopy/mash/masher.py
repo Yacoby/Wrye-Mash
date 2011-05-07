@@ -1803,6 +1803,7 @@ class InstallersList(balt.Tank):
                            details,id,style|wx.LC_EDIT_LABELS)
 
         self.gList.Bind(wx.EVT_CHAR, self.OnChar)
+        self.gList.Bind(wx.EVT_LEFT_DCLICK, self.OnDClick)
 
     def OnChar(self,event):
         """Char event: Reorder."""
@@ -1837,6 +1838,15 @@ class InstallersList(balt.Tank):
                     path.start()
         else:
             event.Skip()
+
+    def OnDClick(self,event):
+        """Double click, open the installer."""
+        (hitItem,hitFlag) = self.gList.HitTest(event.GetPosition())
+        if hitItem < 0:
+            return
+        path = self.data.dir.join(self.GetItem(hitItem))
+        if path.exists():
+            path.start()
 
 #------------------------------------------------------------------------------
 class InstallersPanel(SashTankPanel):
