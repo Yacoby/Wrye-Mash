@@ -3953,6 +3953,22 @@ class File_Stats(Link):
 
 # Installers Links -----------------------------------------------------------------
 #------------------------------------------------------------------------------
+class Installers_AddMarker(Link):
+    """Add an installer marker."""
+    def AppendToMenu(self,menu,window,data):
+        Link.AppendToMenu(self,menu,window,data)
+        menuItem = wx.MenuItem(menu,self.id,_('Add Marker...'))
+        menu.AppendItem(menuItem)
+
+    def Execute(self,event):
+        """Handle selection."""
+        name = balt.askText(self.gTank,_('Enter a title:'),_('Add Marker'))
+        if not name: return
+        name = '=='+name+'=='
+        self.data.addMarker(name)
+        self.data.refresh(what='OS')
+        globals.gInstallers.RefreshUIMods()
+#------------------------------------------------------------------------------
 class Installers_AnnealAll(Link):
     """Anneal all packages."""
     def AppendToMenu(self,menu,window,data):
@@ -6588,6 +6604,8 @@ def InitInstallerLinks():
     InstallersPanel.mainMenu.append(Installers_Open())
     InstallersPanel.mainMenu.append(Installers_Refresh(fullRefresh=False))
     InstallersPanel.mainMenu.append(Installers_Refresh(fullRefresh=True))
+    InstallersPanel.mainMenu.append(SeparatorLink())
+    InstallersPanel.mainMenu.append(Installers_AddMarker())
     #InstallersPanel.mainMenu.append(Mods_IniTweaks())
     InstallersPanel.mainMenu.append(SeparatorLink())
     InstallersPanel.mainMenu.append(Installers_AnnealAll())
