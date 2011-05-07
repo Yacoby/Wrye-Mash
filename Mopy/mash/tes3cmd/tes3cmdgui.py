@@ -81,7 +81,7 @@ class cleanop ( wx.Dialog ):
 class cleaner ( wx.Frame ):
 	
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"tes3cmd Cleaner", pos = wx.DefaultPosition, size = wx.Size( 532,346 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"tes3cmd Cleaner", pos = wx.DefaultPosition, size = wx.Size( 530,350 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
 		
 		self.SetSizeHintsSz( wx.DefaultSize, wx.DefaultSize )
 		
@@ -183,8 +183,12 @@ class cleaner ( wx.Frame ):
 		
 		bSizer71 = wx.BoxSizer( wx.VERTICAL )
 		
+		bSizer82 = wx.BoxSizer( wx.VERTICAL )
+		
 		self.m_button5 = wx.Button( self.m_panel4, wx.ID_ANY, u"Save Log", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer71.Add( self.m_button5, 0, wx.ALIGN_RIGHT|wx.ALL, 5 )
+		bSizer82.Add( self.m_button5, 0, wx.ALIGN_RIGHT|wx.ALL, 5 )
+		
+		bSizer71.Add( bSizer82, 1, wx.EXPAND, 5 )
 		
 		fgSizer6.Add( bSizer71, 1, wx.EXPAND, 5 )
 		
