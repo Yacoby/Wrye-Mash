@@ -1101,7 +1101,11 @@ The Mash distribution includes additional files that assist in its operation and
 * Added Mlox integration
 * Added tes3cmd intergration
 * Fixed issue with installer and read only files
+* Installer files now open on double click
 * Added Ctrl based sorting to the installers tab
+* Fixed the odd unicode errors
+* Changed the icon
+* Added markers to the installer
 * A lot of code refactoring
  * Moved code out of masher.py
  * Settings now is in settings.py
