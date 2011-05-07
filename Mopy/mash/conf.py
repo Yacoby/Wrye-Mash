@@ -6,12 +6,19 @@ from mosh import _
 
 settings = None
 
+def findMwDir(curPath, trys):
+    if os.path.exists(os.path.join(curPath, 'Morrowind.exe')):
+        return curPath
+    if trys == 0:
+        return curPath
+    return findMwDir(os.path.dirname(curPath), trys - 1)
+
 settingDefaults = {
     #-# SettingsWindow
     'mash.settings.show':False,
     #--Morrowind Directory
     #get the parent of the current directory
-    'mwDir': os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+    'mwDir': findMwDir(os.path.realpath(__file__), 3),
     #--Wrye Mash
     'mash.version': 0,
     'mash.readme': (0,'84 DCG'),

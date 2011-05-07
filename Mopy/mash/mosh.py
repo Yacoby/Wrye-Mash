@@ -3123,7 +3123,7 @@ class ModInfos(FileInfos):
         #--Load masters
         modFileNames = self.keys()
         for master,size in self[fileName].tes3.masters:
-            if master in modFileNames:
+            if master in modFileNames and master != fileName:
                 self.load(master,False)
         #--Load self
         mwIniFile.load(fileName,doSave)

@@ -2372,7 +2372,10 @@ class MashFrame(wx.Frame):
         self.SetSizeHints(minSize[0],minSize[1])
         self.SetTitle()
         #--Application Icons
-        self.SetIcons(globals.images['mash.icons'].GetIconBundle())
+        ib = wx.IconBundle()
+        ib.AddIconFromFile(os.path.join('images', 'Wrye Mash.ico'),
+                           wx.BITMAP_TYPE_ANY)
+        self.SetIcons(ib)
         #--Status Bar
         self.SetStatusBar(MashStatusBar(self))
         #--Sizer
