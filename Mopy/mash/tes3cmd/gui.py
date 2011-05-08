@@ -1,4 +1,5 @@
 import os
+from copy import copy
 
 import wx
 
@@ -56,8 +57,10 @@ class DoneEvent(wx.PyEvent):
 class Cleaner(tes3cmdgui.cleaner, OutputParserMixin):
     """ GUI interface for the clean function """
 
-    def __init__(self, parent, files):
+    def __init__(self, parent, files, args = {}):
         tes3cmdgui.cleaner.__init__(self, parent)
+
+        self.args = args
 
         self.files = files
         self.totalFiles = len(files)
@@ -84,10 +87,23 @@ class Cleaner(tes3cmdgui.cleaner, OutputParserMixin):
             return
 
         filename = self.files.pop()
+        lowerFname = filename.lower()
+
+        #we don't want to clean morrowind.esm
+        if lowerFname == 'morrowind.esm':
+            self.StartNext()
+            return
+
+        #if we copy expansions, don't clean gmsts (I think)
+        args = copy(self.args)
+        if lowerFname == 'tribunal.esm' or lowerFname == 'bloodmon.esm':
+            args['gmsts'] = False
+        args['replace'] = True
+
         self.mCurrentFile.SetLabel(filename)
 
         self.worker = tes3cmd.Threaded(callback=lambda: wx.PostEvent(self, DoneEvent()))
-        self.worker.clean([filename], replace=True)
+        self.worker.clean([filename], **args)
     
     def OnDone(self, event):
         """ Called when a file has finished processing """

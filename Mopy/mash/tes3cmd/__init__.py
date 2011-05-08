@@ -32,7 +32,12 @@ class HelperMixin:
             args += ['--backup-dir', backupDir]
         return args
 
-    def buildCleanArgs(self, files, replace, hideBackups, backupDir):
+    def buildCleanArgs(self, files, replace, hideBackups, backupDir,
+                       cells, dups, gmsts, instances, junk):
+
+        if not (cells or dups or gmsts or instances or junk):
+            raise Exception('No options selected')
+
         args = ['tes3cmd.exe', 'clean']
         if replace:
             args += ['--replace']
@@ -40,6 +45,23 @@ class HelperMixin:
             args += ['--hide-backups']
         if backupDir:
             args += ['--backup-dir', backupDir]
+
+        #if everything is true then we don't need to set any of the options
+        if cells and dups and gmsts and instances and junk:
+            args += files
+            return args
+
+        if cells:
+            args += ['--cell-params']
+        if dups:
+            args += ['--dups']
+        if gmsts:
+            args += ['--gmsts']
+        if instances:
+            args += ['--instances']
+        if junk:
+            args += ['--junk-cells']
+
         args += files
         return args
 
@@ -74,9 +96,11 @@ class Threaded(threading.Thread, HelperMixin):
         self.args = self.buildFixitArgs(hideBackups, backupDir)
         self.start()
 
-    def clean(self, files, replace=False, hideBackups=True, backupDir=None):
+    def clean(self, files, replace=False, hideBackups=True, backupDir=None,
+              cells=True, dups=True, gmsts=True, instances=True, junk=True):
         self.files = files
-        self.args = self.buildCleanArgs(files, replace, hideBackups, backupDir) 
+        self.args = self.buildCleanArgs(files, replace, hideBackups, backupDir,
+                                        cells, dups, gmsts, instances, junk) 
         self.start()
 
     def run(self):
