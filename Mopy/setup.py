@@ -161,5 +161,5 @@ if os.path.exists('upx.exe'):
             + glob.glob(os.path.join(dest_folder, '*.exe')) )
     #note, --ultra-brute takes ages.
     #If you want a fast build change it to --best
-    args = ['upx.exe', '--ultra-brute'] + files
+    args = ['upx.exe', '--best'] + files
     os.spawnv(os.P_WAIT, 'upx.exe', args)

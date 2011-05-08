@@ -50,5 +50,5 @@ def importMlox():
         saveMloxCfg(mloxPath)
         return mlox
     else:
-        import mlox.fakemlox
-        return mlox.fakemlox
+        from . import fakemlox
+        return fakemlox
