@@ -102,7 +102,7 @@ class cleaner ( wx.Frame ):
 		self.mStop = wx.Button( self.m_panel4, wx.ID_ANY, u"Stop", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer14.Add( self.mStop, 0, wx.ALL, 5 )
 		
-		self.mProgress = wx.Gauge( self.m_panel4, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.mProgress = wx.Gauge( self.m_panel4, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL|wx.GA_SMOOTH )
 		bSizer14.Add( self.mProgress, 0, wx.ALL, 5 )
 		
 		self.m_staticText6 = wx.StaticText( self.m_panel4, wx.ID_ANY, u"Currently Cleaning:", wx.DefaultPosition, wx.DefaultSize, 0 )
