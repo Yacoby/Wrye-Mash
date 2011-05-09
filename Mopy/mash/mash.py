@@ -60,10 +60,6 @@ if len(sys.argv) > 1:
 else:
     stdOutCode = -1
 
-masher.InitSettings()
-masher.InitLinks()
-masher.InitImages()
-
 if stdOutCode >= 0:
     app = masher.MashApp(stdOutCode)
 else:
