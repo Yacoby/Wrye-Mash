@@ -65,6 +65,23 @@ class HelperMixin:
         args += files
         return args
 
+    def buildHeaderArgs(self, file, hideBackups, backupDir, sync, 
+                        updateMasters, updateRecordCount):
+        args = ['tes3cmd.exe', 'header']
+        if hideBackups:
+            args += ['--hide-backups']
+        if backupDir:
+            args += ['--backup-dir', backupDir]
+
+        if sync:
+            args += '--synchronize'
+        if updateMasters:
+            args += '--update-masters'
+        if updateRecordCount:
+            args += '--update-record-count'
+        args.append(file)
+        return args
+
 
 class Basic(HelperMixin):
     def fixit(self, hideBackups=True, backupDir=None):
@@ -101,6 +118,13 @@ class Threaded(threading.Thread, HelperMixin):
         self.files = files
         self.args = self.buildCleanArgs(files, replace, hideBackups, backupDir,
                                         cells, dups, gmsts, instances, junk) 
+        self.start()
+
+    def header(self, file, hideBackups=True, backupDir=None, sync=True,
+               updateMasters=False, updateRecordCount=False):
+        self.files = [file]
+        self.args = self.buildHeaderArgs(file, hideBackups, backupDir, sync,
+                                         updateMasters, updateRecordCount)
         self.start()
 
     def run(self):

@@ -41,6 +41,7 @@ class CleanOp( tes3cmdgui.cleanop ):
 	def OnCleanClick( self, event ):
 		pass
 
+DONE_HEADER, DONE_CLEAN = range(2)
 
 #the thread that manages the threaded process uses wx events
 #to post messsages to the main thread
@@ -49,7 +50,8 @@ def EVT_DONE(win, func):
     win.Connect(-1, -1, EVT_DONE_ID, func)
 
 class DoneEvent(wx.PyEvent):
-    def __init__(self):
+    def __init__(self, t):
+        self.doneType = t
         wx.PyEvent.__init__(self)
         self.SetEventType(EVT_DONE_ID)
 
@@ -76,12 +78,13 @@ class Cleaner(tes3cmdgui.cleaner, OutputParserMixin):
         self.args = args
 
         self.files = files
-        self.totalFiles = len(files)
+        self.remainingFiles = copy(files)
 
         self.output = {}
 
         EVT_DONE(self,self.OnDone)
 
+    #--------------------------------------------------------------------------
     def Start(self, callback=None):
         """
         Starts running tes3cmd over all the files
@@ -98,18 +101,18 @@ class Cleaner(tes3cmdgui.cleaner, OutputParserMixin):
         call to Start()
 
         This is called from Start() to start cleaning the list of files
-        and from OnDone to start cleaning the next file when one has been
+        and from DoneHeadere() to start cleaning the next file when one has been
         cleaned.
         """
 
-        if not self.files:
+        if not self.remainingFiles:
             self.mSkip.Disable()
             self.mStop.Disable()
             if self.endCallback:
                 self.endCallback()
             return
 
-        filename = self.files.pop()
+        self.currentFile = filename = self.remainingFiles.pop()
         lowerFname = filename.lower()
 
         #we don't want to clean morrowind.esm
@@ -125,46 +128,77 @@ class Cleaner(tes3cmdgui.cleaner, OutputParserMixin):
 
         self.mCurrentFile.SetLabel(filename)
 
-        self.worker = tes3cmd.Threaded(callback=lambda: wx.PostEvent(self, DoneEvent()))
-        self.worker.clean([filename], **args)
-    
+        #start cleaning the current file
+        func = lambda: wx.PostEvent(self, DoneEvent(DONE_CLEAN))
+        self.cleaner = tes3cmd.Threaded(callback=func)
+        self.cleaner.clean([filename], **args)
+
+    #--------------------------------------------------------------------------
+    # GUI clean event and event handlers
     def OnDone(self, event):
         """
-        Called when a file has finished processing. This parses the output
-        and starts cleaning the next mod
+        Called when a file has finished processing.
+        Dispatches to the correct function depending on event type
         """
-        out = self.worker.out
-        err = self.worker.err
+        if event.doneType == DONE_HEADER:
+            self.DoneHeader()
+        elif event.doneType == DONE_CLEAN:
+            self.DoneClean()
+            
+    def DoneClean(self):
+        """
+        When the file has done cleaning, we then sync the headers
+        """
+        out = self.cleaner.out
+        err = self.cleaner.err
         
         stats, cleaned = self.ParseOutput(out)
-        for f in self.worker.files:
-            self.output[f] = { 'stats' : stats,
-                               'cleaned' : cleaned,
-                               'output' : out,
-                               'error' : err }
-            self.mCleanedMods.Append(f)
+        self.output[self.currentFile] = { 'stats' : stats,
+                                          'cleaned' : cleaned,
+                                          'output' : out,
+                                          'error' : err }
+
+        func = lambda: wx.PostEvent(self, DoneEvent(DONE_HEADER))
+        self.syncer = tes3cmd.Threaded(callback=func)
+        self.syncer.header(self.currentFile)
+
+    def DoneHeader(self):
+        """
+        When the header has been processed, we can then start the next file
+        """
+        self.output[self.currentFile]['output'] += self.syncer.out
+        self.output[self.currentFile]['error'] += self.syncer.err
+        self.mCleanedMods.Append(self.currentFile)
 
         if not self.mCleanedMods.GetSelections():
             self.mCleanedMods.Select(0)
-            self.Select(self.worker.files[0])
+            self.Select(self.currentFile)
 
-        ratio = (self.totalFiles - len(self.files))/float(self.totalFiles)
+        tfLen = len(self.files)
+        ratio = (tfLen - len(self.remainingFiles))/float(tfLen)
         self.mProgress.SetValue(ratio*100)
 
         self.mCurrentFile.SetLabel('')
         self.StartNext()
 	
+    #--------------------------------------------------------------------------
+    # GUI  skip and stop events
     def OnSkip(self, event):
         """ When the skip button is pressed """
         self.worker.stop()
         self.worker.join()
-
         self.StartNext()
 
     def OnStop(self, event):
         """ When the stop button is pressed """
         self.worker.stop()
         self.worker.join()
+
+    #--------------------------------------------------------------------------
+    # GUI list selection events to view the logs for a file
+    def OnSelect(self, event):
+        """ ListBox select, selecting a mod to view the stats of """
+        self.Select(event.GetString())
 
     def Select(self, name):
         """ Sets the details for the given mod name """
@@ -173,20 +207,24 @@ class Cleaner(tes3cmdgui.cleaner, OutputParserMixin):
         self.mLog.SetValue(item['cleaned'])
         self.mErrors.SetValue(item['error'])
 
-    def OnSelect(self, event):
-        """ ListBox select, selecting a mod to view the stats of """
-        self.Select(event.GetString())
+    #--------------------------------------------------------------------------
+    # Log functions and save log button event
+    def GetLog(self, fileName):
+        """ Gets the log text for the given file name """
+        log = ''
+        o = self.output[fileName]
+        if o['error']:
+            log += o['error'] + '\n'
+        if o['output']:
+            log += o['output'] + '\n'
+        return log
 
     def SaveLog(self, fileName):
         """ Saves the log information to the given location """
         f = open(fileName, 'w')
-        for o in self.output.values(): 
-            if o['error']:
-                f.write(o['error'])
-                f.write('\n')
-            if o['output']:
-                f.write(o['output'])
-                f.write('\n')
+        for fn in self.output.keys(): 
+            f.write('--' + fn + '--\n')
+            f.write(self.GetLog(fn))
         f.close()
 
     def OnSaveLog(self, event):

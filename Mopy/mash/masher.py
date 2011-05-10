@@ -5447,14 +5447,28 @@ class Mod_Tes3cmd_Clean(Link):
         Link.AppendToMenu(self,menu,window,data)
         menuItem = wx.MenuItem(menu,self.id,_('Clean Selected'))
         menu.AppendItem(menuItem)
-
         if not tes3cmd.getLocation():
             menuItem.Enable(False)
+    
+    def OnDone(self):
+        logDir = os.path.join(conf.settings['mwDir'],
+                              'Data Files',
+                              'tes3cmd',
+                              'Logs')
+        if not os.path.exists(logDir):
+            os.makedirs(logDir)
+
+        for fileName in self.form.files:
+            fh = open(os.path.join(logDir, fileName + '.log'), 'w')
+            fh.write(self.form.GetLog(fileName))
+            fh.close()
+
+        self.window.Refresh()
 
     def Execute(self,event):
-        form = tes3cmd.gui.Cleaner(self.window, self.data)
-        form.Show()
-        form.Start(self.window.Refresh)
+        self.form = tes3cmd.gui.Cleaner(self.window, self.data)
+        self.form.Show()
+        self.form.Start(self.OnDone)
 
 #------------------------------------------------------------------------------
 class Mod_RenumberRefs(Link):
