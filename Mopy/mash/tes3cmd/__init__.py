@@ -27,7 +27,7 @@ class HelperMixin:
     def buildFixitArgs(self, hideBackups, backupDir):
         args = ['tes3cmd.exe', 'fixit']
         if hideBackups:
-            args += ['--hide-backups']
+            args.append('--hide-backups')
         if backupDir:
             args += ['--backup-dir', backupDir]
         return args
@@ -40,9 +40,9 @@ class HelperMixin:
 
         args = ['tes3cmd.exe', 'clean']
         if replace:
-            args += ['--replace']
+            args.append('--replace')
         if hideBackups:
-            args += ['--hide-backups']
+            args.append('--hide-backups')
         if backupDir:
             args += ['--backup-dir', backupDir]
 
@@ -52,15 +52,15 @@ class HelperMixin:
             return args
 
         if cells:
-            args += ['--cell-params']
+            args.append('--cell-params')
         if dups:
-            args += ['--dups']
+            args.append('--dups')
         if gmsts:
-            args += ['--gmsts']
+            args.append('--gmsts')
         if instances:
-            args += ['--instances']
+            args.append('--instances')
         if junk:
-            args += ['--junk-cells']
+            args.append('--junk-cells')
 
         args += files
         return args
@@ -69,16 +69,16 @@ class HelperMixin:
                         updateMasters, updateRecordCount):
         args = ['tes3cmd.exe', 'header']
         if hideBackups:
-            args += ['--hide-backups']
+            args.append('--hide-backups')
         if backupDir:
             args += ['--backup-dir', backupDir]
 
         if sync:
-            args += '--synchronize'
+            args.append('--synchronize')
         if updateMasters:
-            args += '--update-masters'
+            args.append('--update-masters')
         if updateRecordCount:
-            args += '--update-record-count'
+            args.append('--update-record-count')
         args.append(file)
         return args
 
