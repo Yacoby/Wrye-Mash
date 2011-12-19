@@ -2127,10 +2127,15 @@ class InstallersPanel(SashTankPanel):
 
     def OnCheckSubItem(self,event):
         """Handle check/uncheck of item."""
+        selected = self.gSubList.GetSelections()
+
         installer = self.data[self.detailsItem]
         for index in range(self.gSubList.GetCount()):
             installer.subActives[index+1] = self.gSubList.IsChecked(index)
         self.refreshCurrent(installer)
+
+        for i in selected:
+            self.gSubList.Select(i)
 
     def OnCheckEspmItem(self,event):
         """Handle check/uncheck of item."""
