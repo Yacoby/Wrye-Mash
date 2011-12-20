@@ -45,6 +45,8 @@ import bolt
 from bolt import BoltError
 from bolt import LString, GPath, Flags, DataDict, SubProgress
 
+import compat
+
 import mush
 bush = mush #--Cheap code compatibility.
 
@@ -233,7 +235,7 @@ class Settings:
         self.data = {}
         #--Load
         if os.path.exists(self.path):
-            inData = cPickle.load(open(self.path))
+            inData = compat.uncpickle(open(self.path))
             self.data.update(inData)
 
     def loadDefaults(self,defaults):
@@ -248,7 +250,7 @@ class Settings:
         filePath = self.path
         if os.path.exists(filePath):
             ins = open(filePath)
-            outData = cPickle.load(ins)
+            outData = compat.uncpickle(ins)
             ins.close()
             #--Delete some data?
             for key in self.deleted:
@@ -351,7 +353,7 @@ class Table:
         #--Load
         if os.path.exists(self.path):
             ins = open(self.path)
-            inData = cPickle.load(ins)
+            inData = compat.uncpickle(ins)
             self.data.update(inData)
 
     def save(self):
@@ -454,7 +456,7 @@ class PickleDict(bolt.PickleDict):
             ins = None
             try:
                 ins = self.oldPath.open('r')
-                self.data.update(cPickle.load(ins))
+                self.data.update(compat.uncpickle(ins))
                 ins.close()
                 result = 1
             except EOFError:
@@ -3212,7 +3214,7 @@ class ModInfos(FileInfos):
         """Load ObjectMaps from file."""
         path = os.path.join(self.dir,settings['mosh.modInfos.objectMaps'])
         if os.path.exists(path):
-            self.objectMaps = cPickle.load(open(path,'rb'))
+            self.objectMaps = compat.uncpickle(open(path,'rb'))
         else:
             self.objectMaps = {}
 
