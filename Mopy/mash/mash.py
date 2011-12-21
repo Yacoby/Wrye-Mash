@@ -55,14 +55,6 @@ from wx.lib.pubsub import Publisher
 
 import masher
 
-if len(sys.argv) > 1:
-    stdOutCode = int(sys.argv[1])
-else:
-    stdOutCode = -1
-
-if stdOutCode >= 0:
-    app = masher.MashApp(stdOutCode)
-else:
-    app = masher.MashApp()
-
+#logging and showing of stdout is handled by our code. See mash.errorlog
+app = masher.MashApp(redirect=False)
 app.MainLoop()
