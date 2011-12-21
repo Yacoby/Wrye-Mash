@@ -2312,10 +2312,8 @@ class MashNotebook(wx.Notebook):
         #--Selection
         pageIndex = conf.settings['mash.page']
         #-# Canged for Utilities page
-        # if settings['bash.installers.fastStart'] and pageIndex == 0:
         if conf.settings['bash.installers.fastStart'] and pageIndex == 1:
-        #-#
-            pageIndex = 1
+            pageIndex = 2 #this should be the mods index
         self.SetSelection(pageIndex)
         #--Events
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED,self.OnShowPage)
