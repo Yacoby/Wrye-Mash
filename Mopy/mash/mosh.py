@@ -2358,7 +2358,7 @@ class MWIniFile:
             mtime = modInfos[loadFile].mtime
             if mtime not in self.doubleTime:
                 self.refreshDoubleTime()
-            return not self.doubleTime[modInfos[loadFile].mtime]
+            return not self.doubleTime[mtime]
         else:
             return not (True in self.doubleTime.values())
 
