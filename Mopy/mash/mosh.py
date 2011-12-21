@@ -2351,6 +2351,13 @@ class MWIniFile:
         if loadFile and loadFile not in self.loadFiles:
             return True
         elif loadFile:
+            #An attempt at a fix for issue #27
+            #I am not sure why this is now needed and wasn't before.
+            #One posibility is that when modInfos gets manipulated this isn't
+            #refreshed.
+            mtime = modInfos[loadFile].mtime
+            if mtime not in self.doubleTime:
+                self.refreshDoubleTime()
             return not self.doubleTime[modInfos[loadFile].mtime]
         else:
             return not (True in self.doubleTime.values())
