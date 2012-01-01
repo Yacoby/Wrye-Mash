@@ -815,7 +815,7 @@ class MasterList(gui.List):
         return objMaps
 
 #------------------------------------------------------------------------------
-class ModList(gui.List):
+class ModList(gui.List, gui.ListDragDropMixin):
     #--Class Data
     mainMenu = [] #--Column menu
     itemMenu = [] #--Single item menu
@@ -838,6 +838,7 @@ class ModList(gui.List):
         self.itemMenu = ModList.itemMenu
         #--Parent init
         gui.List.__init__(self,parent,-1,ctrlStyle=(wx.LC_REPORT))#|wx.SUNKEN_BORDER))
+        gui.ListDragDropMixin.__init__(self, self.list)
         #--Image List
         checkboxesIL = globals.images['mash.checkboxes'].GetImageList()
         self.list.SetImageList(checkboxesIL,wx.IMAGE_LIST_SMALL)
@@ -850,6 +851,7 @@ class ModList(gui.List):
         #$# from FallenWizard
         self.list.Bind(wx.EVT_CHAR, self.OnChar)
         #$#
+
 
     def Refresh(self,files='ALL',detail='SAME'):
         """Refreshes UI for specified file. Also calls saveList.Refresh()!"""
@@ -1061,6 +1063,42 @@ class ModList(gui.List):
     def OnSpacePress(self, event):
         for fileName in self.GetSelected():
             self.ToggleModActivation(fileName)
+        self.Refresh()
+
+    def OnDrop(self, name, fromIdx, toIdx):
+        if conf.settings['mash.mods.sort'] != 'Modified':
+            err = ('The most list must be must be sorted by Modified to'
+                   ' enable ctrl based sorting')
+            gui.dialog.ErrorMessage(self.GetParent(), err)
+            return
+
+        ext = name[-4:].lower()
+        items = [x for x in self.GetItems()
+                 if x.lower().endswith(ext)] #if extensions match
+        items.sort(key=lambda x:mosh.modInfos[x].mtime)
+
+        #no point if there are no items
+        if len(items) <= 1:
+            return
+
+        #take into account the fact that the indexes will be incorrect due to
+        #having filtered the list of exm/esp only
+        fromIdx = max(0, fromIdx - (len(self.GetItems()) - len(items)))
+        toIdx = max(0, toIdx - (len(self.GetItems()) - len(items)))
+
+        #remove item from list and reinsert into a new location
+        i = items.pop(fromIdx)
+        if fromIdx < toIdx:
+            toIdx -= 1
+        items.insert(toIdx, i)
+
+        #correct the times on the list
+        getTime = lambda x: mosh.modInfos[x].mtime
+        for i in range(len(items) - 1, 0, -1):
+            if getTime(items[i]) <= getTime(items[i-1]):
+                mosh.modInfos[items[i-1]].setMTime( getTime(items[i]) - 1 )
+
+        mosh.modInfos.refreshDoubleTime()
         self.Refresh()
 
     def moveSelected(self, event, moveMod):
