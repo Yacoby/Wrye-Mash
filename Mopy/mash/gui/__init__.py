@@ -61,25 +61,30 @@ class ListDragDropMixin:
         The event for an item being dropped, should be overridden
 
         name - The name of the item (its text)
+        fromIndex - The index that the item has come from
+        toIndex - The index that the item should be inserted
         '''
         pass
 
     def _DoStartDrag(self, e):
         # Create the data object: Just use plain text.
+        listId = self.listCtrl.GetId()
         idx = e.GetIndex()
         text = self.listCtrl.GetItem(idx).GetText()
-        data = wx.CustomDataObject('TextIdx')
-        data.SetData(pickle.dumps((text, idx)))
+        data = wx.CustomDataObject('Text_Idx_Listid')
+        data.SetData(pickle.dumps((text, idx, listId)))
 
         ds = wx.DropSource(self.listCtrl)
         ds.SetData(data)
         ds.DoDragDrop(True)
-        #res = dropSource.DoDragDrop(flags=wx.Drag_DefaultMove)
 
-    def _DdInsert(self, x, y, text, fromIdx):
+    def _DdInsert(self, x, y, fromId, text, fromIdx):
         '''
         Insert text at given x, y coordinates --- used with drag-and-drop.
         '''
+        if fromId != self.listCtrl.GetId():
+            return
+
         # Find insertion point.
         toIdx, flags = self.listCtrl.HitTest((x, y))
 
@@ -110,7 +115,7 @@ class ListDrop(wx.PyDropTarget):
         self.setFn = setFn
 
         # specify the type of data we will accept
-        self.data = wx.CustomDataObject('TextIdx')
+        self.data = wx.CustomDataObject('Text_Idx_Listid')
         self.SetDataObject(self.data)
 
     # Called when OnDrop returns True.  We need to get the data and
@@ -118,8 +123,8 @@ class ListDrop(wx.PyDropTarget):
     def OnData(self, x, y, d):
         # copy the data from the drag source to our data object
         if self.GetData():
-            text, idx = pickle.loads(self.data.GetData())
-            self.setFn(x, y, text, idx)
+            text, idx, listId = pickle.loads(self.data.GetData())
+            self.setFn(x, y, listId, text, idx)
 
         # what is returned signals the source what to do
         # with the original data (move, copy, etc.)  In this

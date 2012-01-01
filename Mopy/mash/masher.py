@@ -1066,6 +1066,7 @@ class ModList(gui.List, gui.ListDragDropMixin):
         self.Refresh()
 
     def OnDrop(self, name, fromIdx, toIdx):
+        ''' Support for dragging and dropping list items '''
         if conf.settings['mash.mods.sort'] != 'Modified':
             err = ('The most list must be must be sorted by Modified to'
                    ' enable ctrl based sorting')
