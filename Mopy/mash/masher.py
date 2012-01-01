@@ -1831,7 +1831,7 @@ class SavePanel(gui.NotebookPanel):
         self.saveDetails.Layout()
 
 #------------------------------------------------------------------------------
-class InstallersList(balt.Tank):
+class InstallersList(balt.Tank, gui.ListDragDropMixin):
     """
     The list of installed packages. Subclass of balt.Tank to allow
     reordering etal 
@@ -1841,8 +1841,17 @@ class InstallersList(balt.Tank):
         balt.Tank.__init__(self,parent,data,icons,mainMenu,itemMenu,
                            details,id,style|wx.LC_EDIT_LABELS)
 
+        gui.ListDragDropMixin.__init__(self, self.gList)
+
         self.gList.Bind(wx.EVT_CHAR, self.OnChar)
         self.gList.Bind(wx.EVT_LEFT_DCLICK, self.OnDClick)
+    
+    def OnDrop(self, name, fromIdx, toIdx):
+        ''' support for drag and drop '''
+        self.data.moveArchives([bolt.Path(name)], toIdx)
+        self.data.refresh(what='I')
+        self.RefreshUI()
+
 
     def OnChar(self,event):
         """Char event: Reorder."""
