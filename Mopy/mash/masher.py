@@ -1065,7 +1065,7 @@ class ModList(gui.List, gui.ListDragDropMixin):
             self.ToggleModActivation(fileName)
         self.Refresh()
 
-    def OnDrop(self, name, fromIdx, toIdx):
+    def OnDrop(self, names, toIdx):
         ''' Support for dragging and dropping list items '''
 
         if conf.settings['mash.mods.sort'] != 'Modified':
@@ -1075,32 +1075,38 @@ class ModList(gui.List, gui.ListDragDropMixin):
             return
 
         #get a list of sorted items for the given file type only
-        ext = name[-4:].lower()
-        items = [x for x in self.GetItems()
-                 if x.lower().endswith(ext)] #if extensions match
+        items = [x for x in self.GetItems()]
         items.sort(key=lambda x:mosh.modInfos[x].mtime)
+        esm = [x for x in items if x.lower().endswith('esm')]
+        esp = [x for x in items if x.lower().endswith('esp')]
 
-        #no point if there are no items
-        if len(items) <= 1:
-            return
+        for fileType, items in {'esm':esm, 'esp':esp}.iteritems():
 
-        #take into account the fact that the indexes will be incorrect due to
-        #having filtered the list of esm or esp only
-        fromIdx = max(0, fromIdx - (len(self.GetItems()) - len(items)))
-        toIdx = max(0, toIdx - (len(self.GetItems()) - len(items)))
+            currentNames = [x for x in names if x in items]
 
-        #remove item from list and reinsert into a new location
-        item = items.pop(fromIdx)
-        if fromIdx < toIdx: #removing the item mutates the list
-            toIdx -= 1
-        items.insert(toIdx, item)
+            #no point if there are no items
+            if len(items) <= 1:
+                continue
 
-        #correct the times on the list, so that the changes made above take
-        #effect with the minimum possible time movement
-        getTime = lambda x: mosh.modInfos[x].mtime
-        for i in range(len(items) - 1, 0, -1):
-            if getTime(items[i]) <= getTime(items[i-1]):
-                mosh.modInfos[items[i-1]].setMTime( getTime(items[i]) - 1 )
+            #take into account the fact that the indexes will be incorrect due to
+            #having filtered the list of esm or esp only
+            idx = max(0, toIdx - (len(self.GetItems()) - len(items)))
+
+            #remove item from list and reinsert into a new location
+            for name in currentNames:
+                fromIdx = items.index(name)
+                item = items.pop(fromIdx)
+                if fromIdx < idx: #removing the item mutates the list
+                    idx -= 1
+                items.insert(idx, item)
+                idx += 1
+
+            #correct the times on the list, so that the changes made above take
+            #effect with the minimum possible time movement
+            getTime = lambda x: mosh.modInfos[x].mtime
+            for i in range(len(items) - 1, 0, -1):
+                if getTime(items[i]) <= getTime(items[i-1]):
+                    mosh.modInfos[items[i-1]].setMTime( getTime(items[i]) - 1 )
 
         mosh.modInfos.refreshDoubleTime()
         self.Refresh()
@@ -1848,9 +1854,9 @@ class InstallersList(balt.Tank, gui.ListDragDropMixin):
         self.gList.Bind(wx.EVT_CHAR, self.OnChar)
         self.gList.Bind(wx.EVT_LEFT_DCLICK, self.OnDClick)
     
-    def OnDrop(self, name, fromIdx, toIdx):
-        ''' Implementing support for drag and drop '''
-        self.data.moveArchives([bolt.Path(name)], toIdx)
+    def OnDrop(self, names, toIdx):
+        ''' Implementing support for drag and drop of installers '''
+        self.data.moveArchives([bolt.Path(name) for name in names], toIdx)
         self.data.refresh(what='I')
         self.RefreshUI()
 
