@@ -815,7 +815,7 @@ class MasterList(gui.List):
         return objMaps
 
 #------------------------------------------------------------------------------
-class ModList(gui.List):
+class ModList(gui.List, gui.ListDragDropMixin):
     #--Class Data
     mainMenu = [] #--Column menu
     itemMenu = [] #--Single item menu
@@ -838,6 +838,7 @@ class ModList(gui.List):
         self.itemMenu = ModList.itemMenu
         #--Parent init
         gui.List.__init__(self,parent,-1,ctrlStyle=(wx.LC_REPORT))#|wx.SUNKEN_BORDER))
+        gui.ListDragDropMixin.__init__(self, self.list)
         #--Image List
         checkboxesIL = globals.images['mash.checkboxes'].GetImageList()
         self.list.SetImageList(checkboxesIL,wx.IMAGE_LIST_SMALL)
@@ -850,6 +851,7 @@ class ModList(gui.List):
         #$# from FallenWizard
         self.list.Bind(wx.EVT_CHAR, self.OnChar)
         #$#
+
 
     def Refresh(self,files='ALL',detail='SAME'):
         """Refreshes UI for specified file. Also calls saveList.Refresh()!"""
@@ -1061,6 +1063,52 @@ class ModList(gui.List):
     def OnSpacePress(self, event):
         for fileName in self.GetSelected():
             self.ToggleModActivation(fileName)
+        self.Refresh()
+
+    def OnDrop(self, names, toIdx):
+        ''' Support for dragging and dropping list items '''
+
+        if conf.settings['mash.mods.sort'] != 'Modified':
+            err = ('The most list must be must be sorted by Modified to'
+                   ' enable ctrl based sorting')
+            gui.dialog.ErrorMessage(self.GetParent(), err)
+            return
+
+        #get a list of sorted items for the given file type only
+        items = [x for x in self.GetItems()]
+        items.sort(key=lambda x:mosh.modInfos[x].mtime)
+        esm = [x for x in items if x.lower().endswith('esm')]
+        esp = [x for x in items if x.lower().endswith('esp')]
+
+        for fileType, items in {'esm':esm, 'esp':esp}.iteritems():
+
+            currentNames = [x for x in names if x in items]
+
+            #no point if there are no items
+            if len(items) <= 1:
+                continue
+
+            #take into account the fact that the indexes will be incorrect due to
+            #having filtered the list of esm or esp only
+            idx = max(0, toIdx - (len(self.GetItems()) - len(items)))
+
+            #remove item from list and reinsert into a new location
+            for name in currentNames:
+                fromIdx = items.index(name)
+                item = items.pop(fromIdx)
+                if fromIdx < idx: #removing the item mutates the list
+                    idx -= 1
+                items.insert(idx, item)
+                idx += 1
+
+            #correct the times on the list, so that the changes made above take
+            #effect with the minimum possible time movement
+            getTime = lambda x: mosh.modInfos[x].mtime
+            for i in range(len(items) - 1, 0, -1):
+                if getTime(items[i]) <= getTime(items[i-1]):
+                    mosh.modInfos[items[i-1]].setMTime( getTime(items[i]) - 1 )
+
+        mosh.modInfos.refreshDoubleTime()
         self.Refresh()
 
     def moveSelected(self, event, moveMod):
@@ -1792,7 +1840,7 @@ class SavePanel(gui.NotebookPanel):
         self.saveDetails.Layout()
 
 #------------------------------------------------------------------------------
-class InstallersList(balt.Tank):
+class InstallersList(balt.Tank, gui.ListDragDropMixin):
     """
     The list of installed packages. Subclass of balt.Tank to allow
     reordering etal 
@@ -1801,9 +1849,16 @@ class InstallersList(balt.Tank):
                  details=None,id=-1,style=(wx.LC_REPORT | wx.LC_SINGLE_SEL)):
         balt.Tank.__init__(self,parent,data,icons,mainMenu,itemMenu,
                            details,id,style|wx.LC_EDIT_LABELS)
+        gui.ListDragDropMixin.__init__(self, self.gList)
 
         self.gList.Bind(wx.EVT_CHAR, self.OnChar)
         self.gList.Bind(wx.EVT_LEFT_DCLICK, self.OnDClick)
+    
+    def OnDrop(self, names, toIdx):
+        ''' Implementing support for drag and drop of installers '''
+        self.data.moveArchives([bolt.Path(name) for name in names], toIdx)
+        self.data.refresh(what='I')
+        self.RefreshUI()
 
     def OnChar(self,event):
         """Char event: Reorder."""
@@ -2127,10 +2182,15 @@ class InstallersPanel(SashTankPanel):
 
     def OnCheckSubItem(self,event):
         """Handle check/uncheck of item."""
+        selected = self.gSubList.GetSelections()
+
         installer = self.data[self.detailsItem]
         for index in range(self.gSubList.GetCount()):
             installer.subActives[index+1] = self.gSubList.IsChecked(index)
         self.refreshCurrent(installer)
+
+        for i in selected:
+            self.gSubList.Select(i)
 
     def OnCheckEspmItem(self,event):
         """Handle check/uncheck of item."""
@@ -2307,10 +2367,8 @@ class MashNotebook(wx.Notebook):
         #--Selection
         pageIndex = conf.settings['mash.page']
         #-# Canged for Utilities page
-        # if settings['bash.installers.fastStart'] and pageIndex == 0:
         if conf.settings['bash.installers.fastStart'] and pageIndex == 1:
-        #-#
-            pageIndex = 1
+            pageIndex = 2 #this should be the mods index
         self.SetSelection(pageIndex)
         #--Events
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED,self.OnShowPage)
@@ -2889,6 +2947,9 @@ class MashApp(wx.App):
             size=conf.settings['mash.frameSize'])
         self.SetTopWindow(frame)
         frame.Show()
+        #--Error log
+        import errorlog
+        errorlog.ErrorLog(frame)
         #--DocBrowser, JournalBrowser
         if conf.settings['mash.modDocs.show']:
             DocBrowser().Show()
@@ -3256,9 +3317,19 @@ class File_Redate(Link):
         """Handle menu selection."""
         #--Get current start time.
         fileInfos = self.window.data
+
+        #--Work out start time
+        selInfos = [fileInfos[fileName] for fileName in self.data]
+        selInfos.sort(key=lambda a: a.mtime)
+
+        if len(selInfos):
+            startTime = selInfos[0].mtime
+        else:
+            startTime = time.time()
+
         #--Ask user for revised time.
         dialog = wx.TextEntryDialog(self.window,_('Redate selected mods starting at...'),
-            _('Redate Mods'),formatDate(int(time.time())))
+            _('Redate Mods'),formatDate(int(startTime)))
         result = dialog.ShowModal()
         newTimeStr = dialog.GetValue()
         dialog.Destroy()
@@ -3272,12 +3343,12 @@ class File_Redate(Link):
         except OverflowError:
             gui.dialog.ErrorMessage(self,_('Mash cannot handle dates greater than January 19, 2038.)'))
             return
+
         #--Do it
-        selInfos = [fileInfos[fileName] for fileName in self.data]
-        selInfos.sort(key=lambda a: a.mtime)
         for fileInfo in selInfos:
             fileInfo.setMTime(newTime)
             newTime += 60
+
         #--Refresh
         fileInfos.refreshDoubleTime()
         self.window.Refresh()

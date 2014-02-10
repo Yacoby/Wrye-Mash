@@ -1090,7 +1090,15 @@ The Mash distribution includes additional files that assist in its operation and
 
 == Versions ===================================================================
 {{CONTENTS=0}}
-=== 85 [In Development]
+=== 86 [In Development]
+* Fixed output logging
+* Added drag and drop for mods and installers tab
+* Fixed "Avoid at startup" option
+* Allowed settings to be transfered from previous versions
+* Improved unicode handling - File names are now stored as unicode
+* Disabled marker renaming
+
+=== 85 [05/11/2011]
 * Merged changes with Wrye Mash Standalone
 * Added Ctrl Based mod sorting
 * You can now toggle mods with the space bar

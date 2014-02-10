@@ -957,6 +957,7 @@ class Tank(wx.Panel):
         gList.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         gList.Bind(wx.EVT_COMMAND_RIGHT_CLICK, self.DoItemMenu)
         gList.Bind(wx.EVT_LIST_ITEM_SELECTED,self.OnItemSelected)
+        gList.Bind(wx.EVT_LIST_BEGIN_LABEL_EDIT, self.OnStartLabelEdit)
         #--Events: Columns
         gList.Bind(wx.EVT_LIST_COL_CLICK, self.OnColumnClick)
         gList.Bind(wx.EVT_LIST_COL_RIGHT_CLICK, self.DoColumnMenu)
@@ -1163,6 +1164,10 @@ class Tank(wx.Panel):
     def OnItemSelected(self,event):
         """Item Selected: Refresh details."""
         self.RefreshDetails(self.GetItem(event.m_itemIndex))
+
+    def OnStartLabelEdit(self, event):
+        ''' We don't supported renaming labels, so don't let anyone start '''
+        event.Veto()
 
     def OnSize(self, event):
         """Panel size was changed. Change gList size to match."""
