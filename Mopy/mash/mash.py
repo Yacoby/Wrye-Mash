@@ -49,10 +49,6 @@ def ForceWxVersion():
 CheckWx()
 ForceWxVersion()
 
-#required to be able to run this with py2exe
-from wx.lib.pubsub import setupv1 
-from wx.lib.pubsub import Publisher 
-
 import masher
 
 #logging and showing of stdout is handled by our code. See mash.errorlog
