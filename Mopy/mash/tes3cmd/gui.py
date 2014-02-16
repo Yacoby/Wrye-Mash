@@ -185,14 +185,16 @@ class Cleaner(tes3cmdgui.cleaner, OutputParserMixin):
     # GUI  skip and stop events
     def OnSkip(self, event):
         """ When the skip button is pressed """
-        self.worker.stop()
-        self.worker.join()
+        self.cleaner.stop()
+        self.cleaner.join()
         self.StartNext()
 
     def OnStop(self, event):
         """ When the stop button is pressed """
-        self.worker.stop()
-        self.worker.join()
+        self.cleaner.stop()
+        self.cleaner.join()
+
+        self.mCurrentFile.SetLabel('')
 
     #--------------------------------------------------------------------------
     # GUI list selection events to view the logs for a file
